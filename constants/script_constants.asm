@@ -125,6 +125,7 @@ DEF OBJECT_EVENT_SIZE EQU 13 ; object_event
 	const BGEVENT_JUMPTEXT
 	const BGEVENT_JUMPSTD
 	const BGEVENT_GROTTOITEM
+	const BGEVENT_OAM_ANIMATE
 DEF NUM_BGEVENTS EQU const_value
 
 ; BGEVENT_ITEM has to be the last BG event type, since hidden item BG events

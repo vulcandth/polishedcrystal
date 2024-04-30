@@ -12,7 +12,7 @@ SetCurrentWeather::
 	farcall GetOvercastIndex
 	and a
 	jr z, .not_overcast
-	ld a, OW_WEATHER_RAIN
+	ld a, OW_WEATHER_THUNDERSTORM
 .set_weather
 	ld b, a
 	ld a, [wWeatherFlags]
@@ -56,14 +56,24 @@ SetCurrentWeather::
 .not_snowing
 	ld a, [wMapGroup]
 	cp GROUP_RUGGED_ROAD_NORTH
-	jr nz, .no_weather
+	jr nz, .no_sandstorm
 	ld a, [wMapNumber]
 	cp MAP_RUGGED_ROAD_NORTH
 	jr z, .sandstorm
 	cp MAP_RUGGED_ROAD_SOUTH
-	jr nz, .no_weather
+	jr nz, .no_sandstorm
 .sandstorm
 	ld a, OW_WEATHER_SANDSTORM
+	jr .set_weather
+
+.no_sandstorm
+	ld a, [wMapGroup]
+	cp GROUP_CHERRYGROVE_CITY
+	jr nz, .no_weather
+	ld a, [wMapNumber]
+	cp MAP_CHERRYGROVE_CITY
+	jr nz, .no_weather
+	ld a, OW_WEATHER_CHERRY_BLOSSOMS
 	jr .set_weather
 
 .no_weather

@@ -13,6 +13,12 @@ LoadWeatherPal::
 	jr z, .rain ; thunerstorm
 	dec a
 	jr z, .sandstorm
+; cherry blossoms
+	ld a, PAL_OW_PINK
+	ld [wNeededPalIndex], a
+	ld [wLoadedObjPal6], a
+	ld de, wOBPals1 palette 6
+	jr CopySpritePal
 .snow
 	ldh a, [rSVBK]
 	push af

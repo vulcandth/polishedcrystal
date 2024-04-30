@@ -668,6 +668,7 @@ BGEventJumptable:
 	dw .jumptext ; BGEVENT_JUMPTEXT
 	dw .jumpstd  ; BGEVENT_JUMPSTD
 	dw .ifnotset ; BGEVENT_GROTTOITEM
+	dw DoNothing ; BGEVENT_OAM_ANIMATE
 	assert_table_length NUM_BGEVENTS
 
 .up

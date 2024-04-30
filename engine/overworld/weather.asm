@@ -38,6 +38,9 @@ DoOverworldWeather:
 	ld a, [wCurrentWeather]
 	cp OW_WEATHER_SANDSTORM
 	call z, DoOverworldSandstorm
+	ld a, [wCurrentWeather]
+	cp OW_WEATHER_CHERRY_BLOSSOMS
+	call z, DoOverworldCherryBlossoms
 .done
 	farcall OWFadePalettesStep
 	ld hl, wOverworldWeatherDelay
@@ -615,6 +618,188 @@ SpawnSandDrop:
 	ld [hli], a
 	jr .finish
 
+DoOverworldCherryBlossoms:
+;	ld a, [wOverworldWeatherDelay]
+;	and %10
+;	ret nz
+	ld a, [wLoadedObjPal6]
+	cp PAL_OW_PINK
+	jr z, .continue
+	farcall LoadWeatherPal
+.continue
+	call ScanForEmptyOAM
+	call nc, SpawnCherryBlossom
+	call ScanForEmptyOAM
+	call nc, SpawnCherryBlossom
+	call ScanForEmptyOAM
+	call nc, SpawnCherryBlossom
+; fallthrough
+DoCherryBlossomFall:
+	ld de, wShadowOAM
+	ld hl, wShadowOAM
+	ld b, NUM_SPRITE_OAM_STRUCTS
+.loop
+	ld hl, SPRITEOAMSTRUCT_YCOORD
+	ld a, [hl]
+	cp OAM_YCOORD_HIDDEN
+	jr z, .next
+	ld hl, SPRITEOAMSTRUCT_TILE_ID
+	add hl, de
+	ld a, [hli]
+	cp SNOWFLAKE_TILE
+	jr nz, .next
+	ld a, [hl]
+	cp 6 ; pallete 6
+	jr nz, .next
+
+	call Random
+	cp 3 percent
+	jr c, .despawn
+
+	ld a, [wPlayerStepVectorY]
+	add a
+	ld c, a
+	ld hl, SPRITEOAMSTRUCT_YCOORD
+	add hl, de
+	ld a, [hl]
+	sub c
+	ld c, a
+	call GetDropSpeedModifier
+	add c
+	add 2
+	ld hl, SPRITEOAMSTRUCT_YCOORD
+	add hl, de
+	cp OAM_YCOORD_HIDDEN
+	ld [hl], a
+	jr nc, .despawn
+
+	ld a, [wPlayerStepVectorX]
+	add a
+	ld c, a
+	call Random
+	and 1
+	ld a, c
+	jr nz, .no_add_1
+	inc a
+.no_add_1
+	ld c, a
+	ld hl, SPRITEOAMSTRUCT_XCOORD
+	add hl, de
+	ld a, [hl]
+	sub c
+	inc a
+	ld hl, SPRITEOAMSTRUCT_XCOORD
+	add hl, de
+	sub 1 ; no-optimize a++|a-- (need to set carry)
+	ld [hl], a
+	jr c, .despawn
+.next
+	ld hl, SPRITEOAMSTRUCT_LENGTH
+	add hl, de
+	ld d, h
+	ld e, l
+	dec b
+	jr nz, .loop
+	ret
+
+.despawn
+	ld hl, SPRITEOAMSTRUCT_YCOORD
+	add hl, de
+	ld a, OAM_YCOORD_HIDDEN
+	ld [hli], a
+	xor a
+	ld [hli], a
+	ld [hli], a
+	ld [hl], a
+	jr .next
+	ret
+
+SpawnCherryBlossom:
+	push hl
+	ld hl, wCurMapBGEventsPointer
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
+	ld a, [wCurMapBGEventCount]
+	ld c, a
+	;dec c
+.loop
+	ld a, [wMapScriptsBank]
+	ld hl, 2
+	add hl, de
+	call GetFarByte
+	cp BGEVENT_OAM_ANIMATE
+	jr nz, .next_bg_event
+	call Random
+	cp 1 percent
+	jr nc, .next_bg_event
+	ld hl, 0
+	add hl, de
+	ld a, [wMapScriptsBank]
+	call GetFarWord
+	ld a, [wXCoord]
+	ld b, a
+	ld a, h
+	sub b
+	ld h, a
+	ld a, [wYCoord]
+	ld b, a
+	ld a, l
+	sub b
+	ld l, a
+	ld a, h
+	ld c, 16
+	call SimpleMultiply
+	ld h, a
+	ld a, l
+	ld c, 16
+	call SimpleMultiply
+	ld l, a
+	ld a, h
+	add $50
+	ld h, a
+	ld a, l
+	add $54
+	ld l, a
+	ld b, h
+	ld c, l
+	pop hl
+	push hl
+	ld a, c
+	ld [hli], a
+	ld a, b
+	ld [hli], a
+	ld a, WEATHER_TILE_1
+	ld [hli], a
+	ld a, 6 ; pallete 6
+	ld [hld], a
+	dec hl
+	dec hl
+	ldh a, [hUsedWeatherSpriteIndex]
+	and a
+	jr nz, .continue
+	ld a, 04
+	ldh [hUsedWeatherSpriteIndex], a
+	jr .done
+.continue
+	cp l
+	jr nc, .done
+	ld a, l
+	ldh [hUsedWeatherSpriteIndex], a
+.done
+	pop hl
+	ret
+
+.next_bg_event
+	ld hl, 5
+	add hl, de
+	ld d, h
+	ld e, l
+	dec c
+	jr nz, .loop
+	pop hl
+	ret
+
 GetDropSpeedModifier:
 ; input: e = sprite index
 ; output: a = is_even(e / 4)
@@ -750,7 +935,13 @@ LoadWeatherGraphics:
 	jr z, .snow
 	dec a
 	jr z, .rain
-; standstorm
+	dec a
+	jr z, .sand
+; cherry blossoms
+	lb bc, BANK(CherryBlossomGFX), 1
+	ld de, CherryBlossomGFX
+	jr .continue
+.sand
 	lb bc, BANK(SandGFX), 1
 	ld de, SandGFX
 	jr .continue
@@ -770,3 +961,4 @@ RainGFX:   INCBIN "gfx/overworld/rain.2bpp"
 SplashGFX: INCBIN "gfx/overworld/rain_splash.2bpp"
 SnowGFX:   INCBIN "gfx/overworld/snow.2bpp"
 SandGFX:   INCBIN "gfx/overworld/sand.2bpp"
+CherryBlossomGFX: INCBIN "gfx/overworld/cherry_blossom.2bpp"

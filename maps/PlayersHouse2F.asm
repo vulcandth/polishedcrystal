@@ -252,7 +252,7 @@ endr
 	givepoke DUDUNSPARCE, DUDUNSPARCE_THREE_SEGMENT_FORM, 50
 	givepoke FARIGIRAF, 50
 	; fill pokedex
-	callasm FillPokedex
+;	callasm FillPokedex
 ;	; new bark events
 	addcellnum PHONE_MOM
 	setmapscene PLAYERS_HOUSE_1F, $1
