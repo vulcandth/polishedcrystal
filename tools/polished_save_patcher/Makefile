@@ -5,7 +5,7 @@ OS := $(shell uname -s)
 
 # Compiler and flags
 CXX := g++
-CXXFLAGS := -Iinclude
+CXXFLAGS := -Iinclude -std=c++17
 
 # Directories
 SRC_DIR := src
@@ -17,6 +17,7 @@ VERSION8_DIR := $(RESOURCES_DIR)/version8
 # Source files
 SOURCES := $(SRC_DIR)/CommonPatchFunctions.cpp \
            $(SRC_DIR)/PatchVersion7to8.cpp \
+           $(SRC_DIR)/PatchVersion7to8_unorderedmaps.cpp \
            $(SRC_DIR)/SaveBinary.cpp \
            $(SRC_DIR)/SymbolDatabase.cpp \
            $(SRC_DIR)/main.cpp

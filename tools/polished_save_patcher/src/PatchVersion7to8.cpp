@@ -6,10 +6,44 @@ constexpr int NUM_OBJECT_STRUCTS = 13;
 constexpr int OBJECT_PALETTE_V7 = 0x06;
 constexpr int OBJECT_PALETTE_V8 = 0x06;
 constexpr int OBJECT_PAL_INDEX_V8 = 0x21;
-constexpr int OBJECT_LENGTH_V7 = 0x20;
-constexpr int OBJECT_LENGTH_V8 = 0x21;
+constexpr int OBJECT_LENGTH_V7 = 0x21;
+constexpr int OBJECT_LENGTH_V8 = 0x22;
 constexpr int NUM_KEY_ITEMS_V7 = 0x1D;
 constexpr int NUM_KEY_ITEMS_V8 = 0x24;
+constexpr int NUM_APRICORNS = 0x07;
+constexpr int NUM_EVENTS = 0x8ff;
+constexpr int NUM_FRUIT_TREES_V7 = 0x23;
+constexpr int NUM_LANDMARKS_V7 = 0x90;
+constexpr int NUM_LANDMARKS_V8 = 0x91;
+constexpr int CONTACT_LIST_SIZE_V7 = 30;
+constexpr int NUM_PHONE_CONTACTS_V8 = 0x25;
+constexpr int NUM_SPAWNS_V7 = 30;
+constexpr int NUM_SPAWNS_V8 = 34;
+constexpr int PARTYMON_STRUCT_LENGTH = 0x30;
+constexpr int PARTY_LENGTH = 6;
+constexpr int PLAYER_NAME_LENGTH = 8;
+constexpr int MON_NAME_LENGTH = 11;
+constexpr uint8_t EXTSPECIES_MASK = 0b00100000;
+constexpr int MON_EXTSPECIES = 0x15;
+constexpr int MON_EXTSPECIES_F = 5;
+constexpr int MON_ITEM = 0x01;
+constexpr int MON_CAUGHTLOCATION = 0x1e;
+constexpr int NUM_POKEMON_V7 = 0xfe;
+constexpr int MONDB_ENTRIES_V7 = 167;
+constexpr int MONDB_ENTRIES_A_V8 = 167;
+constexpr int MONDB_ENTRIES_B_V8 = 28;
+constexpr int MONDB_ENTRIES_C_V8 = 12;
+constexpr int MONDB_ENTRIES_V8 = MONDB_ENTRIES_A_V8 + MONDB_ENTRIES_B_V8 + MONDB_ENTRIES_C_V8;
+constexpr int SAVEMON_STRUCT_LENGTH = 0x31;
+constexpr int MONS_PER_BOX = 20;
+constexpr int MIN_MONDB_SLACK = 10;
+constexpr int NUM_BOXES_V7 = (MONDB_ENTRIES_V7 * 2 - MIN_MONDB_SLACK) / MONS_PER_BOX;
+constexpr int NUM_BOXES_V8 = (MONDB_ENTRIES_V8 * 2 - MIN_MONDB_SLACK) / MONS_PER_BOX;
+constexpr int BOX_NAME_LENGTH = 9;
+constexpr int NEWBOX_SIZE = MONS_PER_BOX + ((MONS_PER_BOX + 7) / 8) + BOX_NAME_LENGTH + 1;
+constexpr int SAVEMON_EXTSPECIES = 0x15;
+constexpr int SAVEMON_ITEM = 0x01;
+constexpr int SAVEMON_CAUGHTLOCATION = 0x1b;
 
 void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 	// copy the old save file to the new save file
@@ -30,7 +64,7 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 	// calculate the checksum from lookup symbol name "sGameData" to "sGameDataEnd"
 	uint16_t calculated_checksum = calculate_checksum(save7, sym7.getSRAMAddress("sGameData"), sym7.getSRAMAddress("sGameDataEnd"));
 	if (save_checksum != calculated_checksum) {
-		std::cerr << "Checksum mismatch! Expected: " << std::hex << calculated_checksum << ", got: " << save_checksum << std::endl;
+		std::cerr << RED_TEXT << "Checksum mismatch! Expected: " << std::hex << calculated_checksum << ", got: " << save_checksum << std::endl;
 		return;
 	}
 
@@ -40,137 +74,1375 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 	// calculate the checksum from lookup symbol name "sBackupGameData" to "sBackupGameDataEnd"
 	uint16_t calculated_backup_checksum = calculate_checksum(save7, sym7.getSRAMAddress("sBackupGameData"), sym7.getSRAMAddress("sBackupGameDataEnd"));
 	if (backup_checksum != calculated_backup_checksum) {
-		std::cerr << "Backup checksum mismatch! Expected: " << std::hex << calculated_backup_checksum << ", got: " << backup_checksum << std::endl;
+		std::cerr << RED_TEXT << "Backup checksum mismatch! Expected: " << std::hex << calculated_backup_checksum << ", got: " << backup_checksum << std::endl;
 		return;
 	}
 
-	std::cout << "Patching Player Data..." << std::endl;
+	// for n, 1, NUM_BOXES_V8 + 1
+	std::cout << RESET_TEXT << "Clearing v8 sNewBox#..." << std::endl;
+	for (int n = 1; n < NUM_BOXES_V8 + 1; n++) {
+		// clear the newbox
+		it8.seek(sym8.getSRAMAddress("sNewBox" + std::to_string(n)));
+		for (int i = 0; i < NEWBOX_SIZE; i++) {
+			it8.setByte(0x00);
+			it8.next();
+		}
+	}
+
+	// copy the version 7 boxes to the version 8 boxes
+	for (int n = 1; n < NUM_BOXES_V7 + 1; n++) {
+		// copy the newbox
+		it7.seek(sym7.getSRAMAddress("sNewBox" + std::to_string(n)));
+		it8.seek(sym8.getSRAMAddress("sNewBox" + std::to_string(n)));
+		for (int i = 0; i < NEWBOX_SIZE; i++) {
+			it8.setByte(it7.getByte());
+			it7.next();
+			it8.next();
+		}
+	}
+
+	// clear the v8 sBackupNewBox space
+	std::cout << RESET_TEXT << "Clearing v8 sBackupNewBox#..." << std::endl;
+	for (int n = 1; n < NUM_BOXES_V8 + 1; n++) {
+		// clear the backup newbox
+		it8.seek(sym8.getSRAMAddress("sBackupNewBox" + std::to_string(n)));
+		for (int i = 0; i < NEWBOX_SIZE; i++) {
+			it8.setByte(0x00);
+			it8.next();
+		}
+	}
+
+	// copy the version 7 backup boxes to the version 8 backup boxes
+	for (int n = 1; n < NUM_BOXES_V7 + 1; n++) {
+		// copy the backup newbox
+		it7.seek(sym7.getSRAMAddress("sBackupNewBox" + std::to_string(n)));
+		it8.seek(sym8.getSRAMAddress("sBackupNewBox" + std::to_string(n)));
+		for (int i = 0; i < NEWBOX_SIZE; i++) {
+			it8.setByte(it7.getByte());
+			it7.next();
+			it8.next();
+		}
+	}
+
+	// copy sBoxMons1 to sBoxMons1A
+	std::cout << RESET_TEXT << "Copying from sBoxMons1 to sBoxMons1A..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sBoxMons1"));
+	it8.seek(sym8.getSRAMAddress("sBoxMons1A"));
+	it8.copy(it7, MONDB_ENTRIES_A_V8 * SAVEMON_STRUCT_LENGTH);
+
+	// clear it8 sBoxMons1B
+	std::cout << RESET_TEXT << "Clearing sBoxMons1B..." << std::endl;
+	it8.seek(sym8.getSRAMAddress("sBoxMons1B"));
+	for (int i = 0; i < MONDB_ENTRIES_B_V8; i++) {
+		for (int j = 0; j < SAVEMON_STRUCT_LENGTH; j++) {
+			it8.setByte(0x00);
+			it8.next();
+		}
+	}
+
+	// clear it8 sBoxMons1C
+	std::cout << RESET_TEXT << "Clearing sBoxMons1C..." << std::endl;
+	it8.seek(sym8.getSRAMAddress("sBoxMons1C"));
+	for (int i = 0; i < MONDB_ENTRIES_C_V8; i++) {
+		for (int j = 0; j < SAVEMON_STRUCT_LENGTH; j++) {
+			it8.setByte(0x00);
+			it8.next();
+		}
+	}
+
+	// copy sBoxMons2 to SBoxMons2A
+	std::cout << RESET_TEXT << "Copying from sBoxMons2 to sBoxMons2A..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sBoxMons2"));
+	it8.seek(sym8.getSRAMAddress("sBoxMons2A"));
+	it8.copy(it7, MONDB_ENTRIES_A_V8 * SAVEMON_STRUCT_LENGTH);
+
+	// clear it8 sBoxMons2B
+	std::cout << RESET_TEXT << "Clearing sBoxMons2B..." << std::endl;
+	it8.seek(sym8.getSRAMAddress("sBoxMons2B"));
+	for (int i = 0; i < MONDB_ENTRIES_B_V8; i++) {
+		for (int j = 0; j < SAVEMON_STRUCT_LENGTH; j++) {
+			it8.setByte(0x00);
+			it8.next();
+		}
+	}
+
+	// clear it8 sBoxMons2C
+	std::cout << RESET_TEXT << "Clearing sBoxMons2C..." << std::endl;
+	it8.seek(sym8.getSRAMAddress("sBoxMons2C"));
+	for (int i = 0; i < MONDB_ENTRIES_C_V8; i++) {
+		for (int j = 0; j < SAVEMON_STRUCT_LENGTH; j++) {
+			it8.setByte(0x00);
+			it8.next();
+		}
+	}
+
+	// Patching sBoxMons1A if checksums match
+	std::cout << RESET_TEXT << "Checking sBoxMons1A checksums..." << std::endl;
+	for (int i = 0; i < MONDB_ENTRIES_A_V8; i++) {
+		it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH);
+		uint16_t calc_checksum = calculateNewboxChecksum(save8, sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH);
+		uint16_t cur_checksum = extractStoredNewboxChecksum(save8, sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH);
+		if (calc_checksum == cur_checksum) {
+			// patching
+			uint16_t species = it8.getByte();
+			it8.next();
+			uint8_t item = it8.getByte();
+			it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTLOCATION);
+			uint8_t caught_location = it8.getByte();
+			// convert species
+			uint16_t species_v8 = mapv7PkmntoV8(species);
+			if (species_v8 == 0xFFFF) {
+				std::cerr << RED_TEXT << "Species " << std::hex << species << " not found in version 8 pokemon list." << std::endl;
+				continue;
+			} else {
+				if (species != species_v8) {
+					std::cout << RESET_TEXT << "Species " << std::hex << species << " converted to " << std::hex << species_v8 << std::endl;
+				}
+				it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH);
+				it8.setByte(species_v8 & 0xFF);
+				it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_EXTSPECIES);
+				uint8_t personality = it8.getByte();
+				personality &= ~EXTSPECIES_MASK;
+				personality |= (species_v8 >> 8) << MON_EXTSPECIES_F;
+				it8.setByte(personality);
+			}
+			// convert item
+			uint8_t item_v8 = mapv7ItemtoV8(item);
+			if (item_v8 == 0xFF) {
+				std::cerr << RED_TEXT << "Item " << std::hex << static_cast<int>(item) << " not found in version 8 item list." << std::endl;
+			} else {
+				if (item != item_v8) {
+					std::cout << RESET_TEXT << "Item " << std::hex << static_cast<int>(item) << " converted to " << std::hex << static_cast<int>(item_v8) << std::endl;
+				}
+				it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_ITEM);
+				it8.setByte(item_v8);
+			}
+			// convert caught location
+			uint8_t caught_location_v8 = mapv7LandmarktoV8(caught_location);
+			if (caught_location_v8 == 0xFF) {
+				std::cerr << RED_TEXT << "Landmark " << std::hex << static_cast<int>(caught_location) << " not found in version 8 landmark list." << std::endl;
+			} else {
+				if (caught_location != caught_location_v8) {
+					std::cout << RESET_TEXT << "Landmark " << std::hex << static_cast<int>(caught_location) << " converted to " << std::hex << static_cast<int>(caught_location_v8) << std::endl;
+				}
+				it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTLOCATION);
+				it8.setByte(caught_location_v8);
+			}
+			// write the new checksum
+			writeNewboxChecksum(save8, sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH);
+		}
+	}
+
+	// Patching sBoxMons2A if checksums match
+	std::cout << RESET_TEXT << "Checking sBoxMons2A checksums..." << std::endl;
+	for (int i = 0; i < MONDB_ENTRIES_A_V8; i++) {
+		it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH);
+		uint16_t calc_checksum = calculateNewboxChecksum(save8, sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH);
+		uint16_t cur_checksum = extractStoredNewboxChecksum(save8, sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH);
+		if (calc_checksum == cur_checksum) {
+			// patching
+			uint16_t species = it8.getByte();
+			it8.next();
+			uint8_t item = it8.getByte();
+			it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTLOCATION);
+			uint8_t caught_location = it8.getByte();
+			// convert species
+			uint16_t species_v8 = mapv7PkmntoV8(species);
+			if (species_v8 == 0xFFFF) {
+				std::cerr << RED_TEXT << "Species " << std::hex << species << " not found in version 8 pokemon list." << std::endl;
+				continue;
+			} else {
+				if (species != species_v8) {
+					std::cout << RESET_TEXT << "Species " << std::hex << species << " converted to " << std::hex << species_v8 << std::endl;
+				}
+				it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH);
+				it8.setByte(species_v8 & 0xFF);
+				it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_EXTSPECIES);
+				uint8_t personality = it8.getByte();
+				personality &= ~EXTSPECIES_MASK;
+				personality |= (species_v8 >> 8) << MON_EXTSPECIES_F;
+				it8.setByte(personality);
+			}
+			// convert item
+			uint8_t item_v8 = mapv7ItemtoV8(item);
+			if (item_v8 == 0xFF) {
+				std::cerr << RED_TEXT << "Item " << std::hex << static_cast<int>(item) << " not found in version 8 item list." << std::endl;
+			} else {
+				if (item != item_v8) {
+					std::cout << RESET_TEXT << "Item " << std::hex << static_cast<int>(item) << " converted to " << std::hex << static_cast<int>(item_v8) << std::endl;
+				}
+				it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_ITEM);
+				it8.setByte(item_v8);
+			}
+			// convert caught location
+			uint8_t caught_location_v8 = mapv7LandmarktoV8(caught_location);
+			if (caught_location_v8 == 0xFF) {
+				std::cerr << RED_TEXT << "Landmark " << std::hex << static_cast<int>(caught_location) << " not found in version 8 landmark list." << std::endl;
+			} else {
+				if (caught_location != caught_location_v8) {
+					std::cout << RESET_TEXT << "Landmark " << std::hex << static_cast<int>(caught_location) << " converted to " << std::hex << static_cast<int>(caught_location_v8) << std::endl;
+				}
+				it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTLOCATION);
+				it8.setByte(caught_location_v8);
+			}
+			// write the new checksum
+			writeNewboxChecksum(save8, sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH);
+		}
+	}
+
+
+	std::cout << RESET_TEXT << "Copying from wPlayerData to wObjectStructs..." << std::endl;
 	
 	// copy bytes from wPlayerData to wObjectStructs - 1 from version 7 to version 8
 	it7.seek(sym7.getPlayerDataAddress("wPlayerData"));
 	it8.seek(sym8.getPlayerDataAddress("wPlayerData"));
 	it8.copy(it7, sym7.getPlayerDataAddress("wObjectStructs") - sym7.getPlayerDataAddress("wPlayerData"));
 	
+	std::cout << RESET_TEXT << "Patching Object Structs..." << std::endl;
+
 	// version 8 expanded each object struct by 1 byte to add the palette index byte at the end.
 	// we need to copy the lower nybble of OBJECT_PALETTE_V7 to the new OBJECT_PAL_INDEX_V8
 	// and then copy the rest of the object struct from version 7 to version 8
 	for (int i = 0; i < NUM_OBJECT_STRUCTS; i++) {
-		// copy up to the palette byte
 		it7.seek(sym7.getPlayerDataAddress("wObjectStructs") + i * OBJECT_LENGTH_V7);
 		it8.seek(sym8.getPlayerDataAddress("wObjectStructs") + i * OBJECT_LENGTH_V8);
-		it8.copy(it7, OBJECT_PALETTE_V7);
-		// save the lower nybble of the palette byte
-		uint8_t palette = it7.getByte() & 0x0F;
-		// copy until the end of v7 object struct
-		it8.copy(it7, OBJECT_LENGTH_V7 - OBJECT_PALETTE_V7);
-		// write the palette byte to the new palette index byte
-		it8.seek(sym8.getPlayerDataAddress("wObjectStructs") + i * OBJECT_LENGTH_V8 + OBJECT_PAL_INDEX_V8);
+
+		// string is equal to "wObject" + string(i) + "Structs"
+		std::string objectStruct;
+		if (i == 0) {
+			objectStruct = "wPlayerStruct";
+		} else {
+			objectStruct = "wObject" + std::to_string(i) + "Struct";
+		}
+		// assert that current address is equal to objectStruct
+		if (it7.getAddress() != sym7.getPlayerDataAddress(objectStruct)) {
+			std::cerr << RED_TEXT << "Unexpected address for " << objectStruct << " in version 7 save file: " << std::hex << it7.getAddress() << ", expected: " << sym7.getPlayerDataAddress(objectStruct) << std::endl;
+		}
+		if (it8.getAddress() != sym8.getPlayerDataAddress(objectStruct)) {
+			std::cerr << RED_TEXT << "Unexpected address for " << objectStruct << " in version 8 save file: " << std::hex << it8.getAddress() << ", expected: " << sym8.getPlayerDataAddress(objectStruct) << std::endl;
+		}
+		it8.copy(it7, OBJECT_LENGTH_V7);
+		// copy the lower nybble of OBJECT_PALETTE_V7 to OBJECT_PAL_INDEX_V8
+		uint8_t palette = save7.getByte(sym7.getPlayerDataAddress("wObjectStructs") + i * OBJECT_LENGTH_V7 + OBJECT_PALETTE_V7) & 0x0F;
+		std::cout << RESET_TEXT << objectStruct << " Palette: " << std::hex << static_cast<int>(palette) << std::endl;
 		it8.setByte(palette);
 	}
+
+	std::cout << RESET_TEXT << "Copying from wObjectStructsEnd to wBattleFactorySwapCount..." << std::endl;
 
 	// copy bytes from wObjectStructsEnd to wBattleFactorySwapCount
 	it7.seek(sym7.getPlayerDataAddress("wObjectStructsEnd"));
 	it8.seek(sym8.getPlayerDataAddress("wObjectStructsEnd"));
-	it8.copy(it7, sym7.getPlayerDataAddress("wBattleFactorySwapCount") - sym7.getPlayerDataAddress("wObjectStructsEnd"));
+	it8.copy(it7, sym7.getPlayerDataAddress("wBattleFactorySwapCount") + 1 - sym7.getPlayerDataAddress("wObjectStructsEnd"));
+
+	std::cout << RESET_TEXT << "Copying from wMapObjects to wEnteredMapFromContinue..." << std::endl;
 
 	// seek to wMapObjects
 	it7.seek(sym7.getPlayerDataAddress("wMapObjects"));
 	it8.seek(sym8.getPlayerDataAddress("wMapObjects"));
-
 	// copy bytes to wEnteredMapFromContinue
 	it8.copy(it7, sym7.getPlayerDataAddress("wEnteredMapFromContinue") - sym7.getPlayerDataAddress("wMapObjects"));
 	
+	std::cout << RESET_TEXT << "Copy wEnteredMapFromContinue" << std::endl;
 	// copy it7 wEnteredMapFromContinue to it8 wEnteredMapFromContinue
-	it7.seek(sym7.getPlayerDataAddress("wEnteredMapFromContinue"));
+	// assert that the address is correct
+	if (it7.getAddress() != sym7.getPlayerDataAddress("wEnteredMapFromContinue")) {
+		std::cerr << RED_TEXT << "Unexpected address for wEnteredMapFromContinue in version 7 save file: " << std::hex << it7.getAddress() << std::endl;
+	}
 	it8.seek(sym8.getPlayerDataAddress("wEnteredMapFromContinue"));
 	it8.setByte(it7.getByte());
+	std::cout << RESET_TEXT << "Copy wStatusFlags3" << std::endl;
 	// copy it7 wStatusFlags3 to it8 wStatusFlags3
 	it7.seek(sym7.getPlayerDataAddress("wStatusFlags3"));
 	it8.seek(sym8.getPlayerDataAddress("wStatusFlags3"));
 	it8.setByte(it7.getByte());
 
+	std::cout << RESET_TEXT << "Copying from wTimeOfDayPal to wTMsHMsEnd..." << std::endl;
 	// copy from it7 wTimeOfDayPal to it7 wTMsHMsEnd
 	it7.seek(sym7.getPlayerDataAddress("wTimeOfDayPal"));
 	it8.seek(sym8.getPlayerDataAddress("wTimeOfDayPal"));
 	it8.copy(it7, sym7.getPlayerDataAddress("wTMsHMsEnd") - sym7.getPlayerDataAddress("wTimeOfDayPal"));
 
+	std::cout << RESET_TEXT << "Patching wTMsHMs..." << std::endl;
 	// set it8 wKeyItems -> wKeyItemsEnd to 0x00
-	it8.seek(sym8.getPlayerDataAddress("wKeyItems"));
+	// assert that the address is correct
+	if (it8.getAddress() != sym8.getPlayerDataAddress("wKeyItems")) {
+		std::cerr << RED_TEXT << "Unexpected address for wKeyItems in version 8 save file: " << std::hex << it8.getAddress() << std::endl;
+	}
 	while(it8.getAddress() < sym8.getPlayerDataAddress("wKeyItemsEnd")) {
 		it8.setByte(0x00);
 		it8.next();
 	}
 
-	// each wKeyItems in it7 is a bitfield of key items, look up the bit index in the map and set the corresponding bit in it8
+	std::cout << RESET_TEXT << "Patching wKeyItems..." << std::endl;
 	it7.seek(sym7.getPlayerDataAddress("wKeyItems"));
 	it8.seek(sym8.getPlayerDataAddress("wKeyItems"));
+	// it7 wKeyItems is a bit flag array of NUM_KEY_ITEMS_V7 bits. If v7 bit is set, lookup the bit index in the map and write the index to the next byte in it8.
 	for (int i = 0; i < NUM_KEY_ITEMS_V7; i++) {
-		// loop through all the bits in the byte
-		for (int j = 0; j < 8; j++) {
-			// check if the bit is set
-			if (it7.getByte() & (1 << j)) {
-				// get the key item index is equal to the bit index
-				uint8_t keyItemIndex = i * 8 + j;
-				// map the version 7 key item to the version 8 key item
-				uint8_t keyItemIndexV8 = mapv7KeyItemtoV8(keyItemIndex);
-				// if the key item is found write to the next byte in it8.
-				if (keyItemIndexV8 != 0xFF) {
-					it8.setByte(keyItemIndexV8);
-					it8.next();
+		// check if the bit is set
+		if (it7.getByte() & (1 << (i % 8))) {
+			// get the key item index is equal to the bit index
+			uint8_t keyItemIndex = i;
+			// map the version 7 key item to the version 8 key item
+			uint8_t keyItemIndexV8 = mapv7KeyItemtoV8(keyItemIndex);
+			// if the key item is found write to the next byte in it8.
+			if (keyItemIndexV8 != 0xFF) {
+				// print found key itemv7 and converted key itemv8
+				if (keyItemIndex != keyItemIndexV8){
+					std::cout << RESET_TEXT << "Key Item " << std::hex << static_cast<int>(keyItemIndex) << " converted to " << std::hex << static_cast<int>(keyItemIndexV8) << std::endl;
 				}
+				it8.setByte(keyItemIndexV8);
+				it8.next();
+			} else {
+				// warn we couldn't find v7 key item in v8
+				std::cerr << RED_TEXT << "Key Item " << std::hex << keyItemIndex << " not found in version 8 key item list." << std::endl;
 			}
 		}
+		if (i % 8 == 7) {
+			it7.next();
+		}
 	}
-	// write -1 at the end of the key items
-	it8.setByte(0xFF);
+	// write 0x00 to the end of wKeyItems
+	it8.setByte(0x00);
 
+	std::cout << RESET_TEXT << "Copy wNumItems..." << std::endl;
+	// Copy it7 wNumItems to it8 wNumItems
+	it7.seek(sym7.getPlayerDataAddress("wNumItems"));
+	it8.seek(sym8.getPlayerDataAddress("wNumItems"));
+	// save the number of items
+	uint8_t numItemsv7 = it7.getByte();
+	uint8_t numItemsv8 = 0;
+	it8.setByte(numItemsv7);
+	it7.next();
+	it8.next();
+	// wItems is in the structure of ITEM_ID, QUANTITY. With an ITEM_ID of 0xFF indicating the end of the list.
+	// we need to convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY.
+	std::cout << RESET_TEXT << "Patching wItems..." << std::endl;
+	// assert that the address is correct
+	if (it7.getAddress() != sym7.getPlayerDataAddress("wItems")) {
+		std::cerr << RED_TEXT << "Unexpected address for wItems in version 7 save file: " << std::hex << it7.getAddress() << std::endl;
+	}
+	if (it8.getAddress() != sym8.getPlayerDataAddress("wItems")) {
+		std::cerr << RED_TEXT << "Unexpected address for wItems in version 8 save file: " << std::hex << it8.getAddress() << std::endl;
+	}
+	// for numItemsv7, convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY
+	for (int i = 0; i < numItemsv7 + 1; i++) {
+		// get the ITEM_ID from version 7
+		uint8_t itemIDV7 = it7.getByte();
+		it7.next();
+		if (itemIDV7 == 0xFF) {
+			it8.setByte(0xFF);
+			break;
+		}
+		// map the version 7 item to the version 8 item
+		uint8_t itemIDV8 = mapv7ItemtoV8(itemIDV7);
+		// if the item is found write to the next byte in it8.
+		if (itemIDV8 != 0xFF) {
+			// print found itemv7 and converted itemv8
+			if (itemIDV7 != itemIDV8){
+				std::cout << RESET_TEXT << "Item ID " << std::hex << static_cast<int>(itemIDV7) << " converted to " << std::hex << static_cast<int>(itemIDV8) << std::endl;
+			}
+			numItemsv8++;
+			it8.setByte(itemIDV8);
+			it8.next();
+			// copy the quantity
+			it8.setByte(it7.getByte());
+			it7.next();
+			it8.next();
+		} else {
+			// warn we couldn't find v7 item in v8
+			std::cerr << RED_TEXT << "Item ID " << std::hex << itemIDV7 << " not found in version 8 item list." << std::endl;
+			// skip this v7 item and move to the next v7 item
+			it7.next();
+			it7.next();
+		}
+	}
+	// update the number of items v8
+	it8.seek(sym8.getPlayerDataAddress("wNumItems"));
+	it8.setByte(numItemsv8);
+
+	std::cout << RESET_TEXT << "Copy wNumMedicine..." << std::endl;
+	// Copy it7 wNumMedicine to it8 wNumMedicine
+	it7.seek(sym7.getPlayerDataAddress("wNumMedicine"));
+	it8.seek(sym8.getPlayerDataAddress("wNumMedicine"));
+	// save the number of medcine items
+	uint8_t numMedicinev7 = it7.getByte();
+	uint8_t numMedicinev8 = 0;
+	it8.setByte(numMedicinev7);
+	it7.next();
+	it8.next();
+	// wMedicine is in the structure of ITEM_ID, QUANTITY. With an ITEM_ID of 0xFF indicating the end of the list.
+	// we need to convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY.
+	std::cout << RESET_TEXT << "Patching wMedicine..." << std::endl;
+	// assert that the address is correct
+	if (it7.getAddress() != sym7.getPlayerDataAddress("wMedicine")) {
+		std::cerr << RED_TEXT << "Unexpected address for wMedicine in version 7 save file: " << std::hex << it7.getAddress() << std::endl;
+	}
+	// for numMedicinev7, convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY
+	for (int i = 0; i < numMedicinev7 + 1; i++) {
+		// get the ITEM_ID from version 7
+		uint8_t itemIDV7 = it7.getByte();
+		it7.next();
+		if (itemIDV7 == 0xFF) {
+			it8.setByte(0xFF);
+			break;
+		}
+		// map the version 7 item to the version 8 item
+		uint8_t itemIDV8 = mapv7ItemtoV8(itemIDV7);
+		// if the item is found write to the next byte in it8.
+		if (itemIDV8 != 0xFF) {
+			// print found itemv7 and converted itemv8
+			if (itemIDV7 != itemIDV8){
+				std::cout << RESET_TEXT << "Item ID " << std::hex << static_cast<int>(itemIDV7) << " converted to " << std::hex << static_cast<int>(itemIDV8) << std::endl;
+			}
+			numMedicinev8++;
+			it8.setByte(itemIDV8);
+			it8.next();
+			// copy the quantity
+			it8.setByte(it7.getByte());
+			it7.next();
+			it8.next();
+		} else {
+			// warn we couldn't find v7 item in v8
+			std::cerr << RED_TEXT << "Item ID " << std::hex << itemIDV7 << " not found in version 8 item list." << std::endl;
+			// skip this v7 item and move to the next v7 item
+			it7.next();
+			it7.next();
+		}
+	}
+	// update the number of medicine v8
+	it8.seek(sym8.getPlayerDataAddress("wNumMedicine"));
+	it8.setByte(numMedicinev8);
+
+	std::cout << RESET_TEXT << "Copy wNumBalls..." << std::endl;
+	// Copy it7 wNumBalls to it8 wNumBalls
+	it7.seek(sym7.getPlayerDataAddress("wNumBalls"));
+	it8.seek(sym8.getPlayerDataAddress("wNumBalls"));
+	// save the number of ball items
+	uint8_t numBallsv7 = it7.getByte();
+	uint8_t numBallsV8 = 0;
+	it8.setByte(numBallsv7);
+	it7.next();
+	it8.next();
+	// wBalls is in the structure of ITEM_ID, QUANTITY. With an ITEM_ID of 0xFF indicating the end of the list.
+	// we need to convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY.
+	std::cout << RESET_TEXT << "Patching wBalls..." << std::endl;
+	// assert that the address is correct
+	if (it7.getAddress() != sym7.getPlayerDataAddress("wBalls")) {
+		std::cerr << RED_TEXT << "Unexpected address for wBalls in version 7 save file: " << std::hex << it7.getAddress() << std::endl;
+	}
+	// for numBallsv7, convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY
+	for (int i = 0; i < numBallsv7 + 1; i++) {
+		// get the ITEM_ID from version 7
+		uint8_t itemIDV7 = it7.getByte();
+		it7.next();
+		if (itemIDV7 == 0xFF) {
+			it8.setByte(0xFF);
+			break;
+		}
+		// map the version 7 item to the version 8 item
+		uint8_t itemIDV8 = mapv7ItemtoV8(itemIDV7);
+		// if the item is found write to the next byte in it8.
+		if (itemIDV8 != 0xFF) {
+			// print found itemv7 and converted itemv8
+			if (itemIDV7 != itemIDV8){
+				std::cout << RESET_TEXT << "Item ID " << std::hex << static_cast<int>(itemIDV7) << " converted to " << std::hex << static_cast<int>(itemIDV8) << std::endl;
+			}
+			numBallsV8++;
+			it8.setByte(itemIDV8);
+			it8.next();
+			// copy the quantity
+			it8.setByte(it7.getByte());
+			it7.next();
+			it8.next();
+		} else {
+			// warn we couldn't find v7 item in v8
+			std::cerr << RED_TEXT << "Item ID " << std::hex << itemIDV7 << " not found in version 8 item list." << std::endl;
+			// skip this v7 item and move to the next v7 item
+			it7.next();
+			it7.next();
+		}
+	}
+	// update the number of balls v8
+	it8.seek(sym8.getPlayerDataAddress("wNumBalls"));
+	it8.setByte(numBallsV8);
+
+	std::cout << RESET_TEXT << "Copy wNumBerries..." << std::endl;
+	// Copy it7 wNumBerries to it8 wNumBerries
+	it7.seek(sym7.getPlayerDataAddress("wNumBerries"));
+	it8.seek(sym8.getPlayerDataAddress("wNumBerries"));
+	// save the number of berry items
+	uint8_t numBerriesv7 = it7.getByte();
+	uint8_t numBerriesv8 = 0;
+	it8.setByte(numBerriesv7);
+	it7.next();
+	it8.next();
+	// wBerries is in the structure of ITEM_ID, QUANTITY. With an ITEM_ID of 0xFF indicating the end of the list.
+	// we need to convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY.
+	std::cout << RESET_TEXT << "Patching wBerries..." << std::endl;
+	// assert that the address is correct
+	if (it7.getAddress() != sym7.getPlayerDataAddress("wBerries")) {
+		std::cerr << RED_TEXT << "Unexpected address for wBerries in version 7 save file: " << std::hex << it7.getAddress() << std::endl;
+	}
+	// for numBerriesv7, convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY
+	for (int i = 0; i < numBerriesv7 + 1; i++) {
+		// get the ITEM_ID from version 7
+		uint8_t itemIDV7 = it7.getByte();
+		it7.next();
+		if (itemIDV7 == 0xFF) {
+			it8.setByte(0xFF);
+			break;
+		}
+		// map the version 7 item to the version 8 item
+		uint8_t itemIDV8 = mapv7ItemtoV8(itemIDV7);
+		// if the item is found write to the next byte in it8.
+		if (itemIDV8 != 0xFF) {
+			// print found itemv7 and converted itemv8
+			if (itemIDV7 != itemIDV8){
+				std::cout << RESET_TEXT << "Item ID " << std::hex << static_cast<int>(itemIDV7) << " converted to " << std::hex << static_cast<int>(itemIDV8) << std::endl;
+			}
+			numBerriesv8++;
+			it8.setByte(itemIDV8);
+			it8.next();
+			// copy the quantity
+			it8.setByte(it7.getByte());
+			it7.next();
+			it8.next();
+		} else {
+			// warn we couldn't find v7 item in v8
+			std::cerr << RED_TEXT << "Item ID " << std::hex << itemIDV7 << " not found in version 8 item list." << std::endl;
+			// skip this v7 item and move to the next v7 item
+			it7.next();
+			it7.next();
+		}
+	}
+	// update the number of berries v8
+	it8.seek(sym8.getPlayerDataAddress("wNumBerries"));
+	it8.setByte(numBerriesv8);
+
+	std::cout << RESET_TEXT << "Copy wNumPCItems..." << std::endl;
+	// Copy it7 wNumPCItems to it8 wNumPCItems
+	it7.seek(sym7.getPlayerDataAddress("wNumPCItems"));
+	it8.seek(sym8.getPlayerDataAddress("wNumPCItems"));
+	// save the number of pc items
+	uint8_t numPCItems = it7.getByte();
+	uint8_t numPCItemsV8 = 0;
+	it8.setByte(numPCItems);
+	it7.next();
+	it8.next();
+	// wPCItems is in the structure of ITEM_ID, QUANTITY. With an ITEM_ID of 0xFF indicating the end of the list.
+	// we need to convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY.
+	std::cout << RESET_TEXT << "Patching wPCItems..." << std::endl;
+	// assert that the address is correct
+	if (it7.getAddress() != sym7.getPlayerDataAddress("wPCItems")) {
+		std::cerr << RED_TEXT << "Unexpected address for wPCItems in version 7 save file: " << std::hex << it7.getAddress() << std::endl;
+	}
+	// for numPCItems, convert the ITEM_ID from version 7 to version 8 and copy the QUANTITY
+	for (int i = 0; i < numPCItems + 1; i++) {
+		// get the ITEM_ID from version 7
+		uint8_t itemIDV7 = it7.getByte();
+		it7.next();
+		if (itemIDV7 == 0xFF) {
+			it8.setByte(0xFF);
+			break;
+		}
+		// map the version 7 item to the version 8 item
+		uint8_t itemIDV8 = mapv7ItemtoV8(itemIDV7);
+		// if the item is found write to the next byte in it8.
+		if (itemIDV8 != 0xFF) {
+			// print found itemv7 and converted itemv8
+			if (itemIDV7 != itemIDV8){
+				std::cout << RESET_TEXT << "Item ID " << std::hex << static_cast<int>(itemIDV7) << " converted to " << std::hex << static_cast<int>(itemIDV8) << std::endl;
+			}
+			numPCItemsV8++;
+			it8.setByte(itemIDV8);
+			it8.next();
+			// copy the quantity
+			it8.setByte(it7.getByte());
+			it7.next();
+			it8.next();
+		} else {
+			// warn we couldn't find v7 item in v8
+			std::cerr << RED_TEXT << "Item ID " << std::hex << itemIDV7 << " not found in version 8 item list." << std::endl;
+			// skip this v7 item and move to the next v7 item
+			it7.next();
+			it7.next();
+		}
+	}
+	// update the number of pc items v8
+	it8.seek(sym8.getPlayerDataAddress("wNumPCItems"));
+	it8.setByte(numPCItemsV8);
+
+	std::cout << RESET_TEXT << "Copy wApricorns..." << std::endl;
+	it7.seek(sym7.getPlayerDataAddress("wApricorns"));
+	it8.seek(sym8.getPlayerDataAddress("wApricorns"));
+	it8.copy(it7, NUM_APRICORNS);
+
+	std::cout << RESET_TEXT << "Copy from wPokegearFlags to wAlways0SceneID..." << std::endl;
+	it8.copy(it7, sym7.getPlayerDataAddress("wAlways0SceneID") - sym7.getPlayerDataAddress("wPokegearFlags"));
+
+	std::cout << RESET_TEXT << "copy from wAlways0SceneID to wEcruteakHouseSceneID + 1..." << std::endl;
+	it8.copy(it7, sym7.getPlayerDataAddress("wEcruteakHouseSceneID") + 1 - sym7.getPlayerDataAddress("wAlways0SceneID"));
+
+	// clear wEcruteakPokecenter1FSceneID as it is no longer used
+	std::cout << RESET_TEXT << "Clear wEcruteakPokecenter1FSceneID..." << std::endl;
+	it8.setByte(0x00);
+	it7.next();
+	it8.next();
+
+	// copy from wElmsLabSceneID to wEventFlags
+	std::cout << RESET_TEXT << "Copy from wElmsLabSceneID to wEventFlags..." << std::endl;
+	it8.copy(it7, sym7.getPlayerDataAddress("wEventFlags") - sym7.getPlayerDataAddress("wElmsLabSceneID"));
+
+	// clear it8 wEventFlags
+	std::cout << RESET_TEXT << "Clear wEventFlags..." << std::endl;
+	for (int i = 0; i < NUM_EVENTS; i++) {
+		it8.setByte(0x00);
+		it8.next();
+	}
+	it8.seek(sym8.getPlayerDataAddress("wEventFlags"));
+
+	// wEventFlags is a flag_array of NUM_EVENTS bits. If v7 bit is set, lookup the bit index in the map and set the corresponding bit in v8
+	std::cout << RESET_TEXT << "Patching wEventFlags..." << std::endl;
+	for (int i = 0; i < NUM_EVENTS; i++) {
+		// check if the bit is set
+		if (it7.getByte() & (1 << (i % 8))) {
+			// get the event flag index is equal to the bit index
+			uint16_t eventFlagIndex = i;
+			// map the version 7 event flag to the version 8 event flag
+			uint16_t eventFlagIndexV8 = mapv7EventFlagtoV8(eventFlagIndex);
+			// if the event flag is found set the corresponding bit in it8
+			if (eventFlagIndexV8 != 0xFFFF) {
+				// print found event flagv7 and converted event flagv8
+				if (eventFlagIndex != eventFlagIndexV8){
+					std::cout << RESET_TEXT << "Event Flag " << std::hex << static_cast<int>(eventFlagIndex) << " converted to " << std::hex << static_cast<int>(eventFlagIndexV8) << std::endl;
+				}
+				// seek to the byte containing the bit
+				it8.seek(sym8.getPlayerDataAddress("wEventFlags") + i / 8);
+				// set the bit
+				it8.setByte(it8.getByte() | (1 << (i % 8)));
+			}
+		}
+		if (i % 8 == 7) {
+			it7.next();
+		}
+	}
+
+	// copy v7 wCurBox to v8 wCurBox
+	std::cout << RESET_TEXT << "Copy wCurBox..." << std::endl;
+	it7.seek(sym7.getPlayerDataAddress("wCurBox"));
+	it8.seek(sym8.getPlayerDataAddress("wCurBox"));
+	it8.setByte(it7.getByte());
+
+	// set it8 wUsedObjectPals to 0x00
+	std::cout << RESET_TEXT << "Clear wUsedObjectPals..." << std::endl;
+	it8.seek(sym8.getPlayerDataAddress("wUsedObjectPals"));
+	for (int i = 0; i < 0x10; i++) {
+		it8.setByte(0x00);
+		it8.next();
+	}
+
+	// set it8 wLoadedObjPal0-7 to -1
+	std::cout << RESET_TEXT << "Clear wLoadedObjPal0-7..." << std::endl;
+	it8.seek(sym8.getPlayerDataAddress("wLoadedObjPal0"));
+	for (int i = 0; i < 8; i++) {
+		it8.setByte(0xFF);
+		it8.next();
+	}
+
+	// copy from wCelebiEvent to wCurMapCallbacksPointer + 2
+	std::cout << RESET_TEXT << "Copy from wCelebiEvent to wCurMapCallbacksPointer + 2..." << std::endl;
+	it7.seek(sym7.getPlayerDataAddress("wCelebiEvent"));
+	it8.seek(sym8.getPlayerDataAddress("wCelebiEvent"));
+	it8.copy(it7, sym7.getPlayerDataAddress("wCurMapCallbacksPointer") + 2 - sym7.getPlayerDataAddress("wCelebiEvent"));
+
+	// copy from wDecoBed to wFruitTreeFlags
+	std::cout << RESET_TEXT << "Copy from wDecoBed to wFruitTreeFlags..." << std::endl;
+	it7.seek(sym7.getPlayerDataAddress("wDecoBed"));
+	it8.seek(sym8.getPlayerDataAddress("wDecoBed"));
+	it8.copy(it7, sym7.getPlayerDataAddress("wFruitTreeFlags") - sym7.getPlayerDataAddress("wDecoBed"));
+
+	// Copy wFruitTreeFlags
+	std::cout << RESET_TEXT << "Copy wFruitTreeFlags..." << std::endl;
+	it8.copy(it7, NUM_FRUIT_TREES_V7 + 7 / 8);
+
+	// Clear wNuzlockeLandmarkFlags
+	std::cout << RESET_TEXT << "Clear wNuzlockeLandmarkFlags..." << std::endl;
+	it8.seek(sym8.getPlayerDataAddress("wNuzlockeLandmarkFlags"));
+	for (int i = 0; i < NUM_LANDMARKS_V8 + 7 / 8; i++) {
+		it8.setByte(0x00);
+		it8.next();
+	}
+
+	// wNuzlockeLandmarkFlags is a flag_array of NUM_LANDMARKS bits. If v7 bit is set, lookup the bit index in the map and set the corresponding bit in v8
+	std::cout << RESET_TEXT << "Patching wNuzlockeLandmarkFlags..." << std::endl;
+	it7.seek(sym7.getPlayerDataAddress("wNuzlockeLandmarkFlags"));
+	it8.seek(sym8.getPlayerDataAddress("wNuzlockeLandmarkFlags"));
+	for (int i = 0; i < NUM_LANDMARKS_V7; i++) {
+		// check if the bit is set
+		if (it7.getByte() & (1 << (i % 8))) {
+			// get the landmark flag index is equal to the bit index
+			uint8_t landmarkFlagIndex = i;
+			// map the version 7 landmark flag to the version 8 landmark flag
+			uint8_t landmarkFlagIndexV8 = mapv7LandmarktoV8(landmarkFlagIndex);
+			// if the landmark flag is found set the corresponding bit in it8
+			if (landmarkFlagIndexV8 != 0xFF) {
+				// print found landmark flagv7 and converted landmark flagv8
+				if (landmarkFlagIndex != landmarkFlagIndexV8){
+					std::cout << RESET_TEXT << "Landmark Flag " << std::hex << static_cast<int>(landmarkFlagIndex) << " converted to " << std::hex << static_cast<int>(landmarkFlagIndexV8) << std::endl;
+				}
+				// seek to the byte containing the bit
+				it8.seek(sym8.getPlayerDataAddress("wNuzlockeLandmarkFlags") + i / 8);
+				// set the bit
+				it8.setByte(it8.getByte() | (1 << (i % 8)));
+			}
+		}
+		if (i % 8 == 7) {
+			it7.next();
+		}
+	}
+
+	// clear wHiddenGrottoContents to wCurHiddenGrotto
+	std::cout << RESET_TEXT << "Clear wHiddenGrottoContents to wCurHiddenGrotto..." << std::endl;
+	it8.seek(sym8.getPlayerDataAddress("wHiddenGrottoContents"));
+	while (it8.getAddress() <= sym8.getPlayerDataAddress("wCurHiddenGrotto")) {
+		it8.setByte(0x00);
+		it8.next();
+	}
+
+
+	// copy from wLuckyNumberDayBuffer to wPhoneList
+	std::cout << RESET_TEXT << "Copy from wLuckyNumberDayBuffer to wPhoneList..." << std::endl;
+	it7.seek(sym7.getPlayerDataAddress("wLuckyNumberDayBuffer"));
+	it8.seek(sym8.getPlayerDataAddress("wLuckyNumberDayBuffer"));
+	it8.copy(it7, sym7.getPlayerDataAddress("wPhoneList") - sym7.getPlayerDataAddress("wLuckyNumberDayBuffer"));
+
+	// Clear v8 wPhoneList
+	std::cout << RESET_TEXT << "Clear wPhoneList..." << std::endl;
+	it8.seek(sym8.getPlayerDataAddress("wPhoneList"));
+	for (int i = 0; i < NUM_PHONE_CONTACTS_V8 + 7 / 8; i++) {
+		it8.setByte(0x00);
+		it8.next();
+	}
+
+	// wPhoneList has been converted to a bit flag array in version 8.
+	// for each byte in v7 up to CONTACT_LIST_SIZE_V7, if the byte is non-zero, set the corresponding bit in v8
+	std::cout << RESET_TEXT << "Patching wPhoneList..." << std::endl;
+	it7.seek(sym7.getPlayerDataAddress("wPhoneList"));
+	it8.seek(sym8.getPlayerDataAddress("wPhoneList"));
+	for (int i = 0; i < CONTACT_LIST_SIZE_V7; i++) {
+		// check if the byte is non-zero
+		if (it7.getByte() != 0x00) {
+			// map the version 7 contact to the version 8 contact
+			uint8_t contactIndexV8 = it7.getByte();
+			// print found contact v7 index
+			std::cout << RESET_TEXT << "Found Contact Index " << std::hex << static_cast<int>(contactIndexV8) << std::endl;
+			// seek to the byte containing the bit
+			it8.seek(sym8.getPlayerDataAddress("wPhoneList") + contactIndexV8 / 8);
+			// set the bit
+			it8.setByte(it8.getByte() | (1 << (contactIndexV8 % 8)));
+		}
+		it7.next();
+	}
+
+	// copy from wParkBallsRemaining to wPlayerDataEnd
+	std::cout << RESET_TEXT << "Copy from wParkBallsRemaining to wPlayerDataEnd..." << std::endl;
+	it7.seek(sym7.getPlayerDataAddress("wParkBallsRemaining"));
+	it8.seek(sym8.getPlayerDataAddress("wParkBallsRemaining"));
+	it8.copy(it7, sym7.getPlayerDataAddress("wPlayerDataEnd") - sym7.getPlayerDataAddress("wParkBallsRemaining"));
+
+	// wVisitedSpawns is a flag_array of NUM_SPAWNS bits. If v7 bit is set, lookup the bit index in the map and set the corresponding bit in v8
+	std::cout << RESET_TEXT << "Patching wVisitedSpawns..." << std::endl;
+	it7.seek(sym7.getMapDataAddress("wVisitedSpawns"));
+	it8.seek(sym8.getMapDataAddress("wVisitedSpawns"));
+	// print current address
+	std::cout << RESET_TEXT << "Current Address: " << std::hex << it7.getAddress() << std::endl;
+	for (int i = 0; i < NUM_SPAWNS_V7; i++) {
+		// check if the bit is set
+		if (it7.getByte() & (1 << (i % 8))) {
+			// get the spawn index is equal to the bit index
+			uint8_t spawnIndex = i;
+			// map the version 7 spawn to the version 8 spawn
+			uint8_t spawnIndexV8 = mapv7SpawntoV8(spawnIndex);
+			// if the spawn is found set the corresponding bit in it8
+			if (spawnIndexV8 != 0xFF) {
+				// print found spawnv7 and converted spawnv8
+				if (spawnIndex != spawnIndexV8){
+					std::cout << RESET_TEXT << "Spawn " << std::hex << static_cast<int>(spawnIndex) << " converted to " << std::hex << static_cast<int>(spawnIndexV8) << std::endl;
+				}
+				// seek to the byte containing the bit
+				it8.seek(sym8.getMapDataAddress("wVisitedSpawns") + i / 8);
+				// set the bit
+				it8.setByte(it8.getByte() | (1 << (i % 8)));
+			}
+		}
+		if (i % 8 == 7) {
+			it7.next();
+		}
+	}
+
+	// TODO: Convert MAP_GROUPs and MAP_NUMBERs
+
+	// Copy from wDigWarpNumber to wCurMapDataEnd
+	std::cout << RESET_TEXT << "Copy from wDigWarpNumber to wCurMapDataEnd..." << std::endl;
+	it7.seek(sym7.getMapDataAddress("wDigWarpNumber"));
+	it8.seek(sym8.getMapDataAddress("wDigWarpNumber"));
+	it8.copy(it7, sym7.getMapDataAddress("wCurMapDataEnd") - sym7.getMapDataAddress("wDigWarpNumber"));
+
+	// map the v7 wDigMapGroup and wDigMapNumber to v8 wDigMapGroup and wDigMapNumber
+	std::cout << RESET_TEXT << "Map wDigMapGroup and wDigMapNumber..." << std::endl;
+	it7.seek(sym7.getMapDataAddress("wDigMapGroup"));
+	it8.seek(sym8.getMapDataAddress("wDigMapGroup"));
+	uint8_t digMapGroupV7 = it7.getByte();
+	it7.next();
+	uint8_t digMapNumberV7 = it7.getByte();
+	// create the tuple for the dig map group and number
+	std::tuple<uint8_t, uint8_t> digMapV8 = mapv7toV8(digMapGroupV7, digMapNumberV7);
+	// print found dig map group and number v7 and converted dig map group and number v8
+	if (digMapGroupV7 != std::get<0>(digMapV8) || digMapNumberV7 != std::get<1>(digMapV8)){
+		std::cout << RESET_TEXT << "Dig Map Group " << std::hex << static_cast<int>(digMapGroupV7) << " and Number " << std::hex << static_cast<int>(digMapNumberV7) << " converted to Group " << std::hex << static_cast<int>(std::get<0>(digMapV8)) << " and Number " << std::hex << static_cast<int>(std::get<1>(digMapV8)) << std::endl;
+	}
+	// write the dig map group and number to v8
+	it8.setByte(std::get<0>(digMapV8));
+	it8.next();
+	it8.setByte(std::get<1>(digMapV8));
+
+	// map the v7 wBackupMapGroup and wBackupMapNumber to v8 wBackupMapGroup and wBackupMapNumber
+	std::cout << RESET_TEXT << "Map wBackupMapGroup and wBackupMapNumber..." << std::endl;
+	it7.seek(sym7.getMapDataAddress("wBackupMapGroup"));
+	it8.seek(sym8.getMapDataAddress("wBackupMapGroup"));
+	uint8_t backupMapGroupV7 = it7.getByte();
+	it7.next();
+	uint8_t backupMapNumberV7 = it7.getByte();
+	// create the tuple for the backup map group and number
+	std::tuple<uint8_t, uint8_t> backupMapV8 = mapv7toV8(backupMapGroupV7, backupMapNumberV7);
+	// print found backup map group and number v7 and converted backup map group and number v8
+	if (backupMapGroupV7 != std::get<0>(backupMapV8) || backupMapNumberV7 != std::get<1>(backupMapV8)){
+		std::cout << RESET_TEXT << "Backup Map Group " << std::hex << static_cast<int>(backupMapGroupV7) << " and Number " << std::hex << static_cast<int>(backupMapNumberV7) << " converted to Group " << std::hex << static_cast<int>(std::get<0>(backupMapV8)) << " and Number " << std::hex << static_cast<int>(std::get<1>(backupMapV8)) << std::endl;
+	}
+	// write the backup map group and number to v8
+	it8.setByte(std::get<0>(backupMapV8));
+	it8.next();
+	it8.setByte(std::get<1>(backupMapV8));
+
+	// map the v7 wLastSpawnMapGroup and wLastSpawnMapNumber to v8 wLastSpawnMapGroup and wLastSpawnMapNumber
+	std::cout << RESET_TEXT << "Map wLastSpawnMapGroup and wLastSpawnMapNumber..." << std::endl;
+	it7.seek(sym7.getMapDataAddress("wLastSpawnMapGroup"));
+	it8.seek(sym8.getMapDataAddress("wLastSpawnMapGroup"));
+	uint8_t lastSpawnMapGroupV7 = it7.getByte();
+	it7.next();
+	uint8_t lastSpawnMapNumberV7 = it7.getByte();
+	// create the tuple for the last spawn map group and number
+	std::tuple<uint8_t, uint8_t> lastSpawnMapV8 = mapv7toV8(lastSpawnMapGroupV7, lastSpawnMapNumberV7);
+	// print found last spawn map group and number v7 and converted last spawn map group and number v8
+	if (lastSpawnMapGroupV7 != std::get<0>(lastSpawnMapV8) || lastSpawnMapNumberV7 != std::get<1>(lastSpawnMapV8)){
+		std::cout << RESET_TEXT << "Last Spawn Map Group " << std::hex << static_cast<int>(lastSpawnMapGroupV7) << " and Number " << std::hex << static_cast<int>(lastSpawnMapNumberV7) << " converted to Group " << std::hex << static_cast<int>(std::get<0>(lastSpawnMapV8)) << " and Number " << std::hex << static_cast<int>(std::get<1>(lastSpawnMapV8)) << std::endl;
+	}
+	// write the last spawn map group and number to v8
+	it8.setByte(std::get<0>(lastSpawnMapV8));
+	it8.next();
+	it8.setByte(std::get<1>(lastSpawnMapV8));
+
+	// map the v7 wMapGroup and wMapNumber to v8 wMapGroup and wMapNumber
+	std::cout << RESET_TEXT << "Map wMapGroup and wMapNumber..." << std::endl;
+	it7.seek(sym7.getMapDataAddress("wMapGroup"));
+	it8.seek(sym8.getMapDataAddress("wMapGroup"));
+	uint8_t mapGroupV7 = it7.getByte();
+	it7.next();
+	uint8_t mapNumberV7 = it7.getByte();
+	// create the tuple for the map group and number
+	std::tuple<uint8_t, uint8_t> mapV8 = mapv7toV8(mapGroupV7, mapNumberV7);
+	// print found map group and number v7 and converted map group and number v8
+	if (mapGroupV7 != std::get<0>(mapV8) || mapNumberV7 != std::get<1>(mapV8)){
+		std::cout << RESET_TEXT << "Map Group " << std::hex << static_cast<int>(mapGroupV7) << " and Number " << std::hex << static_cast<int>(mapNumberV7) << " converted to Group " << std::hex << static_cast<int>(std::get<0>(mapV8)) << " and Number " << std::hex << static_cast<int>(std::get<1>(mapV8)) << std::endl;
+	}
+	// write the map group and number to v8
+	it8.setByte(std::get<0>(mapV8));
+	it8.next();
+	it8.setByte(std::get<1>(mapV8));
+
+	// Copy wPartyCount
+	std::cout << RESET_TEXT << "Copy wPartyCount..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wPartyCount"));
+	it8.seek(sym8.getPokemonDataAddress("wPartyCount"));
+	it8.setByte(it7.getByte());
+
+	// copy wPartyMons PARTYMON_STRUCT_LENGTH * PARTY_LENGTH
+	std::cout << RESET_TEXT << "Copy wPartyMons..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wPartyMons"));
+	it8.seek(sym8.getPokemonDataAddress("wPartyMons"));
+	it8.copy(it7, PARTYMON_STRUCT_LENGTH * PARTY_LENGTH);
+
+	// fix the party mon species
+	std::cout << RESET_TEXT << "Fix party mon species..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wPartyMons"));
+	for (int i = 0; i < PARTY_LENGTH; i++) {
+		it8.seek(sym8.getPokemonDataAddress("wPartyMons") + i * PARTYMON_STRUCT_LENGTH);
+		uint16_t species = it8.getByte();
+		if (species == 0x00) {
+			continue;
+		}
+		uint16_t speciesV8 = mapv7PkmntoV8(species);
+		// warn if the species was not found
+		if (speciesV8 == 0xFFFF) {
+			std::cerr << RED_TEXT << "Species " << std::hex << species << " not found in version 8 species list." << std::endl;
+			continue;
+		}
+		// print found speciesv7 and converted speciesv8
+		if (species != speciesV8){
+			std::cout << RESET_TEXT << "Species " << std::hex << species << " converted to " << std::hex << speciesV8 << std::endl;
+		}
+		// write the lower 8 bits of the species
+		it8.setByte(speciesV8 & 0xFF);
+		it8.seek(sym8.getPokemonDataAddress("wPartyMons") + i * PARTYMON_STRUCT_LENGTH + MON_EXTSPECIES);
+		// get the 9th bit of the species
+		uint8_t extSpecies = speciesV8 >> 8;
+		extSpecies = extSpecies << MON_EXTSPECIES_F;
+		uint8_t currentExtSpecies = it8.getByte();
+		currentExtSpecies &= ~EXTSPECIES_MASK;
+		currentExtSpecies |= extSpecies;
+		it8.setByte(currentExtSpecies);
+	}
+
+	// fix the party mon items
+	std::cout << RESET_TEXT << "Fix party mon items..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wPartyMons"));
+	for (int i = 0; i < PARTY_LENGTH; i++) {
+		it8.seek(sym8.getPokemonDataAddress("wPartyMons") + i * PARTYMON_STRUCT_LENGTH + MON_ITEM);
+		uint8_t item = it8.getWord();
+		if (item == 0x00) {
+			continue;
+		}
+		uint8_t itemV8 = mapv7ItemtoV8(item);
+		// warn if the item was not found
+		if (itemV8 == 0xFF) {
+			std::cerr << RED_TEXT << "Item " << std::hex << static_cast<int>(item) << " not found in version 8 item list." << std::endl;
+			continue;
+		}
+		// print found itemv7 and converted itemv8
+		if (item != itemV8){
+			std::cout << RESET_TEXT << "Item " << std::hex << static_cast<int>(item) << " converted to " << std::hex << static_cast<int>(itemV8) << std::endl;
+		}
+		it8.setByte(itemV8);
+	}
+
+	// fix party mon caught locations
+	std::cout << RESET_TEXT << "Fix party mon caught locations..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wPartyMons"));
+	for (int i = 0; i < PARTY_LENGTH; i++) {
+		it8.seek(sym8.getPokemonDataAddress("wPartyMons") + i * PARTYMON_STRUCT_LENGTH + MON_CAUGHTLOCATION);
+		uint8_t caughtLoc = it8.getByte();
+		uint8_t caughtLocV8 = mapv7LandmarktoV8(caughtLoc);
+		// warn if the caught location was not found
+		if (caughtLocV8 == 0xFF) {
+			std::cerr << RED_TEXT << "Caught Location " << std::hex << caughtLoc << " not found in version 8 caught location list." << std::endl;
+			continue;
+		}
+		// print found caught locationv7 and converted caught locationv8
+		if (caughtLoc != caughtLocV8){
+			std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " converted to " << std::hex << caughtLocV8 << std::endl;
+		}
+		it8.setByte(caughtLocV8);
+	}
+
+	// copy wPartyMonOTs
+	std::cout << RESET_TEXT << "Copy wPartyMonOTs..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wPartyMonOTs"));
+	it8.seek(sym8.getPokemonDataAddress("wPartyMonOTs"));
+	for (int i = 0; i < PARTY_LENGTH; i++) {
+		it8.copy(it7, PLAYER_NAME_LENGTH + 3);
+	}
+
+	// copy wPartyMonNicknames PARTY_LENGTH * MON_NAME_LENGTH
+	std::cout << RESET_TEXT << "Copy wPartyMonNicknames..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wPartyMonNicknames"));
+	it8.seek(sym8.getPokemonDataAddress("wPartyMonNicknames"));
+	it8.copy(it7, MON_NAME_LENGTH * PARTY_LENGTH);
+
+	// TODO: convert forms
+
+	// wPokedexCaught is a flag_array of NUM_POKEMON_V7 bits. If v7 bit is set, lookup the bit index in the map and set the corresponding bit in v8
+	std::cout << RESET_TEXT << "Patching wPokedexCaught..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wPokedexCaught"));
+	it8.seek(sym8.getPokemonDataAddress("wPokedexCaught"));
+	for (int i = 0; i < NUM_POKEMON_V7; i++) {
+		// check if the bit is set
+		if (it7.getByte() & (1 << (i % 8))) {
+			// get the pokemon index is equal to the bit index
+			uint16_t pokemonIndex = i + 1;
+			// map the version 7 pokemon to the version 8 pokemon
+			uint16_t pokemonIndexV8 = mapv7PkmntoV8(pokemonIndex) - 1;
+			// if the pokemon is found set the corresponding bit in it8
+			if (pokemonIndexV8 != 0xFFFF) {
+				// print found pokemonv7 and converted pokemonv8
+				if (pokemonIndex != pokemonIndexV8 + 1){
+					std::cout << RESET_TEXT << "Pokemon " << std::hex << static_cast<int>(pokemonIndex) << " converted to " << std::hex << static_cast<int>(pokemonIndexV8) << std::endl;
+				}
+				// seek to the byte containing the bit
+				it8.seek(sym8.getPokemonDataAddress("wPokedexCaught") + pokemonIndexV8 / 8);
+				// set the bit
+				it8.setByte(it8.getByte() | (1 << (pokemonIndexV8 % 8)));
+			}
+		}
+		if (i % 8 == 7) {
+			it7.next();
+		}
+	}
+
+	// wPokedexSeen is a flag_array of NUM_POKEMON_V7 bits. If v7 bit is set, lookup the bit index in the map and set the corresponding bit in v8
+	std::cout << RESET_TEXT << "Patching wPokedexSeen..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wPokedexSeen"));
+	it8.seek(sym8.getPokemonDataAddress("wPokedexSeen"));
+	for (int i = 0; i < NUM_POKEMON_V7; i++) {
+		// check if the bit is set
+		if (it7.getByte() & (1 << (i % 8))) {
+			// get the pokemon index is equal to the bit index
+			uint16_t pokemonIndex = i + 1;
+			// map the version 7 pokemon to the version 8 pokemon
+			uint16_t pokemonIndexV8 = mapv7PkmntoV8(pokemonIndex) - 1;
+			// if the pokemon is found set the corresponding bit in it8
+			if (pokemonIndexV8 != 0xFFFF) {
+				// print found pokemonv7 and converted pokemonv8
+				if (pokemonIndex != pokemonIndexV8 + 1){
+					std::cout << RESET_TEXT << "Pokemon " << std::hex << static_cast<int>(pokemonIndex) << " converted to " << std::hex << static_cast<int>(pokemonIndexV8) << std::endl;
+				}
+				// seek to the byte containing the bit
+				it8.seek(sym8.getPokemonDataAddress("wPokedexSeen") + pokemonIndexV8 / 8);
+				// set the bit
+				it8.setByte(it8.getByte() | (1 << (pokemonIndexV8 % 8)));
+			}
+		}
+		if (i % 8 == 7) {
+			it7.next();
+		}
+	}
+
+	// copy wUnlockedUnowns
+	std::cout << RESET_TEXT << "Copy wUnlockedUnowns..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wUnlockedUnowns"));
+	it8.seek(sym8.getPokemonDataAddress("wUnlockedUnowns"));
+	it8.setByte(it7.getByte());
+
+	// copy wDayCareMan to wBugContestSecondPartySpecies - 54
+	std::cout << RESET_TEXT << "Copy wDayCareMan to wBugContestSecondPartySpecies - 54..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wDayCareMan"));
+	it8.seek(sym8.getPokemonDataAddress("wDayCareMan"));
+	it8.copy(it7, sym7.getPokemonDataAddress("wBugContestSecondPartySpecies") - 54 - sym7.getPokemonDataAddress("wDayCareMan"));
+
+	// fix wBreedMon1Species and wBreedMon1ExtSpecies
+	std::cout << RESET_TEXT << "Fix wBreedMon1Species..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wBreedMon1Species"));
+	uint16_t species = it8.getByte();
+	if (species != 0x00) {
+		uint16_t speciesV8 = mapv7PkmntoV8(species);
+		// warn if the species was not found
+		if (speciesV8 == 0xFFFF) {
+			std::cerr << RED_TEXT << "Species " << std::hex << species << " not found in version 8 species list." << std::endl;
+		}
+		// print found speciesv7 and converted speciesv8
+		if (species != speciesV8){
+			std::cout << RESET_TEXT << "Species " << std::hex << species << " converted to " << std::hex << speciesV8 << std::endl;
+		}
+		// write the lower 8 bits of the species
+		it8.setByte(speciesV8 & 0xFF);
+		it8.seek(sym8.getPokemonDataAddress("wBreedMon1ExtSpecies"));;
+		// get the 9th bit of the species
+		uint8_t extSpecies = speciesV8 >> 8;
+		extSpecies = extSpecies << MON_EXTSPECIES_F;
+		uint8_t currentExtSpecies = it8.getByte();
+		currentExtSpecies &= ~EXTSPECIES_MASK;
+		currentExtSpecies |= extSpecies;
+		it8.setByte(currentExtSpecies);
+	}
+
+	// fix wBreedMon1Item
+	std::cout << RESET_TEXT << "Fix wBreedMon1Item..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wBreedMon1Item"));
+	uint8_t item = it8.getByte();
+	if (item != 0x00) {
+		uint8_t itemV8 = mapv7ItemtoV8(item);
+		// warn if the item was not found
+		if (itemV8 == 0xFF) {
+			std::cerr << RED_TEXT << "Item " << std::hex << static_cast<int>(item) << " not found in version 8 item list." << std::endl;
+		}
+		// print found itemv7 and converted itemv8
+		if (item != itemV8){
+			std::cout << RESET_TEXT << "Item " << std::hex << static_cast<int>(item) << " converted to " << std::hex << static_cast<int>(itemV8) << std::endl;
+		}
+		it8.setByte(itemV8);
+	}
+
+	// fix wBreedMon1CaughtLocation
+	std::cout << RESET_TEXT << "Fix wBreedMon1CaughtLocation..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wBreedMon1CaughtLocation"));
+	uint8_t caughtLoc = it8.getByte();
+	uint8_t caughtLocV8 = mapv7LandmarktoV8(caughtLoc);
+	// warn if the caught location was not found
+	if (caughtLocV8 == 0xFF) {
+		std::cerr << RED_TEXT << "Caught Location " << std::hex << caughtLoc << " not found in version 8 caught location list." << std::endl;
+	}
+	// print found caught locationv7 and converted caught locationv8
+	if (caughtLoc != caughtLocV8){
+		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " converted to " << std::hex << caughtLocV8 << std::endl;
+	} else {
+		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " not converted." << std::endl;
+	}
+	it8.setByte(caughtLocV8);
+
+	// fix wBreedMon2Species and wBreedMon2ExtSpecies
+	std::cout << RESET_TEXT << "Fix wBreedMon2Species..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wBreedMon2Species"));
+	species = it8.getByte();
+	if (species != 0x00) {
+		uint16_t speciesV8 = mapv7PkmntoV8(species);
+		// warn if the species was not found
+		if (speciesV8 == 0xFFFF) {
+			std::cerr << RED_TEXT << "Species " << std::hex << species << " not found in version 8 species list." << std::endl;
+		}
+		// print found speciesv7 and converted speciesv8
+		if (species != speciesV8){
+			std::cout << RESET_TEXT << "Species " << std::hex << species << " converted to " << std::hex << speciesV8 << std::endl;
+		}
+		// write the lower 8 bits of the species
+		it8.setByte(speciesV8 & 0xFF);
+		it8.seek(sym8.getPokemonDataAddress("wBreedMon2ExtSpecies"));;
+		// get the 9th bit of the species
+		uint8_t extSpecies = speciesV8 >> 8;
+		extSpecies = extSpecies << MON_EXTSPECIES_F;
+		uint8_t currentExtSpecies = it8.getByte();
+		currentExtSpecies &= ~EXTSPECIES_MASK;
+		currentExtSpecies |= extSpecies;
+		it8.setByte(currentExtSpecies);
+	}
+
+	// fix wBreedMon2Item
+	std::cout << RESET_TEXT << "Fix wBreedMon2Item..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wBreedMon2Item"));
+	item = it8.getByte();
+	if (item != 0x00) {
+		uint8_t itemV8 = mapv7ItemtoV8(item);
+		// warn if the item was not found
+		if (itemV8 == 0xFF) {
+			std::cerr << RED_TEXT << "Item " << std::hex << static_cast<int>(item) << " not found in version 8 item list." << std::endl;
+		}
+		// print found itemv7 and converted itemv8
+		if (item != itemV8){
+			std::cout << RESET_TEXT << "Item " << std::hex << static_cast<int>(item) << " converted to " << std::hex << static_cast<int>(itemV8) << std::endl;
+		}
+		it8.setByte(itemV8);
+	}
+
+	// fix wBreedMon2CaughtLocation
+	std::cout << RESET_TEXT << "Fix wBreedMon2CaughtLocation..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wBreedMon2CaughtLocation"));
+	caughtLoc = it8.getByte();
+	caughtLocV8 = mapv7LandmarktoV8(caughtLoc);
+	// warn if the caught location was not found
+	if (caughtLocV8 == 0xFF) {
+		std::cerr << RED_TEXT << "Caught Location " << std::hex << caughtLoc << " not found in version 8 caught location list." << std::endl;
+	}
+	// print found caught locationv7 and converted caught locationv8
+	if (caughtLoc != caughtLocV8){
+		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " converted to " << std::hex << caughtLocV8 << std::endl;
+	} else {
+		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " not converted." << std::endl;
+	}
+	it8.setByte(caughtLocV8);
+
+	// Clear space from wLevelUpMonNickname to wBugContestBackupPartyCount in it8
+	std::cout << RESET_TEXT << "Clear space from wLevelUpMonNickname to wBugContestBackupPartyCount..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wLevelUpMonNickname"));
+	while (it8.getAddress() < sym8.getPokemonDataAddress("wBugContestBackupPartyCount")) {
+		it8.setByte(0x00);
+		it8.next();
+	}
+
+	// copy wBugContestBackupPartyCount
+	std::cout << RESET_TEXT << "Copy wBugContestBackupPartyCount..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wBugContestSecondPartySpecies"));
+	it8.seek(sym8.getPokemonDataAddress("wBugContestBackupPartyCount"));
+	it8.setByte(it7.getByte());
+
+	// copy from wContestMon to wPokemonDataEnd
+	std::cout << RESET_TEXT << "Copy from wContestMon to wPokemonDataEnd..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wContestMon"));
+	it8.seek(sym8.getPokemonDataAddress("wContestMon"));
+	it8.copy(it7, sym7.getPokemonDataAddress("wPokemonDataEnd") - sym7.getPokemonDataAddress("wContestMon"));
+
+	// fix wContestMonSpecies and wContestMonExtSpecies
+	std::cout << RESET_TEXT << "Fix wContestMonSpecies..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wContestMonSpecies"));
+	species = it8.getByte();
+	if (species != 0x00) {
+		uint16_t speciesV8 = mapv7PkmntoV8(species);
+		// warn if the species was not found
+		if (speciesV8 == 0xFFFF) {
+			std::cerr << RED_TEXT << "Species " << std::hex << species << " not found in version 8 species list." << std::endl;
+		}
+		// print found speciesv7 and converted speciesv8
+		if (species != speciesV8){
+			std::cout << RESET_TEXT << "Species " << std::hex << species << " converted to " << std::hex << speciesV8 << std::endl;
+		}
+		// write the lower 8 bits of the species
+		it8.setByte(speciesV8 & 0xFF);
+		it8.seek(sym8.getPokemonDataAddress("wContestMonExtSpecies"));;
+		// get the 9th bit of the species
+		uint8_t extSpecies = speciesV8 >> 8;
+		extSpecies = extSpecies << MON_EXTSPECIES_F;
+		uint8_t currentExtSpecies = it8.getByte();
+		currentExtSpecies &= ~EXTSPECIES_MASK;
+		currentExtSpecies |= extSpecies;
+		it8.setByte(currentExtSpecies);
+	}
+
+	// fix wContestMonItem
+	std::cout << RESET_TEXT << "Fix wContestMonItem..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wContestMonItem"));
+	item = it8.getByte();
+	if (item != 0x00) {
+		uint8_t itemV8 = mapv7ItemtoV8(item);
+		// warn if the item was not found
+		if (itemV8 == 0xFF) {
+			std::cerr << RED_TEXT << "Item " << std::hex << static_cast<int>(item) << " not found in version 8 item list." << std::endl;
+		}
+		// print found itemv7 and converted itemv8
+		if (item != itemV8){
+			std::cout << RESET_TEXT << "Item " << std::hex << static_cast<int>(item) << " converted to " << std::hex << static_cast<int>(itemV8) << std::endl;
+		}
+		it8.setByte(itemV8);
+	}
+
+	// fix wContestMonCaughtLocation
+	std::cout << RESET_TEXT << "Fix wContestMonCaughtLocation..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wContestMonCaughtLocation"));
+	caughtLoc = it8.getByte();
+	caughtLocV8 = mapv7LandmarktoV8(caughtLoc);
+	// warn if the caught location was not found
+	if (caughtLocV8 == 0xFF) {
+		std::cerr << RED_TEXT << "Caught Location " << std::hex << caughtLoc << " not found in version 8 caught location list." << std::endl;
+	}
+	// print found caught locationv7 and converted caught locationv8
+	if (caughtLoc != caughtLocV8){
+		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " converted to " << std::hex << caughtLocV8 << std::endl;
+	} else {
+		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " not converted." << std::endl;
+	}
+	it8.setByte(caughtLocV8);
+
+	// map the version 7 wDunsparceMapGroup and wDunsparceMapNumber to the version 8 wDunsparceMapGroup and wDunsparceMapNumber
+	std::cout << RESET_TEXT << "Map wDunsparceMapGroup and wDunsparceMapNumber..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wDunsparceMapGroup"));
+	it8.seek(sym8.getPokemonDataAddress("wDunsparceMapGroup"));
+	uint8_t dunsparceMapGroup = it7.getByte();
+	it7.next();
+	uint8_t dunsparceMapNumber = it7.getByte();
+	// create tuple to store the map group and map number
+	std::tuple<uint8_t, uint8_t> dunsparceMap = mapv7toV8(dunsparceMapGroup, dunsparceMapNumber);
+	// print found dunsparce mapv7 and converted dunsparce mapv8
+	if (dunsparceMapGroup != std::get<0>(dunsparceMap) || dunsparceMapNumber != std::get<1>(dunsparceMap)){
+		std::cout << RESET_TEXT << "Dunsparce Map " << std::hex << static_cast<int>(dunsparceMapGroup) << " " << std::hex << static_cast<int>(dunsparceMapNumber) << " converted to " << std::hex << static_cast<int>(std::get<0>(dunsparceMap)) << " " << std::hex << static_cast<int>(std::get<1>(dunsparceMap)) << std::endl;
+	}
+	// write the map group and map number
+	it8.setByte(std::get<0>(dunsparceMap));
+	it8.next();
+	it8.setByte(std::get<1>(dunsparceMap));
+
+	// map the version 7 wRoamMons_CurMapNumber and wRoamMons_CurMapGroup to the version 8 wRoamMons_CurMapNumber and wRoamMons_CurMapGroup
+	std::cout << RESET_TEXT << "Map wRoamMons_CurMapNumber and wRoamMons_CurMapGroup..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wRoamMons_CurMapNumber"));
+	it8.seek(sym8.getPokemonDataAddress("wRoamMons_CurMapNumber"));
+	uint8_t roamMons_CurMapNumber = it7.getByte();
+	it7.next();
+	uint8_t roamMons_CurMapGroup = it7.getByte();
+	// create tuple to store the map group and map number
+	std::tuple<uint8_t, uint8_t> roamMons_CurMap = mapv7toV8(roamMons_CurMapGroup, roamMons_CurMapNumber);
+	// print found roamMons_CurMapv7 and converted roamMons_CurMapv8
+	if (roamMons_CurMapGroup != std::get<0>(roamMons_CurMap) || roamMons_CurMapNumber != std::get<1>(roamMons_CurMap)){
+		std::cout << RESET_TEXT << "RoamMons_CurMap " << std::hex << static_cast<int>(roamMons_CurMapGroup) << " " << std::hex << static_cast<int>(roamMons_CurMapNumber) << " converted to " << std::hex << static_cast<int>(std::get<0>(roamMons_CurMap)) << " " << std::hex << static_cast<int>(std::get<1>(roamMons_CurMap)) << std::endl;
+	}
+	// write the map group and map number
+	it8.setByte(std::get<0>(roamMons_CurMap));
+	it8.next();
+	it8.setByte(std::get<1>(roamMons_CurMap));
+
+	// map the version 7 wRoamMons_LastMapNumber and wRoamMons_LastMapGroup to the version 8 wRoamMons_LastMapNumber and wRoamMons_LastMapGroup
+	std::cout << RESET_TEXT << "Map wRoamMons_LastMapNumber and wRoamMons_LastMapGroup..." << std::endl;
+	it7.seek(sym7.getPokemonDataAddress("wRoamMons_LastMapNumber"));
+	it8.seek(sym8.getPokemonDataAddress("wRoamMons_LastMapNumber"));
+	uint8_t roamMons_LastMapNumber = it7.getByte();
+	it7.next();
+	uint8_t roamMons_LastMapGroup = it7.getByte();
+	// create tuple to store the map group and map number
+	std::tuple<uint8_t, uint8_t> roamMons_LastMap = mapv7toV8(roamMons_LastMapGroup, roamMons_LastMapNumber);
+	// print found roamMons_LastMapv7 and converted roamMons_LastMapv8
+	if (roamMons_LastMapGroup != std::get<0>(roamMons_LastMap) || roamMons_LastMapNumber != std::get<1>(roamMons_LastMap)){
+		std::cout << RESET_TEXT << "RoamMons_LastMap " << std::hex << static_cast<int>(roamMons_LastMapGroup) << " " << std::hex << static_cast<int>(roamMons_LastMapNumber) << " converted to " << std::hex << static_cast<int>(std::get<0>(roamMons_LastMap)) << " " << std::hex << static_cast<int>(std::get<1>(roamMons_LastMap)) << std::endl;
+	}
+	// write the map group and map number
+	it8.setByte(std::get<0>(roamMons_LastMap));
+	it8.next();
+	it8.setByte(std::get<1>(roamMons_LastMap));
 	
 
+	// copy sBattleTowerChallengeState
+	std::cout << RESET_TEXT << "Copy sBattleTowerChallengeState..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sBattleTowerChallengeState"));
+	it8.seek(sym8.getSRAMAddress("sBattleTowerChallengeState"));
+	it8.setByte(it7.getByte());
+
+	// write the new save version number big endian
+	std::cout << RESET_TEXT << "Write new save version number..." << std::endl;
+	uint16_t new_save_version = 0x08;
+	save8.setWordBE(SAVE_VERSION_ABS_ADDRESS, new_save_version);
 
 
 	// write new checksums to the version 8 save file
+	std::cout << RESET_TEXT << "Write new checksums..." << std::endl;
 	uint16_t new_checksum = calculate_checksum(save8, sym8.getSRAMAddress("sGameData"), sym8.getSRAMAddress("sGameDataEnd"));
 	save8.setWord(SAVE_CHECKSUM_ABS_ADDRESS, new_checksum);
 
 	// write the modified save file to the output file and print success message
-	std::cout << "Save file patched successfully!" << std::endl;
+	std::cout << RESET_TEXT << "Save file patched successfully!" << std::endl;
 }
 
-// converts a version 7 key item to a version 8 key item
-uint8_t mapv7KeyItemtoV8(uint8_t v7) {
-	std::unordered_map<uint8_t, uint8_t> indexMap = {
-		{0x00, 0x01},  // BICYCLE
-		{0x01, 0x02},  // OLD_ROD
-		{0x02, 0x03},  // GOOD_ROD
-		{0x03, 0x04},  // SUPER_ROD
-		{0x04, 0x06},  // COIN_CASE
-		{0x05, 0x05},  // ITEMFINDER
-		{0x06, 0x0E},  // MYSTERY_EGG
-		{0x07, 0x0C},  // SQUIRTBOTTLE
-		{0x08, 0x0F},  // SECRETPOTION
-		{0x09, 0x11},  // RED_SCALE
-		{0x0A, 0x12},  // CARD_KEY
-		{0x0B, 0x13},  // BASEMENT_KEY
-		{0x0C, 0x1A},  // S_S_TICKET
-		{0x0D, 0x1B},  // PASS
-		{0x0E, 0x15},  // MACHINE_PART
-		{0x0F, 0x14},  // LOST_ITEM
-		{0x10, 0x16},  // RAINBOW_WING
-		{0x11, 0x17},  // SILVER_WING
-		{0x12, 0x18},  // CLEAR_BELL
-		{0x13, 0x19},  // GS_BALL
-		{0x14, 0x0B},  // BLUE_CARD
-		{0x15, 0x1C},  // ORANGETICKET
-		{0x16, 0x1D},  // MYSTICTICKET
-		{0x17, 0x1E},  // OLD_SEA_MAP
-		{0x18, 0x22},  // SHINY_CHARM
-		{0x19, 0x23},  // OVAL_CHARM
-		{0x1A, 0x24},  // CATCH_CHARM
-		{0x1B, 0x0D},  // SILPHSCOPE2
-		{0x1C, 0x07},  // APRICORN_BOX
-		{0x1D, 0x09},  // TYPE_CHART
-	};
+uint16_t calculateNewboxChecksum(const SaveBinary& save, uint32_t startAddress) {
+	uint16_t checksum = 127;
 
-	// return the corresponding version 8 key item or 0xFF if not found
-	return indexMap.find(v7) != indexMap.end() ? indexMap[v7] : 0xFF;
+	// Process bytes 0x00 to 0x1F
+	for (int i = 0; i <= 0x1F; ++i){
+		checksum += save.getByte(startAddress + i) * (i + 1);
+	}
+
+	// Process bytes 0x20 to 0x30
+	for (int i = 0x20; i <= 0x30; ++i){
+		checksum += (save.getByte(startAddress + i) & 0x7F) * (i + 2);
+	}
+
+	// Clamp to 2 bytes
+	checksum &= 0xFFFF;
+
+	return checksum;
+}
+
+uint16_t extractStoredNewboxChecksum(const SaveBinary& save, uint32_t startAddress) {
+	uint16_t storedChecksum = 0;
+	
+	// Read the most significant bits from 0x20 to 0x30
+	for (int i = 0; i <= 0xF; ++i){
+		uint8_t msb = (save.getByte(startAddress + 0x20 + i) & 0x80) >> 7;
+		storedChecksum |= (msb << (0xF - i));
+	}
+	return storedChecksum;
+}
+
+void writeNewboxChecksum(SaveBinary& save, uint32_t startAddress) {
+	uint16_t checksum = calculateNewboxChecksum(save, startAddress);
+
+	// write the most significant bits from 0x20 to 0x30
+	for (int i = 0; i <= 0xF; ++i) {
+		uint8_t byte = save.getByte(startAddress + 0x20 + i);
+		byte &= 0x7F; // clear the most significant bit
+		byte |= ((checksum >> (0xF - i)) & 0x1) << 7; // set the most significant bit
+		save.setByte(startAddress + 0x20 + i, byte);
+	}
 }
