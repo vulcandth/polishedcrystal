@@ -85,6 +85,16 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		return;
 	}
 
+	// check if the player is inside a pokemon center
+	it7.seek(sym7.getMapDataAddress("wMapGroup"));
+	uint8_t map_group = it7.getByte();
+	it7.next();
+	uint8_t map_num = it7.getByte();
+	if (!inPokecenter(map_group, map_num)) {
+		std::cerr << RED_TEXT << "Player is not in a pokemon center. Please save in a pokemon center and try again." << std::endl;
+		return;
+	}
+
 	// for n, 1, NUM_BOXES_V8 + 1
 	std::cout << RESET_TEXT << "Clearing v8 sNewBox#..." << std::endl;
 	for (int n = 1; n < NUM_BOXES_V8 + 1; n++) {
