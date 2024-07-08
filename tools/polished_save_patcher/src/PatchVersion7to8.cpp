@@ -26,7 +26,9 @@ constexpr int MON_NAME_LENGTH = 11;
 constexpr uint8_t EXTSPECIES_MASK = 0b00100000;
 constexpr int MON_EXTSPECIES = 0x15;
 constexpr int MON_EXTSPECIES_F = 5;
+constexpr uint8_t CAUGHT_BALL_MASK = 0b00011111;
 constexpr int MON_ITEM = 0x01;
+constexpr int MON_CAUGHTBALL = 0x1c;
 constexpr int MON_CAUGHTLOCATION = 0x1e;
 constexpr int NUM_POKEMON_V7 = 0xfe;
 constexpr int MONDB_ENTRIES_V7 = 167;
@@ -43,7 +45,12 @@ constexpr int BOX_NAME_LENGTH = 9;
 constexpr int NEWBOX_SIZE = MONS_PER_BOX + ((MONS_PER_BOX + 7) / 8) + BOX_NAME_LENGTH + 1;
 constexpr int SAVEMON_EXTSPECIES = 0x15;
 constexpr int SAVEMON_ITEM = 0x01;
+constexpr int SAVEMON_CAUGHTBALL = 0x19;
 constexpr int SAVEMON_CAUGHTLOCATION = 0x1b;
+constexpr int BATTLETOWER_PARTYDATA_SIZE = 6;
+constexpr int NUM_HOF_TEAMS_V8 = 10;
+constexpr int HOF_MON_LENGTH = 1 + 2 + 2 + 1 + (MON_NAME_LENGTH - 1); // species, id, dvs, level, nick
+constexpr int HOF_LENGTH = 1 + HOF_MON_LENGTH * PARTY_LENGTH + 1; // win count, party, terminator
 
 void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 	// copy the old save file to the new save file
@@ -189,6 +196,8 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 			uint8_t item = it8.getByte();
 			it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTLOCATION);
 			uint8_t caught_location = it8.getByte();
+			it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTBALL);
+			uint8_t caught_ball = it8.getByte() & CAUGHT_BALL_MASK;
 			// convert species
 			uint16_t species_v8 = mapv7PkmntoV8(species);
 			if (species_v8 == 0xFFFF) {
@@ -228,6 +237,20 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 				it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTLOCATION);
 				it8.setByte(caught_location_v8);
 			}
+			// convert caught ball
+			uint8_t caught_ball_v8 = mapv7ItemtoV8(caught_ball);
+			if (caught_ball_v8 == 0xFF) {
+				std::cerr << RED_TEXT << "Ball " << std::hex << static_cast<int>(caught_ball) << " not found in version 8 item list." << std::endl;
+			} else {
+				if (caught_ball != caught_ball_v8) {
+					std::cout << RESET_TEXT << "Ball " << std::hex << static_cast<int>(caught_ball) << " converted to " << std::hex << static_cast<int>(caught_ball_v8) << std::endl;
+				}
+				it8.seek(sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTBALL);
+				uint8_t caught_ball_byte = it8.getByte();
+				caught_ball_byte &= ~CAUGHT_BALL_MASK;
+				caught_ball_byte |= caught_ball_v8 & CAUGHT_BALL_MASK;
+				it8.setByte(caught_ball_v8);
+			}
 			// write the new checksum
 			writeNewboxChecksum(save8, sym8.getSRAMAddress("sBoxMons1A") + i * SAVEMON_STRUCT_LENGTH);
 		}
@@ -246,6 +269,8 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 			uint8_t item = it8.getByte();
 			it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTLOCATION);
 			uint8_t caught_location = it8.getByte();
+			it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTBALL);
+			uint8_t caught_ball = it8.getByte() & CAUGHT_BALL_MASK;
 			// convert species
 			uint16_t species_v8 = mapv7PkmntoV8(species);
 			if (species_v8 == 0xFFFF) {
@@ -285,14 +310,62 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 				it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTLOCATION);
 				it8.setByte(caught_location_v8);
 			}
+			// convert caught ball
+			uint8_t caught_ball_v8 = mapv7ItemtoV8(caught_ball);
+			if (caught_ball_v8 == 0xFF) {
+				std::cerr << RED_TEXT << "Ball " << std::hex << static_cast<int>(caught_ball) << " not found in version 8 item list." << std::endl;
+			} else {
+				if (caught_ball != caught_ball_v8) {
+					std::cout << RESET_TEXT << "Ball " << std::hex << static_cast<int>(caught_ball) << " converted to " << std::hex << static_cast<int>(caught_ball_v8) << std::endl;
+				}
+				it8.seek(sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH + SAVEMON_CAUGHTBALL);
+				uint8_t caught_ball_byte = it8.getByte();
+				caught_ball_byte &= ~CAUGHT_BALL_MASK;
+				caught_ball_byte |= caught_ball_v8 & CAUGHT_BALL_MASK;
+				it8.setByte(caught_ball_v8);
+			}
 			// write the new checksum
 			writeNewboxChecksum(save8, sym8.getSRAMAddress("sBoxMons2A") + i * SAVEMON_STRUCT_LENGTH);
 		}
 	}
 
+	// copy from sLinkBattleResults to sLinkBattleStatsEnd
+	std::cout << RESET_TEXT << "Copying from sLinkBattleResults to sLinkBattleStatsEnd..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sLinkBattleResults"));
+	it8.seek(sym8.getSRAMAddress("sLinkBattleResults"));
+	it8.copy(it7, sym7.getSRAMAddress("sLinkBattleStatsEnd") - sym7.getSRAMAddress("sLinkBattleResults"));
+
+	// copy from sBattleTowerChallengeState to (sBT_OTMonParty3 + BATTLETOWER_PARTYDATA_SIZE + 1)
+	std::cout << RESET_TEXT << "Copying from sBattleTowerChallengeState to sBT_OTMonParty3..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sBattleTowerChallengeState"));
+	it8.seek(sym8.getSRAMAddress("sBattleTowerChallengeState"));
+	it8.copy(it7, sym7.getSRAMAddress("sBT_OTMonParty3") + BATTLETOWER_PARTYDATA_SIZE + 1 - sym7.getSRAMAddress("sBattleTowerChallengeState"));
+
+	// copy from sPartyMail to sSaveVersion
+	std::cout << RESET_TEXT << "Copying from sPartyMail to sSaveVersion..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sPartyMail"));
+	it8.seek(sym8.getSRAMAddress("sPartyMail"));
+	it8.copy(it7, sym7.getSRAMAddress("sSaveVersion") - sym7.getSRAMAddress("sPartyMail"));
+
+	// copy sUpgradeStep to sWritingBackup
+	std::cout << RESET_TEXT << "Copying from sUpgradeStep to sWritingBackup..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sUpgradeStep"));
+	it8.seek(sym8.getSRAMAddress("sUpgradeStep"));
+	it8.copy(it7, sym7.getSRAMAddress("sWritingBackup") + 1 - sym7.getSRAMAddress("sUpgradeStep"));
+
+	// copy sRTCStatusFlags to sLuckyIDNumber
+	std::cout << RESET_TEXT << "Copying from sRTCStatusFlags to sLuckyIDNumber..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sRTCStatusFlags"));
+	it8.seek(sym8.getSRAMAddress("sRTCStatusFlags"));
+	it8.copy(it7, sym7.getSRAMAddress("sLuckyIDNumber") + 2 - sym7.getSRAMAddress("sRTCStatusFlags"));
+
+	// copy sOptions to sGameData
+	std::cout << RESET_TEXT << "Copying from sOptions to sGameData..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sOptions"));
+	it8.seek(sym8.getSRAMAddress("sOptions"));
+	it8.copy(it7, sym7.getSRAMAddress("sGameData") - sym7.getSRAMAddress("sOptions"));
 
 	std::cout << RESET_TEXT << "Copying from wPlayerData to wObjectStructs..." << std::endl;
-	
 	// copy bytes from wPlayerData to wObjectStructs - 1 from version 7 to version 8
 	it7.seek(sym7.getPlayerDataAddress("wPlayerData"));
 	it8.seek(sym8.getPlayerDataAddress("wPlayerData"));
@@ -1027,6 +1100,28 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		it8.setByte(itemV8);
 	}
 
+	// fix party mon caught ball
+	std::cout << RESET_TEXT << "Fix party mon caught ball..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wPartyMons"));
+	for (int i = 0; i < PARTY_LENGTH; i++) {
+		it8.seek(sym8.getPokemonDataAddress("wPartyMons") + i * PARTYMON_STRUCT_LENGTH + MON_CAUGHTBALL);
+		uint8_t caughtBall = it8.getByte() & CAUGHT_BALL_MASK;
+		uint8_t caughtBallV8 = mapv7ItemtoV8(caughtBall);
+		// warn if the caught ball was not found
+		if (caughtBallV8 == 0xFF) {
+			std::cerr << RED_TEXT << "Caught Ball " << std::hex << caughtBall << " not found in version 8 item list." << std::endl;
+			continue;
+		}
+		// print found caught ballv7 and converted caught ballv8
+		if (caughtBall != caughtBallV8){
+			std::cout << RESET_TEXT << "Caught Ball " << std::hex << static_cast<int>(caughtBall) << " converted to " << std::hex << caughtBallV8 << std::endl;
+		}
+		uint8_t currentCaughtBall = it8.getByte();
+		currentCaughtBall &= ~CAUGHT_BALL_MASK;
+		currentCaughtBall |= caughtBallV8 & CAUGHT_BALL_MASK;
+		it8.setByte(currentCaughtBall);
+	}
+
 	// fix party mon caught locations
 	std::cout << RESET_TEXT << "Fix party mon caught locations..." << std::endl;
 	it8.seek(sym8.getPokemonDataAddress("wPartyMons"));
@@ -1173,6 +1268,24 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		it8.setByte(itemV8);
 	}
 
+	// fix wBreedMon1CaughtBall
+	std::cout << RESET_TEXT << "Fix wBreedMon1CaughtBall..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wBreedMon1CaughtBall"));
+	uint8_t caughtBall = it8.getByte() & CAUGHT_BALL_MASK;
+	uint8_t caughtBallV8 = mapv7ItemtoV8(caughtBall);
+	// warn if the caught ball was not found
+	if (caughtBallV8 == 0xFF) {
+		std::cerr << RED_TEXT << "Caught Ball " << std::hex << caughtBall << " not found in version 8 item list." << std::endl;
+	}
+	// print found caught ballv7 and converted caught ballv8
+	if (caughtBall != caughtBallV8){
+		std::cout << RESET_TEXT << "Caught Ball " << std::hex << static_cast<int>(caughtBall) << " converted to " << std::hex << caughtBallV8 << std::endl;
+	}
+	uint8_t currentCaughtBall = it8.getByte();
+	currentCaughtBall &= ~CAUGHT_BALL_MASK;
+	currentCaughtBall |= caughtBallV8 & CAUGHT_BALL_MASK;
+	it8.setByte(currentCaughtBall);
+
 	// fix wBreedMon1CaughtLocation
 	std::cout << RESET_TEXT << "Fix wBreedMon1CaughtLocation..." << std::endl;
 	it8.seek(sym8.getPokemonDataAddress("wBreedMon1CaughtLocation"));
@@ -1185,8 +1298,6 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 	// print found caught locationv7 and converted caught locationv8
 	if (caughtLoc != caughtLocV8){
 		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " converted to " << std::hex << caughtLocV8 << std::endl;
-	} else {
-		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " not converted." << std::endl;
 	}
 	it8.setByte(caughtLocV8);
 
@@ -1232,6 +1343,24 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		}
 		it8.setByte(itemV8);
 	}
+
+	// fix wBreedMon2CaughtBall
+	std::cout << RESET_TEXT << "Fix wBreedMon2CaughtBall..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wBreedMon2CaughtBall"));
+	caughtBall = it8.getByte() & CAUGHT_BALL_MASK;
+	caughtBallV8 = mapv7ItemtoV8(caughtBall);
+	// warn if the caught ball was not found
+	if (caughtBallV8 == 0xFF) {
+		std::cerr << RED_TEXT << "Caught Ball " << std::hex << caughtBall << " not found in version 8 item list." << std::endl;
+	}
+	// print found caught ballv7 and converted caught ballv8
+	if (caughtBall != caughtBallV8){
+		std::cout << RESET_TEXT << "Caught Ball " << std::hex << static_cast<int>(caughtBall) << " converted to " << std::hex << caughtBallV8 << std::endl;
+	}
+	currentCaughtBall = it8.getByte();
+	currentCaughtBall &= ~CAUGHT_BALL_MASK;
+	currentCaughtBall |= caughtBallV8 & CAUGHT_BALL_MASK;
+	it8.setByte(currentCaughtBall);
 
 	// fix wBreedMon2CaughtLocation
 	std::cout << RESET_TEXT << "Fix wBreedMon2CaughtLocation..." << std::endl;
@@ -1313,6 +1442,24 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		it8.setByte(itemV8);
 	}
 
+	// fix wContestMonCaughtBall
+	std::cout << RESET_TEXT << "Fix wContestMonCaughtBall..." << std::endl;
+	it8.seek(sym8.getPokemonDataAddress("wContestMonCaughtBall"));
+	caughtBall = it8.getByte() & CAUGHT_BALL_MASK;
+	caughtBallV8 = mapv7ItemtoV8(caughtBall);
+	// warn if the caught ball was not found
+	if (caughtBallV8 == 0xFF) {
+		std::cerr << RED_TEXT << "Caught Ball " << std::hex << caughtBall << " not found in version 8 item list." << std::endl;
+	}
+	// print found caught ballv7 and converted caught ballv8
+	if (caughtBall != caughtBallV8){
+		std::cout << RESET_TEXT << "Caught Ball " << std::hex << static_cast<int>(caughtBall) << " converted to " << std::hex << caughtBallV8 << std::endl;
+	}
+	currentCaughtBall = it8.getByte();
+	currentCaughtBall &= ~CAUGHT_BALL_MASK;
+	currentCaughtBall |= caughtBallV8 & CAUGHT_BALL_MASK;
+	it8.setByte(currentCaughtBall);
+
 	// fix wContestMonCaughtLocation
 	std::cout << RESET_TEXT << "Fix wContestMonCaughtLocation..." << std::endl;
 	it8.seek(sym8.getPokemonDataAddress("wContestMonCaughtLocation"));
@@ -1325,8 +1472,6 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 	// print found caught locationv7 and converted caught locationv8
 	if (caughtLoc != caughtLocV8){
 		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " converted to " << std::hex << caughtLocV8 << std::endl;
-	} else {
-		std::cout << RESET_TEXT << "Caught Location " << std::hex << static_cast<int>(caughtLoc) << " not converted." << std::endl;
 	}
 	it8.setByte(caughtLocV8);
 
@@ -1383,24 +1528,73 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 	it8.setByte(std::get<0>(roamMons_LastMap));
 	it8.next();
 	it8.setByte(std::get<1>(roamMons_LastMap));
-	
 
-	// copy sBattleTowerChallengeState
-	std::cout << RESET_TEXT << "Copy sBattleTowerChallengeState..." << std::endl;
-	it7.seek(sym7.getSRAMAddress("sBattleTowerChallengeState"));
-	it8.seek(sym8.getSRAMAddress("sBattleTowerChallengeState"));
+	// copy sCheckValue2
+	std::cout << RESET_TEXT << "Copy sCheckValue2..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sCheckValue2"));
+	it8.seek(sym8.getSRAMAddress("sCheckValue2"));
 	it8.setByte(it7.getByte());
+
+	// copy it8 Save to it8 Backup Save
+	std::cout << RESET_TEXT << "Copy Save to Backup Save..." << std::endl;
+	for (int i = 0; i < sym8.getSRAMAddress("sCheckValue2") + 1 - sym8.getSRAMAddress("sOptions"); i++) {
+		save8.setByte(sym8.getSRAMAddress("sBackupOptions") + i, save8.getByte(sym8.getSRAMAddress("sOptions") + i));
+	}
+
+	// TODO: determine how we want to truncate NUM_HOF_TEAMS from 30 to 10.
+	// copy from sHallOfFame to sHallOfFameEnd
+	std::cout << RESET_TEXT << "Copy from sHallOfFame to sHallOfFameEnd..." << std::endl;
+	it7.seek(sym7.getSRAMAddress("sHallOfFame"));
+	it8.seek(sym8.getSRAMAddress("sHallOfFame"));
+	it8.copy(it7, sym8.getSRAMAddress("sHallOfFameEnd") - sym8.getSRAMAddress("sHallOfFame")); // only copy as many as v8 can hold.
+
+	// fix the hall of fame mon species
+	std::cout << RESET_TEXT << "Fix hall of fame mon species..." << std::endl;
+	for (int i = 0; i < NUM_HOF_TEAMS_V8; i++) {
+		for (int j = 0; j < PARTY_LENGTH; j++){
+			it8.seek(sym8.getSRAMAddress("sHallOfFame01Mon1") + i * HOF_LENGTH);
+			it8.seek(it8.getAddress() + j * HOF_MON_LENGTH);
+			uint16_t species = it8.getByte();
+			if (species == 0x00) {
+				continue;
+			}
+			uint16_t speciesV8 = mapv7PkmntoV8(species);
+			// warn if the species was not found
+			if (speciesV8 == 0xFFFF) {
+				std::cerr << RED_TEXT << "Species " << std::hex << species << " not found in version 8 species list." << std::endl;
+				continue;
+			}
+			// print found speciesv7 and converted speciesv8
+			if (species != speciesV8){
+				std::cout << RESET_TEXT << "Species " << std::hex << species << " converted to " << std::hex << speciesV8 << std::endl;
+			}
+			// write the lower 8 bits of the species
+			it8.setByte(speciesV8 & 0xFF);
+			it8.seek(it8.getAddress() + 4);
+			// get the 9th bit of the species
+			uint8_t extSpecies = speciesV8 >> 8;
+			extSpecies = extSpecies << MON_EXTSPECIES_F;
+			uint8_t currentExtSpecies = it8.getByte();
+			currentExtSpecies &= ~EXTSPECIES_MASK;
+			currentExtSpecies |= extSpecies;
+			it8.setByte(currentExtSpecies);
+		}
+	}
 
 	// write the new save version number big endian
 	std::cout << RESET_TEXT << "Write new save version number..." << std::endl;
 	uint16_t new_save_version = 0x08;
 	save8.setWordBE(SAVE_VERSION_ABS_ADDRESS, new_save_version);
 
-
 	// write new checksums to the version 8 save file
 	std::cout << RESET_TEXT << "Write new checksums..." << std::endl;
 	uint16_t new_checksum = calculate_checksum(save8, sym8.getSRAMAddress("sGameData"), sym8.getSRAMAddress("sGameDataEnd"));
 	save8.setWord(SAVE_CHECKSUM_ABS_ADDRESS, new_checksum);
+
+	// write new backup checksums to the version 8 save file
+	std::cout << RESET_TEXT << "Write new backup checksums..." << std::endl;
+	uint16_t new_backup_checksum = calculate_checksum(save8, sym8.getSRAMAddress("sBackupGameData"), sym8.getSRAMAddress("sBackupGameDataEnd"));
+	save8.setWord(SAVE_BACKUP_CHECKSUM_ABS_ADDRESS, new_backup_checksum);
 
 	// write the modified save file to the output file and print success message
 	std::cout << RESET_TEXT << "Save file patched successfully!" << std::endl;
