@@ -955,8 +955,6 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		}
 	}
 
-	// TODO: Convert MAP_GROUPs and MAP_NUMBERs
-
 	// Copy from wDigWarpNumber to wCurMapDataEnd
 	std::cout << RESET_TEXT << "Copy from wDigWarpNumber to wCurMapDataEnd..." << std::endl;
 	it7.seek(sym7.getMapDataAddress("wDigWarpNumber"));
