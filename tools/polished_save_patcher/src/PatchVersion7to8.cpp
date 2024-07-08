@@ -769,6 +769,7 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 
 	// clear it8 wEventFlags
 	std::cout << RESET_TEXT << "Clear wEventFlags..." << std::endl;
+	it8.seek(sym8.getPlayerDataAddress("wEventFlags"));
 	for (int i = 0; i < NUM_EVENTS; i++) {
 		it8.setByte(0x00);
 		it8.next();
@@ -778,6 +779,8 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 	// wEventFlags is a flag_array of NUM_EVENTS bits. If v7 bit is set, lookup the bit index in the map and set the corresponding bit in v8
 	std::cout << RESET_TEXT << "Patching wEventFlags..." << std::endl;
 	for (int i = 0; i < NUM_EVENTS; i++) {
+		// seek to the byte containing the bit
+		it7.seek(sym7.getPlayerDataAddress("wEventFlags") + i / 8);
 		// check if the bit is set
 		if (it7.getByte() & (1 << (i % 8))) {
 			// get the event flag index is equal to the bit index
@@ -788,16 +791,16 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 			if (eventFlagIndexV8 != 0xFFFF) {
 				// print found event flagv7 and converted event flagv8
 				if (eventFlagIndex != eventFlagIndexV8){
-					std::cout << RESET_TEXT << "Event Flag " << std::hex << static_cast<int>(eventFlagIndex) << " converted to " << std::hex << static_cast<int>(eventFlagIndexV8) << std::endl;
+					std::cout << RESET_TEXT << "Event Flag " << std::dec << eventFlagIndex << " converted to " << eventFlagIndexV8 << std::endl;
 				}
 				// seek to the byte containing the bit
-				it8.seek(sym8.getPlayerDataAddress("wEventFlags") + i / 8);
+				it8.seek(sym8.getPlayerDataAddress("wEventFlags") + eventFlagIndexV8 / 8);
 				// set the bit
-				it8.setByte(it8.getByte() | (1 << (i % 8)));
+				it8.setByte(it8.getByte() | (1 << (eventFlagIndexV8 % 8)));
+			} else {
+				// warn we couldn't find v7 event flag in v8
+				std::cerr << YELLOW_TEXT << "Event Flag " << eventFlagIndex << " not found in version 8 event flag list." << std::endl;
 			}
-		}
-		if (i % 8 == 7) {
-			it7.next();
 		}
 	}
 

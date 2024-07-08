@@ -50,6 +50,7 @@ constexpr const char* VERSION_8_SYMBOL_FILE = "resources/version8/version8.sym";
 
 // ANSI escape codes
 const std::string RED_TEXT = "\033[31m";
+const std::string YELLOW_TEXT = "\033[33m";
 const std::string RESET_TEXT = "\033[0m";
 
 #endif
