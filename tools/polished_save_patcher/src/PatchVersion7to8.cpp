@@ -838,7 +838,8 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 			// print found contact v7 index
 			std::cout << RESET_TEXT << "Found Contact Index " << std::hex << static_cast<int>(contactIndexV8) << std::endl;
 			// seek to the byte containing the bit
-			it8.seek(sym8.getPlayerDataAddress("wPhoneList") + contactIndexV8 / 8);
+			contactIndexV8--; // bit index starts at 0 not 1
+			it8.seek(sym8.getPlayerDataAddress("wPhoneList") + (contactIndexV8 / 8));
 			// set the bit
 			it8.setByte(it8.getByte() | (1 << (contactIndexV8 % 8)));
 		}
