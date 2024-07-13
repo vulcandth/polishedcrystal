@@ -24,10 +24,12 @@ constexpr int PARTY_LENGTH = 6;
 constexpr int PLAYER_NAME_LENGTH = 8;
 constexpr int MON_NAME_LENGTH = 11;
 constexpr uint8_t EXTSPECIES_MASK = 0b00100000;
+constexpr uint8_t FORM_MASK = 0b00011111;
 constexpr int MON_EXTSPECIES = 0x15;
 constexpr int MON_EXTSPECIES_F = 5;
 constexpr uint8_t CAUGHT_BALL_MASK = 0b00011111;
 constexpr int MON_ITEM = 0x01;
+constexpr int MON_FORM = 0x15;
 constexpr int MON_CAUGHTBALL = 0x1c;
 constexpr int MON_CAUGHTLOCATION = 0x1e;
 constexpr int NUM_POKEMON_V7 = 0xfe;
@@ -45,6 +47,7 @@ constexpr int BOX_NAME_LENGTH = 9;
 constexpr int NEWBOX_SIZE = MONS_PER_BOX + ((MONS_PER_BOX + 7) / 8) + BOX_NAME_LENGTH + 1;
 constexpr int SAVEMON_EXTSPECIES = 0x15;
 constexpr int SAVEMON_ITEM = 0x01;
+constexpr int SAVEMON_FORM = 0x15;
 constexpr int SAVEMON_CAUGHTBALL = 0x19;
 constexpr int SAVEMON_CAUGHTLOCATION = 0x1b;
 constexpr int BATTLETOWER_PARTYDATA_SIZE = 6;
@@ -118,6 +121,42 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		}
 	}
 
+	// Write default box names from NUM_BOXES_V7 + 1 to NUM_BOXES_V8
+	std::cout << RESET_TEXT << "Writing default box names..." << std::endl;
+	for (int n = NUM_BOXES_V7 + 1; n < NUM_BOXES_V8 + 1; n++) {
+		it8.seek(sym8.getSRAMAddress("sNewBox" + std::to_string(n) + "Name"));
+		std::cout << RESET_TEXT << "Writing default box name for sNewBox" << n << "..." << std::endl;
+		it8.setByte(0x7f); // ' '
+		it8.next();
+		it8.setByte(0x7f); // ' '
+		it8.next();
+		it8.setByte(0x81); // B
+		it8.next();
+		it8.setByte(0xae); // o
+		it8.next();
+		it8.setByte(0xb7); // x
+		it8.next();
+		it8.setByte(0x7f); // ' '
+		it8.next();
+		// write 10s place
+		it8.setByte(0xe0 + (n / 10));
+		it8.next();
+		// write 1s place
+		it8.setByte(0xe0 + (n % 10));
+	}
+
+	// convert pc box themes
+	std::cout << RESET_TEXT << "Converting PC box themes..." << std::endl;
+	for (int n = 1; n < NUM_BOXES_V8 + 1; n++) {
+		it8.seek(sym8.getSRAMAddress("sNewBox" + std::to_string(n) + "Theme"));
+		uint8_t theme = it8.getByte();
+		uint8_t theme_v8 = mapv7ThemeToV8(theme);
+		if (theme != theme_v8) {
+			std::cout << RESET_TEXT << "Theme " << std::hex << static_cast<int>(theme) << " converted to " << std::hex << static_cast<int>(theme_v8) << std::endl;
+			it8.setByte(theme_v8);
+		}
+	}
+
 	// clear the v8 sBackupNewBox space
 	std::cout << RESET_TEXT << "Clearing v8 sBackupNewBox#..." << std::endl;
 	for (int n = 1; n < NUM_BOXES_V8 + 1; n++) {
@@ -138,6 +177,42 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 			it8.setByte(it7.getByte());
 			it7.next();
 			it8.next();
+		}
+	}
+
+	// Write default backup box names from NUM_BOXES_V7 + 1 to NUM_BOXES_V8
+	std::cout << RESET_TEXT << "Writing default backup box names..." << std::endl;
+	for (int n = NUM_BOXES_V7 + 1; n < NUM_BOXES_V8 + 1; n++) {
+		it8.seek(sym8.getSRAMAddress("sBackupNewBox" + std::to_string(n) + "Name"));
+		std::cout << RESET_TEXT << "Writing default backup box name for sBackupNewBox" << n << "..." << std::endl;
+		it8.setByte(0x7f); // ' '
+		it8.next();
+		it8.setByte(0x7f); // ' '
+		it8.next();
+		it8.setByte(0x81); // B
+		it8.next();
+		it8.setByte(0xae); // o
+		it8.next();
+		it8.setByte(0xb7); // x
+		it8.next();
+		it8.setByte(0x7f); // ' '
+		it8.next();
+		// write 10s place
+		it8.setByte(0xe0 + (n / 10));
+		it8.next();
+		// write 1s place
+		it8.setByte(0xe0 + (n % 10));
+	}
+
+	// convert backup pc box themes
+	std::cout << RESET_TEXT << "Converting backup PC box themes..." << std::endl;
+	for (int n = 1; n < NUM_BOXES_V8 + 1; n++) {
+		it8.seek(sym8.getSRAMAddress("sBackupNewBox" + std::to_string(n) + "Theme"));
+		uint8_t theme = it8.getByte();
+		uint8_t theme_v8 = mapv7ThemeToV8(theme);
+		if (theme != theme_v8) {
+			std::cout << RESET_TEXT << "Theme " << std::hex << static_cast<int>(theme) << " converted to " << std::hex << static_cast<int>(theme_v8) << std::endl;
+			it8.setByte(theme_v8);
 		}
 	}
 
@@ -223,6 +298,19 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 				uint8_t personality = it8.getByte();
 				personality &= ~EXTSPECIES_MASK;
 				personality |= (species_v8 >> 8) << MON_EXTSPECIES_F;
+				uint8_t form = personality & FORM_MASK;
+				if (species_v8 == 0x81) { // if species is Magikarp
+					form = mapv7MagikarpFormToV8(form);
+					personality &= ~FORM_MASK;
+					personality |= form;
+				}
+				if (species_v8 = 0x82) { // if species is Gyarados
+					if (form == 0x11){
+						form = 0x15;
+						personality &= ~FORM_MASK;
+						personality |= form;
+					}
+				}
 				it8.setByte(personality);
 			}
 			// convert item
@@ -296,6 +384,19 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 				uint8_t personality = it8.getByte();
 				personality &= ~EXTSPECIES_MASK;
 				personality |= (species_v8 >> 8) << MON_EXTSPECIES_F;
+				uint8_t form = personality & FORM_MASK;
+				if (species_v8 == 0x81) { // if species is Magikarp
+					form = mapv7MagikarpFormToV8(form);
+					personality &= ~FORM_MASK;
+					personality |= form;
+				}
+				if (species_v8 = 0x82) { // if species is Gyarados
+					if (form == 0x11){
+						form = 0x15;
+						personality &= ~FORM_MASK;
+						personality |= form;
+					}
+				}
 				it8.setByte(personality);
 			}
 			// convert item
@@ -1086,6 +1187,19 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		uint8_t currentExtSpecies = it8.getByte();
 		currentExtSpecies &= ~EXTSPECIES_MASK;
 		currentExtSpecies |= extSpecies;
+		uint8_t form = currentExtSpecies & FORM_MASK;
+		if (speciesV8 == 0x81){
+			form = mapv7MagikarpFormToV8(form);
+			currentExtSpecies &= ~FORM_MASK;
+			currentExtSpecies |= form;
+		}
+		if (speciesV8 == 0x82){
+			if (form == 0x11){
+				form = 0x15;
+				currentExtSpecies &= ~FORM_MASK;
+				currentExtSpecies |= form;
+			}
+		}
 		it8.setByte(currentExtSpecies);
 	}
 
@@ -1259,6 +1373,19 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		uint8_t currentExtSpecies = it8.getByte();
 		currentExtSpecies &= ~EXTSPECIES_MASK;
 		currentExtSpecies |= extSpecies;
+		uint8_t form = currentExtSpecies & FORM_MASK;
+		if (speciesV8 == 0x81){
+			form = mapv7MagikarpFormToV8(form);
+			currentExtSpecies &= ~FORM_MASK;
+			currentExtSpecies |= form;
+		}
+		if (speciesV8 == 0x82){
+			if (form == 0x11){
+				form = 0x15;
+				currentExtSpecies &= ~FORM_MASK;
+				currentExtSpecies |= form;
+			}
+		}
 		it8.setByte(currentExtSpecies);
 	}
 
@@ -1335,6 +1462,19 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		uint8_t currentExtSpecies = it8.getByte();
 		currentExtSpecies &= ~EXTSPECIES_MASK;
 		currentExtSpecies |= extSpecies;
+		uint8_t form = currentExtSpecies & FORM_MASK;
+		if (speciesV8 == 0x81){
+			form = mapv7MagikarpFormToV8(form);
+			currentExtSpecies &= ~FORM_MASK;
+			currentExtSpecies |= form;
+		}
+		if (speciesV8 == 0x82){
+			if (form == 0x11){
+				form = 0x15;
+				currentExtSpecies &= ~FORM_MASK;
+				currentExtSpecies |= form;
+			}
+		}
 		it8.setByte(currentExtSpecies);
 	}
 
@@ -1433,6 +1573,19 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 		uint8_t currentExtSpecies = it8.getByte();
 		currentExtSpecies &= ~EXTSPECIES_MASK;
 		currentExtSpecies |= extSpecies;
+		uint8_t form = currentExtSpecies & FORM_MASK;
+		if (speciesV8 == 0x81){
+			form = mapv7MagikarpFormToV8(form);
+			currentExtSpecies &= ~FORM_MASK;
+			currentExtSpecies |= form;
+		}
+		if (speciesV8 == 0x82){
+			if (form == 0x11){
+				form = 0x15;
+				currentExtSpecies &= ~FORM_MASK;
+				currentExtSpecies |= form;
+			}
+		}
 		it8.setByte(currentExtSpecies);
 	}
 
@@ -1588,6 +1741,19 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 			uint8_t currentExtSpecies = it8.getByte();
 			currentExtSpecies &= ~EXTSPECIES_MASK;
 			currentExtSpecies |= extSpecies;
+			uint8_t form = currentExtSpecies & FORM_MASK;
+			if (speciesV8 == 0x81){
+				form = mapv7MagikarpFormToV8(form);
+				currentExtSpecies &= ~FORM_MASK;
+				currentExtSpecies |= form;
+			}
+			if (speciesV8 == 0x82){
+				if (form == 0x11){
+					form = 0x15;
+					currentExtSpecies &= ~FORM_MASK;
+					currentExtSpecies |= form;
+				}
+			}
 			it8.setByte(currentExtSpecies);
 		}
 	}

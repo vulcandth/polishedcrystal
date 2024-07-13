@@ -3560,3 +3560,64 @@ bool inPokecenter(uint8_t v7_group, uint8_t v7_map) {
 
 	return false;
 }
+
+// converts a version 7 key item to a version 8 key item
+uint8_t mapv7MagikarpFormToV8(uint8_t v7) {
+	std::unordered_map<uint8_t, uint8_t> indexMap = {
+		{0x02, 0x02}, // MAGIKARP_SKELLY_FORM
+		{0x03, 0x03}, // MAGIKARP_CALICO1_FORM
+		{0x04, 0x04}, // MAGIKARP_CALICO2_FORM
+		{0x05, 0x05}, // MAGIKARP_CALICO3_FORM
+		{0x06, 0x06}, // MAGIKARP_TWO_TONE_FORM
+		{0x07, 0x07}, // MAGIKARP_ORCA_FORM
+		{0x08, 0x08}, // MAGIKARP_DAPPLES_FORM
+		{0x09, 0x09}, // MAGIKARP_TIGER_FORM
+		{0x0a, 0x0a}, // MAGIKARP_ZEBRA_FORM
+		{0x0b, 0x0b}, // MAGIKARP_STRIPE_FORM
+		{0x0c, 0x0c}, // MAGIKARP_BUBBLES_FORM
+		{0x0d, 0x0f}, // MAGIKARP_FOREHEAD_FORM
+		{0x0e, 0x10}, // MAGIKARP_MASK_FORM
+		{0x0f, 0x13}, // MAGIKARP_SAUCY_FORM
+		{0x10, 0x14}, // MAGIKARP_RAINDROP_FORM
+	};
+
+	// return the corresponding version 8 key item or 0xFF if not found
+	return indexMap.find(v7) != indexMap.end() ? indexMap[v7] : 0xFF;
+}
+
+uint8_t mapv7ThemeToV8(uint8_t v7) {
+	std::unordered_map<uint8_t, uint8_t> indexMap = {
+		{0x00, 0x00},  // THEME_STANDARD
+		{0x01, 0x01},  // THEME_PRO
+		{0x02, 0x02},  // THEME_MOBILE
+		{0x03, 0x03},  // THEME_CLASSIC
+		{0x04, 0x04},  // THEME_BLISS
+		{0x05, 0x05},  // THEME_CONTRAST
+		{0x06, 0x06},  // THEME_NATURE
+		{0x07, 0x09},  // THEME_TRUTH
+		{0x08, 0x0A},  // THEME_IDEALS
+		{0x09, 0x0B},  // THEME_LIGHT
+		{0x0A, 0x0C},  // THEME_DARKNESS
+		{0x0B, 0x0D},  // THEME_MATTE
+		{0x0C, 0x0F},  // THEME_NORMAL
+		{0x0D, 0x10},  // THEME_FIGHTING
+		{0x0E, 0x11},  // THEME_FLYING
+		{0x0F, 0x12},  // THEME_POISON
+		{0x10, 0x13},  // THEME_GROUND
+		{0x11, 0x14},  // THEME_ROCK
+		{0x12, 0x15},  // THEME_BUG
+		{0x13, 0x16},  // THEME_GHOST
+		{0x14, 0x17},  // THEME_STEEL
+		{0x15, 0x18},  // THEME_FIRE
+		{0x16, 0x19},  // THEME_WATER
+		{0x17, 0x1A},  // THEME_GRASS
+		{0x18, 0x1B},  // THEME_ELECTRIC
+		{0x19, 0x1C},  // THEME_PSYCHIC
+		{0x1A, 0x1D},  // THEME_ICE
+		{0x1B, 0x1E},  // THEME_DRAGON
+		{0x1C, 0x1F},  // THEME_DARK
+		{0x1D, 0x20},  // THEME_FAIRY
+	};
+	// return the corresponding version 8 theme or 0xFF if not found
+	return indexMap.find(v7) != indexMap.end() ? indexMap[v7] : 0xFF;
+}

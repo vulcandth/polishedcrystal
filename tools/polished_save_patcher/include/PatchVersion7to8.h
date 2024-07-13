@@ -34,6 +34,12 @@ struct TupleHash {
 
 std::tuple<uint8_t, uint8_t> mapv7toV8(uint8_t v7_group, uint8_t v7_map);
 
+// converts a version 7 magikarp form to a version 8 magikarp form
+uint8_t mapv7MagikarpFormToV8(uint8_t v7);
+
+// converts a version 7 theme to a version 8 theme
+uint8_t mapv7ThemeToV8(uint8_t v7);
+
 uint16_t calculateNewboxChecksum(const SaveBinary& save, uint32_t startAddress);
 
 uint16_t extractStoredNewboxChecksum(const SaveBinary& save, uint32_t startAddress);
