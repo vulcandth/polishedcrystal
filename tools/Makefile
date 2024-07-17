@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean polished_save_patcher polished_save_patcher_clean
 
 CC := gcc
 CFLAGS = -O3 -flto -std=c17 -Wall -Wextra -pedantic \
@@ -40,11 +40,17 @@ tools := \
 	scan_includes \
 	vwf
 
-all: $(tools)
+all: $(tools) polished_save_patcher
 	@:
 
-clean:
+clean: polished_save_patcher_clean
 	$(RM) $(tools) *.o *.h.gch *.pyc
+
+polished_save_patcher:
+	$(MAKE) -C polished_save_patcher
+
+polished_save_patcher_clean:
+	$(MAKE) -C polished_save_patcher clean
 
 gfx: common.h
 png_dimensions: common.h

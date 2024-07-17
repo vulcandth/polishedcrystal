@@ -9,4 +9,12 @@ pokemon_animation
 pokemon_animation_graphics
 scan_includes
 vwf
-polished_save_patcher\polished_save_patcher
+
+# Ignore generated objects from polished_save_patcher
+polished_save_patcher/*.o
+polished_save_patcher/*.html
+polished_save_patcher/*.data
+polished_save_patcher/*.js
+polished_save_patcher/*.wasm
+polished_save_patcher/*.mem
+polished_save_patcher/*.worker.js
