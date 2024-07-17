@@ -28,6 +28,9 @@ OBJECTS := $(SOURCES:.cpp=.o)
 # Executable name
 TARGET := polished_save_patcher.html
 
+# Additional output files
+ADDITIONAL_FILES := polished_save_patcher.data polished_save_patcher.js polished_save_patcher.wasm polished_save_patcher.mem polished_save_patcher.worker.js
+
 # Windows-specific settings
 ifeq ($(OS), Windows_NT)
     CXX := emcc
@@ -49,7 +52,7 @@ $(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp
 
 # Clean
 clean:
-	$(RM) $(OBJECTS) $(TARGET)
+	$(RM) $(OBJECTS) $(TARGET) $(ADDITIONAL_FILES)
 
 # Phony targets
 .PHONY: all clean
