@@ -70,7 +70,7 @@ EMSCRIPTEN_BINDINGS(patch_save_module) {
 }
 
 EM_JS(void, js_stdout, (const char* str), {
-    var msg = UTF8ToString(str);
+    var msg = UTF8ToString(str).trim();
     console.log(msg);
     var outputElement = document.getElementById('output');
     if (outputElement) {
@@ -79,7 +79,7 @@ EM_JS(void, js_stdout, (const char* str), {
 });
 
 EM_JS(void, js_stderr, (const char* str), {
-    var msg = UTF8ToString(str);
+    var msg = UTF8ToString(str).trim();
     console.error(msg);
     var outputElement = document.getElementById('output');
     if (outputElement) {
