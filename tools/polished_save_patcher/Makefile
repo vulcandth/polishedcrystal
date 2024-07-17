@@ -1,10 +1,10 @@
-# Makefile for polished_save_patcher
+# Makefile for polished_save_patcher with WebAssembly
 
 # Detect the operating system
 OS := $(shell uname -s)
 
 # Compiler and flags
-CXX := g++
+CXX := emcc
 CXXFLAGS := -Iinclude -std=c++17
 
 # Directories
@@ -26,13 +26,12 @@ SOURCES := $(SRC_DIR)/CommonPatchFunctions.cpp \
 OBJECTS := $(SOURCES:.cpp=.o)
 
 # Executable name
-TARGET := polished_save_patcher
+TARGET := polished_save_patcher.html
 
 # Windows-specific settings
 ifeq ($(OS), Windows_NT)
-    CXX := g++
+    CXX := emcc
     RM := del
-    TARGET := polished_save_patcher.exe
 else
     RM := rm -f
 endif
@@ -42,7 +41,7 @@ all: $(TARGET)
 
 # Linking
 $(TARGET): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $@
+	$(CXX) $(OBJECTS) -o $@ $(LDFLAGS) -s WASM=1 -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' --preload-file resources --bind
 
 # Compilation
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp

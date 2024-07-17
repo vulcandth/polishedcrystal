@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Save Patcher</title>
+    <script src="polished_save_patcher.js"></script>
+</head>
+<body>
+    <h1>Save Patcher</h1>
+    <input type="file" id="oldSave" />
+    <button onclick="patchSave()">Patch Save</button>
+    <script>
+        function patchSave() {
+            var oldSaveFile = document.getElementById('oldSave').files[0];
+            if (!oldSaveFile) {
+                alert("Please select the save file you want to patch.");
+                return;
+            }
+
+            var oldSavePath = '/old_save.sav';
+            var newSavePath = '/new_save.sav';
+
+            // Read the old save file
+            var reader = new FileReader();
+            reader.onload = function(event) {
+                var data = new Uint8Array(event.target.result);
+                FS.writeFile(oldSavePath, data);
+
+                // Call the C++ function
+                Module.patch_save(oldSavePath, newSavePath);
+
+                // Read the patched save file
+                var patchedData = FS.readFile(newSavePath);
+                var blob = new Blob([patchedData], { type: 'application/octet-stream' });
+                var url = URL.createObjectURL(blob);
+
+                // Create a download link for the patched save file
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'patched_save.sav';
+                a.click();
+                URL.revokeObjectURL(url);
+            };
+            reader.readAsArrayBuffer(oldSaveFile);
+        }
+    </script>
+</body>
+</html>
