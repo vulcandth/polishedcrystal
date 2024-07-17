@@ -44,7 +44,7 @@ all: $(TARGET)
 
 # Linking
 $(TARGET): $(OBJECTS)
-	$(CXX) $(OBJECTS) -o $@ $(LDFLAGS) -s WASM=1 -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' --preload-file resources --bind
+	$(CXX) $(OBJECTS) -o $@ $(LDFLAGS) -s WASM=1 -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -s DEMANGLE_SUPPORT=1 -s FORCE_FILESYSTEM=1 --preload-file resources --bind
 
 # Compilation
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.cpp

@@ -1,13 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Save Patcher</title>
+    <title>Polished Crystal Save Patcher</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        h1 {
+            color: #0073e6;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .instructions {
+            margin-bottom: 20px;
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: #005bb5;
+        }
+        pre {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .error {
+            color: red;
+        }
+    </style>
     <script src="polished_save_patcher.js"></script>
 </head>
 <body>
-    <h1>Save Patcher</h1>
-    <input type="file" id="oldSave" />
-    <button onclick="patchSave()">Patch Save</button>
+    <div class="container">
+        <h1>Polished Crystal Save Patcher</h1>
+        <div class="instructions">
+            <p>
+                This tool allows you to patch your Polished Crystal save files from one version to another.
+                Follow the steps below to patch your save file:
+            </p>
+            <ol>
+                <li>Click the "Choose File" button to select your old save file.</li>
+                <li>Click the "Patch Save" button to start the patching process.</li>
+                <li>Once the patching is complete, a new save file will be downloaded automatically.</li>
+            </ol>
+        </div>
+        <input type="file" id="oldSave" />
+        <button onclick="patchSave()">Patch Save</button>
+        <pre id="output"></pre>
+    </div>
     <script>
         function patchSave() {
             var oldSaveFile = document.getElementById('oldSave').files[0];

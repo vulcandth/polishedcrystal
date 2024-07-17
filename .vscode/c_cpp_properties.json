@@ -1,15 +1,21 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "Emscripten",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "/home/vulcandth/GitHub/emsdk/upstream/emscripten/system/include",
+                "/home/vulcandth/GitHub/emsdk/upstream/emscripten/system/include/libc",
+                "/home/vulcandth/GitHub/emsdk/upstream/emscripten/system/lib/libc/musl/arch/emscripten",
+                "/home/vulcandth/GitHub/emsdk/upstream/emscripten/cache/sysroot/include"
             ],
-            "defines": [],
-            "compilerPath": "/usr/bin/gcc",
+            "defines": [
+                "__EMSCRIPTEN__"
+            ],
+            "compilerPath": "/home/vulcandth/GitHub/emsdk/upstream/emscripten/emcc",
             "cStandard": "c17",
-            "cppStandard": "gnu++14",
-            "intelliSenseMode": "linux-gcc-x64"
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-clang-x64"
         }
     ],
     "version": 4
