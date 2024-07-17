@@ -304,7 +304,7 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 					personality &= ~FORM_MASK;
 					personality |= form;
 				}
-				if (species_v8 = 0x82) { // if species is Gyarados
+				if (species_v8 == 0x82) { // if species is Gyarados
 					if (form == 0x11){
 						form = 0x15;
 						personality &= ~FORM_MASK;
@@ -390,7 +390,7 @@ void patchVersion7to8(SaveBinary& save7, SaveBinary& save8) {
 					personality &= ~FORM_MASK;
 					personality |= form;
 				}
-				if (species_v8 = 0x82) { // if species is Gyarados
+				if (species_v8 == 0x82) { // if species is Gyarados
 					if (form == 0x11){
 						form = 0x15;
 						personality &= ~FORM_MASK;
