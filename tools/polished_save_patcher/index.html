@@ -64,6 +64,11 @@
         .error {
             color: #ff6e6e;
         }
+        #indicator {
+            color: #80cbc4;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
     </style>
     <script src="polished_save_patcher.js"></script>
 </head>
@@ -83,6 +88,7 @@
         </div>
         <input type="file" id="oldSave" />
         <button onclick="patchSave()">Patch Save</button>
+        <div id="indicator">Ready to patch.</div>
         <pre id="output"></pre>
     </div>
     <script>
@@ -93,43 +99,45 @@
                 return;
             }
 
-            // Clear the output element
+            var indicatorElement = document.getElementById('indicator');
             var outputElement = document.getElementById('output');
+
+            // Clear previous output and update indicator
             outputElement.textContent = '';
+            indicatorElement.textContent = 'Patching in progress...';
 
             var oldSavePath = '/old_save.sav';
             var newSavePath = '/new_save.sav';
 
-            // check if newSavePath already exists
             if (FS.analyzePath(newSavePath).exists) {
-                // remove the old file
                 FS.unlink(newSavePath);
             }
 
-            // Read the old save file
             var reader = new FileReader();
             reader.onload = function(event) {
                 var data = new Uint8Array(event.target.result);
                 FS.writeFile(oldSavePath, data);
 
-                // Call the C++ function
-                Module.patch_save(oldSavePath, newSavePath);
+                // Call the C++ function and handle the result
+                var result = Module.patch_save(oldSavePath, newSavePath);
+                if (result.success) {
+                    var patchedData = FS.readFile(newSavePath, { encoding: 'binary', flags: 'r' });
+                    if (patchedData) {
+                        var blob = new Blob([patchedData], { type: 'application/octet-stream' });
+                        var url = URL.createObjectURL(blob);
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = 'patched_save.sav';
+                        a.click();
+                        URL.revokeObjectURL(url);
 
-                // Read the patched save file
-                var patchedData = FS.readFile(newSavePath, { encoding: 'binary', flags: 'r' });
-                if (!patchedData) {
-                    outputElement.textContent += '<span class="error">Failed to read the patched save file.</span>';
-                    return;
+                        indicatorElement.textContent = 'Patching complete. Save file downloaded successfully.';
+                    } else {
+                        indicatorElement.textContent = 'Patching complete with errors. Failed to read the patched save file.';
+                    }
+                } else {
+                    indicatorElement.textContent = 'Patching failed. See errors in the output.';
                 }
-                var blob = new Blob([patchedData], { type: 'application/octet-stream' });
-                var url = URL.createObjectURL(blob);
-
-                // Create a download link for the patched save file
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = 'patched_save.sav';
-                a.click();
-                URL.revokeObjectURL(url);
             };
             reader.readAsArrayBuffer(oldSaveFile);
         }
