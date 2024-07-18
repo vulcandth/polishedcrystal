@@ -3,13 +3,14 @@
 #include <fstream>
 #include "PatcherConstants.h"
 #include "SaveBinary.h"
+#include "Logging.h"
 
 // Constructor
 SaveBinary::SaveBinary(const std::string& saveFilePath) : m_locked(false) {
 	// Open the file
 	std::ifstream file(saveFilePath, std::ios::binary);
 	if (!file.is_open()) {
-		std::cerr <<  "Failed to open save file: " << saveFilePath << std::endl;
+		js_error <<  "Failed to open save file: " << saveFilePath << std::endl;
 		return;
 	}
 
@@ -17,7 +18,7 @@ SaveBinary::SaveBinary(const std::string& saveFilePath) : m_locked(false) {
 	file.seekg(0, std::ios::end);
 	auto fileSize = file.tellg();
 	if (fileSize < MIN_SAVE_SIZE) {
-		std::cerr <<  "Save file size is too small: " << saveFilePath << ". Expected minimum size: " << MIN_SAVE_SIZE << ", Actual size: " << fileSize << std::endl;
+		js_error <<  "Save file size is too small: " << saveFilePath << ". Expected minimum size: " << MIN_SAVE_SIZE << ", Actual size: " << fileSize << std::endl;
 		file.close();
 		return;
 	}
@@ -36,7 +37,7 @@ SaveBinary::~SaveBinary() {
 // Get the byte at the specified address
 uint8_t SaveBinary::getByte(uint32_t address) const {
 	if (address >= m_data.size()) {
-		std::cerr <<  "Address out of bounds: " << std::hex << address << std::endl;
+		js_error <<  "Address out of bounds: " << std::hex << address << std::endl;
 		return 0;
 	}
 	return m_data[address];
@@ -45,7 +46,7 @@ uint8_t SaveBinary::getByte(uint32_t address) const {
 // get the word at the specified address (little endian)
 uint16_t SaveBinary::getWord(uint32_t address) const {
 	if (address + 1 >= m_data.size()) {
-		std::cerr <<  "Address out of bounds: " << std::hex << address << std::endl;
+		js_error <<  "Address out of bounds: " << std::hex << address << std::endl;
 		return 0;
 	}
 	return m_data[address] | (m_data[address + 1] << 8);
@@ -54,7 +55,7 @@ uint16_t SaveBinary::getWord(uint32_t address) const {
 // get the word at the specified address (big endian)
 uint16_t SaveBinary::getWordBE(uint32_t address) const {
 	if (address + 1 >= m_data.size()) {
-		std::cerr <<  "Address out of bounds: " << std::hex << address << std::endl;
+		js_error <<  "Address out of bounds: " << std::hex << address << std::endl;
 		return 0;
 	}
 	return (m_data[address] << 8) | m_data[address + 1];
@@ -64,12 +65,12 @@ uint16_t SaveBinary::getWordBE(uint32_t address) const {
 void SaveBinary::setByte(uint32_t address, uint8_t value) {
 	// error if locked
 	if (m_locked) {
-		std::cerr <<  "Save file is locked" << std::endl;
+		js_error <<  "Save file is locked" << std::endl;
 		return;
 	}
 	// error if address out of bounds
 	if (address >= m_data.size()) {
-		std::cerr <<  "Address out of bounds: " << std::hex << address << std::endl;
+		js_error <<  "Address out of bounds: " << std::hex << address << std::endl;
 		return;
 	}
 	m_data[address] = value;
@@ -79,12 +80,12 @@ void SaveBinary::setByte(uint32_t address, uint8_t value) {
 void SaveBinary::setWord(uint32_t address, uint16_t value) {
 	// error if locked
 	if (m_locked) {
-		std::cerr <<  "Save file is locked" << std::endl;
+		js_error <<  "Save file is locked" << std::endl;
 		return;
 	}
 	// error if address out of bounds
 	if (address + 1 >= m_data.size()) {
-		std::cerr <<  "Address out of bounds: " << std::hex << address << std::endl;
+		js_error <<  "Address out of bounds: " << std::hex << address << std::endl;
 		return;
 	}
 	m_data[address] = value & 0xFF;
@@ -95,12 +96,12 @@ void SaveBinary::setWord(uint32_t address, uint16_t value) {
 void SaveBinary::setWordBE(uint32_t address, uint16_t value) {
 	// error if locked
 	if (m_locked) {
-		std::cerr <<  "Save file is locked" << std::endl;
+		js_error <<  "Save file is locked" << std::endl;
 		return;
 	}
 	// error if address out of bounds
 	if (address + 1 >= m_data.size()) {
-		std::cerr <<  "Address out of bounds: " << std::hex << address << std::endl;
+		js_error <<  "Address out of bounds: " << std::hex << address << std::endl;
 		return;
 	}
 	m_data[address] = (value >> 8) & 0xFF;
@@ -122,7 +123,7 @@ void SaveBinary::save(const std::string& saveFilePath) const {
 	// Open the file
 	std::ofstream file(saveFilePath, std::ios::binary);
 	if (!file.is_open()) {
-		std::cerr <<  "Failed to open save file: " << saveFilePath << std::endl;
+		js_error <<  "Failed to open save file: " << saveFilePath << std::endl;
 		return;
 	}
 	// Write the data
@@ -181,7 +182,7 @@ void SaveBinary::Iterator::prev() {
 // Move the iterator to the specified address
 void SaveBinary::Iterator::seek(uint32_t address) {
 	if (m_address == address) {
-		//std::cerr <<  "Iterator is already at the requested address: " << std::hex << address << std::endl;
+		//js_error <<  "Iterator is already at the requested address: " << std::hex << address << std::endl;
 		return;
 	}
 	m_address = address;

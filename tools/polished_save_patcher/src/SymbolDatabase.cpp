@@ -1,6 +1,7 @@
 // include "SymbolDatabase.h"
 #include "SymbolDatabase.h"
 #include "PatcherConstants.h"
+#include "Logging.h"
 #include <fstream>
 #include <iostream>
 #include <regex>
@@ -13,7 +14,7 @@ SymbolDatabase::SymbolDatabase(const std::string& symbolFilePath) {
 
 	std::ifstream file(symbolFilePath);
 	if (!file.is_open()) {
-		std::cerr <<  "Failed to open symbol file: " << symbolFilePath << std::endl;
+		js_error <<  "Failed to open symbol file: " << symbolFilePath << std::endl;
 		return;
 	}
 
@@ -112,7 +113,7 @@ uint32_t SymbolDatabase::getSRAMAddress(const std::string& name) const {
 uint32_t SymbolDatabase::getPlayerDataAddress(const std::string& wram_symbol_name) const {
 	// check if symbol is in WRAM
 	if (!isWRAM(wram_symbol_name)) {
-		std::cerr <<  "Symbol " << wram_symbol_name << " is not in WRAM" << std::endl;
+		js_error <<  "Symbol " << wram_symbol_name << " is not in WRAM" << std::endl;
 		return 0;
 	}
 	// we need to find the equivalent SRAM address of the WRAM symbol
@@ -130,7 +131,7 @@ uint32_t SymbolDatabase::getPlayerDataAddress(const std::string& wram_symbol_nam
 	}
 	int32_t distance = wram_symbol->address - wPlayerData->address;
 	if (distance < 0) {
-		std::cerr <<  "Symbol " << wram_symbol_name << " is before wPlayerData" << std::endl;
+		js_error <<  "Symbol " << wram_symbol_name << " is before wPlayerData" << std::endl;
 		return 0;
 	}
 
@@ -141,7 +142,7 @@ uint32_t SymbolDatabase::getPlayerDataAddress(const std::string& wram_symbol_nam
 uint32_t SymbolDatabase::getMapDataAddress(const std::string& wram_symbol_name) const {
 	// check if symbol is in WRAM
 	if (!isWRAM(wram_symbol_name)) {
-		std::cerr <<  "Symbol " << wram_symbol_name << " is not in WRAM" << std::endl;
+		js_error <<  "Symbol " << wram_symbol_name << " is not in WRAM" << std::endl;
 		return 0;
 	}
 	// we need to find the equivalent SRAM address of the WRAM symbol
@@ -150,7 +151,7 @@ uint32_t SymbolDatabase::getMapDataAddress(const std::string& wram_symbol_name) 
 	// get the address of the wMapData symbol
 	const Symbol* wMapData = getSymbol("wCurMapData");
 	if (wMapData == nullptr) {
-		std::cerr <<  "Symbol wCurMapData not found" << std::endl;
+		js_error <<  "Symbol wCurMapData not found" << std::endl;
 		return 0;
 	}
 	// calculate the distance between wram_symbol and wMapData error if result is negative
@@ -160,7 +161,7 @@ uint32_t SymbolDatabase::getMapDataAddress(const std::string& wram_symbol_name) 
 	}
 	int32_t distance = wram_symbol->address - wMapData->address;
 	if (distance < 0) {
-		std::cerr <<  "Symbol " << wram_symbol_name << " is before wCurMapData" << std::endl;
+		js_error <<  "Symbol " << wram_symbol_name << " is before wCurMapData" << std::endl;
 		return 0;
 	}
 
@@ -171,7 +172,7 @@ uint32_t SymbolDatabase::getMapDataAddress(const std::string& wram_symbol_name) 
 uint32_t SymbolDatabase::getPokemonDataAddress(const std::string& wram_symbol_name) const {
 	// check if symbol is in WRAM
 	if (!isWRAM(wram_symbol_name)) {
-		std::cerr <<  "Symbol " << wram_symbol_name << " is not in WRAM" << std::endl;
+		js_error <<  "Symbol " << wram_symbol_name << " is not in WRAM" << std::endl;
 		return 0;
 	}
 	// we need to find the equivalent SRAM address of the WRAM symbol
@@ -189,7 +190,7 @@ uint32_t SymbolDatabase::getPokemonDataAddress(const std::string& wram_symbol_na
 	}
 	int32_t distance = wram_symbol->address - wPokemonData->address;
 	if (distance < 0) {
-		std::cerr <<  "Symbol " << wram_symbol_name << " is before wPokemonData" << std::endl;
+		js_error <<  "Symbol " << wram_symbol_name << " is before wPokemonData" << std::endl;
 		return 0;
 	}
 

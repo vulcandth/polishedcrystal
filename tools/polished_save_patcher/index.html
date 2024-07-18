@@ -100,6 +100,12 @@
             var oldSavePath = '/old_save.sav';
             var newSavePath = '/new_save.sav';
 
+            // check if newSavePath already exists
+            if (FS.analyzePath(newSavePath).exists) {
+                // remove the old file
+                FS.unlink(newSavePath);
+            }
+
             // Read the old save file
             var reader = new FileReader();
             reader.onload = function(event) {
@@ -110,7 +116,11 @@
                 Module.patch_save(oldSavePath, newSavePath);
 
                 // Read the patched save file
-                var patchedData = FS.readFile(newSavePath);
+                var patchedData = FS.readFile(newSavePath, { encoding: 'binary', flags: 'r' });
+                if (!patchedData) {
+                    outputElement.textContent += '<span class="error">Failed to read the patched save file.</span>';
+                    return;
+                }
                 var blob = new Blob([patchedData], { type: 'application/octet-stream' });
                 var url = URL.createObjectURL(blob);
 

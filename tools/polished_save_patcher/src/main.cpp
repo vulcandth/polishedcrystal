@@ -19,12 +19,15 @@ extern "C" {
         // load the save version big endian word
         uint16_t saveVersion = oldSave.getWordBE(SAVE_VERSION_ABS_ADDRESS);
         // if save versions < 7 is unsupported. if save version is > 8, it is unsupported. if save version is 8, it is already patched. 
-        if (saveVersion < 0x07 || saveVersion > 0x08) {
+        if (saveVersion != 0x07) {
             js_error << "Unsupported save version: " << std::hex << saveVersion << std::endl;
             return;
         }
 
-        patchVersion7to8(oldSave, newSave);
+        if(!patchVersion7to8(oldSave, newSave)) {
+            js_error << "Failed to patch save file." << std::endl;
+            return;
+        }
 
         // write that we are saving the file
         js_info << "Saving file..." << std::endl;
