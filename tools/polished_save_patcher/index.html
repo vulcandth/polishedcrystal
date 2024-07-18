@@ -58,6 +58,9 @@
             padding-bottom: 0; /* Remove bottom padding */
             color: #e0e0e0; /* Text color */
         }
+        .warning {
+            color: #ffcc00;
+        }
         .error {
             color: #ff6e6e;
         }
@@ -89,6 +92,10 @@
                 alert("Please select the save file you want to patch.");
                 return;
             }
+
+            // Clear the output element
+            var outputElement = document.getElementById('output');
+            outputElement.textContent = '';
 
             var oldSavePath = '/old_save.sav';
             var newSavePath = '/new_save.sav';

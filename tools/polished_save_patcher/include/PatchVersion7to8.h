@@ -48,7 +48,7 @@ void writeNewboxChecksum(SaveBinary& save, uint32_t startAddress);
 
 bool inPokecenter(uint8_t v7_group, uint8_t v7_map);
 
-// void patchVersion7to8 takes in arguments SaveBinary save7 and SaveBinary save8
-void patchVersion7to8(SaveBinary& save7, SaveBinary& save8);
+// bool patchVersion7to8 takes in arguments SaveBinary save7 and SaveBinary save8
+bool patchVersion7to8(SaveBinary& save7, SaveBinary& save8);
 
 #endif
