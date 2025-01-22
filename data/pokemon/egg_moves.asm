@@ -622,6 +622,22 @@ PichuEggMoves:
 	db REVERSAL
 	db $ff
 
+PichuFlyEggMoves:
+	db DISARM_VOICE
+	db DOUBLE_SLAP
+	db ENCORE
+	db REVERSAL
+	db FLY
+	db $ff
+
+PichuSurfEggMoves:
+	db DISARM_VOICE
+	db DOUBLE_SLAP
+	db ENCORE
+	db REVERSAL
+	db SURF
+	db $ff
+
 CleffaEggMoves:
 	db CALM_MIND
 	db BELLY_DRUM

@@ -571,7 +571,7 @@ InheritEggMove:
 	and SPECIESFORM_MASK
 	ld b, a
 	; bc = index
-	call GetSpeciesAndFormIndex
+	call GetCosmeticSpeciesAndFormIndex
 	ld hl, EggMovePointers
 	add hl, bc
 	add hl, bc

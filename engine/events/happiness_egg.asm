@@ -288,7 +288,7 @@ DayCareStep::
 	add hl, bc
 	ld b, [hl]
 	ld c, a
-	call GetSpeciesAndFormIndex
+	call GetCosmeticSpeciesAndFormIndex
 	ld hl, EggMovePointers
 	add hl, bc
 	add hl, bc

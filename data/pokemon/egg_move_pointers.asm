@@ -293,6 +293,67 @@ EggMovePointers::
 	dw MankeyEggMoves            ; Annihilape
 	assert_table_length NUM_SPECIES
 
+	dw NoEggMoves                ; Unown (B)
+	dw NoEggMoves                ; Unown (C)
+	dw NoEggMoves                ; Unown (D)
+	dw NoEggMoves                ; Unown (E)
+	dw NoEggMoves                ; Unown (F)
+	dw NoEggMoves                ; Unown (G)
+	dw NoEggMoves                ; Unown (H)
+	dw NoEggMoves                ; Unown (I)
+	dw NoEggMoves                ; Unown (J)
+	dw NoEggMoves                ; Unown (K)
+	dw NoEggMoves                ; Unown (L)
+	dw NoEggMoves                ; Unown (M)
+	dw NoEggMoves                ; Unown (N)
+	dw NoEggMoves                ; Unown (O)
+	dw NoEggMoves                ; Unown (P)
+	dw NoEggMoves                ; Unown (Q)
+	dw NoEggMoves                ; Unown (R)
+	dw NoEggMoves                ; Unown (S)
+	dw NoEggMoves                ; Unown (T)
+	dw NoEggMoves                ; Unown (U)
+	dw NoEggMoves                ; Unown (V)
+	dw NoEggMoves                ; Unown (W)
+	dw NoEggMoves                ; Unown (X)
+	dw NoEggMoves                ; Unown (Y)
+	dw NoEggMoves                ; Unown (Z)
+	dw NoEggMoves                ; Unown (!)
+	dw NoEggMoves                ; Unown (?)
+
+	dw EkansEggMoves             ; Arbok (Kanto Form)
+	dw EkansEggMoves             ; Arbok (Koga Form)
+	dw EkansEggMoves             ; Arbok (Agatha Form)
+	dw EkansEggMoves             ; Arbok (Ariana Form)
+
+	dw PichuFlyEggMoves          ; Pikachu (Fly Form)
+	dw PichuSurfEggMoves         ; Pikachu (Surf Form)
+	dw PichuEggMoves             ; Pikachu (Red Form)
+	dw PichuEggMoves             ; Pikachu (Yellow Form)
+	dw PichuEggMoves             ; Pikachu (Spark Form)
+
+	dw PichuEggMoves             ; Pichu (Spiky-eared Form)
+
+	dw NoEggMoves                ; Magikarp (Skelly Form)
+	dw NoEggMoves                ; Magikarp (Calico1 Form)
+	dw NoEggMoves                ; Magikarp (Calico2 Form)
+	dw NoEggMoves                ; Magikarp (Calico3 Form)
+	dw NoEggMoves                ; Magikarp (Two Tone Form)
+	dw NoEggMoves                ; Magikarp (Orca Form)
+	dw NoEggMoves                ; Magikarp (Dapples Form)
+	dw NoEggMoves                ; Magikarp (Tiger Form)
+	dw NoEggMoves                ; Magikarp (Zebra Form)
+	dw NoEggMoves                ; Magikarp (Stripe Form)
+	dw NoEggMoves                ; Magikarp (Bubbles Form)
+	dw NoEggMoves                ; Magikarp (Diamonds Form)
+	dw NoEggMoves                ; Magikarp (Patches Form)
+	dw NoEggMoves                ; Magikarp (Forhead1 Form)
+	dw NoEggMoves                ; Magikarp (Mask1 Form)
+	dw NoEggMoves                ; Magikarp (Forhead2 Form)
+	dw NoEggMoves                ; Magikarp (Mask2 Form)
+	dw NoEggMoves                ; Magikarp (Saucy Form)
+	dw NoEggMoves                ; Magikarp (Raindrop Form)
+
 	dw NoEggMoves                ; Gyarados (Red Form)
 
 	dw NoEggMoves                ; Mewtwo (Armored Form)
@@ -345,4 +406,4 @@ EggMovePointers::
 	dw NoEggMoves                ; Tauros (Paldean Fire Form)
 	dw NoEggMoves                ; Tauros (Paldean Water Form)
 
-	assert_table_length NUM_EXT_POKEMON
+	assert_table_length NUM_UNIQUE_POKEMON
