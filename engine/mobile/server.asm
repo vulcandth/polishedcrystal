@@ -34,6 +34,9 @@ DEF PO_ERROR_UNAUTHORIZED EQU $05
 DEF PO_ERROR_WITHANOTHER  EQU $06
 DEF PO_ERROR_REJECTED     EQU $07
 
+PolishedOnline_VulcanIP:
+	db 3, 14, 248, 79
+
 PolishedOnline_Addr:
 	asciistr "fiq.se"
 
@@ -42,6 +45,12 @@ PolishedOnline_BackupIP:
 
 PO_Connect::
 ; Connects to Polished Online. Returns z if we're unable to connect.
+	ld hl, PolishedOnline_VulcanIP
+	ld bc, PO_PORT
+	call ConnectToIP
+	ret z
+	jr .success
+
 	ld hl, PolishedOnline_Addr
 	ld bc, PO_PORT
 	call ConnectToDomain
