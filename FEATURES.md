@@ -163,21 +163,34 @@ These are *some* of the notable features as of **v3.2.0**. Some would be spoiler
 ### Pokémon
 
 * Many base stat changes, mostly based on [Drayano's Sacred Gold/Storm Silver](https://gbatemp.net/threads/pok%C3%A9mon-sacred-gold-storm-silver.327567/).
+* Ampharos is Electric/Dragon.
+* Ariados is Bug/Dark.
+* Azumarill and Marill are Water/Fairy.
+* Bellossom is Grass/Fairy.
 * Blastoise is Water/Steel.
 * Butterfree is Bug/Psychic.
-* Meowth and Persian are Dark.
-* Grimer and Muk are Poison/Dark.
-* Farfetch'd is Fighting/Flying.
-* Ninetales is Fire/Ghost.
-* Golduck is Water/Psychic.
-* Meganium is Grass/Fairy.
-* Typhlosion is Fire/Ground.
-* Feraligatr is Water/Dark.
-* Noctowl is Flying/Psychic.
-* Ledian is Bug/Fighting.
-* Sunflora is Grass/Fire.
-* Politoed is Water/Grass.
+* Celebi is Grass/Fairy.
+* Charizard is Fire/Dragon.
+* Cleffa, Clefairy, and Clefable are pure Fairy-type.
 * Dunsparce is Normal/Ground.
+* Feraligatr is Water/Dark.
+* Girafarig is Psychic/Dark.
+* Golduck is Water/Psychic.
+* Granbull and Snubbull are pure Fairy-type.
+* Igglybuff, Jigglypuff, and Wigglytuff are Normal/Fairy.
+* Ledian is Bug/Fighting.
+* Lugia is Water/Flying.
+* Meganium is Grass/Fairy.
+* Mr. Mime is Psychic/Fairy.
+* Ninetales is Fire/Ghost.
+* Noctowl is Ghost/Flying.
+* Octillery is Water/Fire.
+* Politoed is Water/Grass.
+* Rapidash is Fire/Fairy.
+* Stantler is Normal/Psychic.
+* Sunflora is Grass/Fire.
+* Togepi is pure Fairy-type and Togetic is Fairy/Flying.
+* Typhlosion is Fire/Ground.
 * Electivire is Electric/Fighting.
 * Magmortar is Fire/Fighting.
 * Rhyperior is Steel/Rock.
