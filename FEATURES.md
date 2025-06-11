@@ -1,6 +1,6 @@
 # Features
 
-These are *some* of the new features as of 2.2.0. Some would be spoilers.
+These are *some* of the notable features as of **v3.2.0**. Some would be spoilers.
 
 > We've been greedy in the amount of gameplay elements we've squeezed in there. There's so much included that I even had colleagues saying to me: "Are you sure you should be going this far with a remake?" In that sense, it's not simply a remake—I think it's more than that. For that reason, I would like to see these games enjoyed by as large a number of people as possible.
 >
@@ -9,19 +9,18 @@ These are *some* of the new features as of 2.2.0. Some would be spoilers.
 
 ## Pokémon
 
-* The entire Pokédex of 253 Pokémon can be caught in one game. Some Pokémon, like Houndour, Murkrow, and Misdreavus, are available at sensible locations in Johto without having to wait for Kanto.
-* Added: Leafeon, Glaceon, Sylveon, Togekiss, Weavile, Honchkrow, Mismagius, Electivire, Magmortar, Magnezone, Tangrowth, Rhyperior, Porygon-Z, Yanmega, Gliscor, Mamoswine, and Munchlax.
-* Removed: Spearow, Fearow, Lickitung, Goldeen, Seaking, Hoppip, Skiploom, Jumpluff, Shuckle, Aipom, Stantler, Cleffa, Igglybuff, Smoochum, and Delibird.
-* New evolution methods work, like Eevee evolving into Glaceon near Ice Rock, or Yanma evolving into Yanmega when knowing AncientPower.
-* Item trade evolutions (like Seadra holding a Dragon Scale) now evolve by leveling up while holding the item.
-* Machoke, Graveler, Haunter, and Kadabra evolve by having sufficient stat exp in Attack, Defense, Speed, and Special respectively (five Protein, Iron, Carbos, or Calcium is enough).
-* Magneton evolves into Magnezone near the Lodestone in Rock Tunnel.
+* The Pokédex features **289 species** with numerous regional and cosmetic forms (a total of **391 unique Pokémon**), all obtainable without trading. Many Pokémon, like Houndour, Murkrow, and Misdreavus, are available at sensible locations in Johto without waiting for Kanto.
+* Added: Azurill, Wynaut, Ambipom, Mismagius, Honchkrow, Bonsly, Mime Jr., Happiny, Munchlax, Mantyke, Weavile, Magnezone, Lickilicky, Rhyperior, Tangrowth, Electivire, Magmortar, Togekiss, Yanmega, Leafeon, Glaceon, Gliscor, Mamoswine, Porygon-Z, Sylveon, Perrserker, Cursola, Sirfetch'd, Mr. Rime, Wyrdeer, Kleavor, Ursaluna, Sneasler, Overqwil, Dudunsparce, Farigiraf, Clodsire, and Annihilape.
+* New evolution methods work, like Eevee evolving near Moss or Ice Rocks (or with evolutionary stones), and Yanma evolving into Yanmega when knowing AncientPower.
+* Item trade evolutions (like Seadra holding a Dragon Scale) now evolve by leveling up while holding that item.
+* Machoke, Graveler, Haunter, and Kadabra now evolve using the **Linking Cord** item.
+* Magneton evolves into Magnezone by leveling up in Magnet Tunnel or Dim Cave, or by using a Thunderstone.
 
 
 ## Moves
 
-* Added: Aerial Ace, Air Slash, Aqua Tail, Astonish, Avalanche, Bug Buzz, Bulk Up, Bullet Punch, Calm Mind, Dark Pulse, DazzlinGleam, Disarm Voice, Dragon Claw, Dragon Dance, Dragon Pulse, Drain Kiss, Earth Power, Energy Ball, Extrasensory, Fairy Wind, Flare Blitz, Flash Cannon, Focus Blast, Gunk Shot, Hail, Hex, Hone Claws, Hurricane, Hyper Voice, Ice Shard, Icicle Crash, Iron Head, Metal Sound, Moonblast, Nasty Plot, Night Slash, Play Rough, Poison Jab, Power Gem, Psystrike, Scald, Seed Bomb, Shadow Claw, Stone Edge, Water Pulse, Wild Charge, Will-O-Wisp, X-Scissor, and Zen Headbutt.
-* Removed: Acid Armor, Amnesia, Barrage, Beat Up, Bide, Bind, Bone Club, Bone Rush, Bubble, Clamp, Comet Punch, Constrict, Conversion2, Cotton Spore, Detect, Fissure, Frustration, Guillotine, Horn Drill, Jump Kick, Kinesis, Lovely Kiss, Meditate, Mega Kick, Mega Punch, Mimic, Mind Reader, Mirror Move, Poison Gas, Powder Snow, Present, Psych Up, Psywave, Razor Wind, Rolling Kick, Sharpen, Skull Bash, Smog, Snore, Spider Web, Spite, Sweet Scent, Synthesis, Tail Whip, Twister, Vice Grip, and Withdraw.
+* Added: Aerial Ace, Air Slash, Aqua Tail, Astonish, Avalanche, Bug Buzz, Bulk Up, Bullet Punch, Calm Mind, Dark Pulse, Dazzling Gleam, Disarming Voice, Dragon Claw, Dragon Dance, Dragon Pulse, Draining Kiss, Earth Power, Energy Ball, Extrasensory, Flare Blitz, Flash Cannon, Focus Blast, Gunk Shot, Hail, Hex, Hone Claws, Hurricane, Hyper Voice, Ice Shard, Icicle Crash, Iron Head, Moonblast, Nasty Plot, Night Slash, Play Rough, Poison Jab, Power Gem, Psystrike, Scald, Seed Bomb, Shadow Claw, Stone Edge, Water Pulse, Wild Charge, Will-O-Wisp, X-Scissor, and Zen Headbutt.
+* Removed: Acid Armor, Barrage, Beat Up, Bide, Bind, Bone Club, Bone Rush, Bubble, Clamp, Comet Punch, Constrict, Conversion2, Cotton Spore, Detect, Fissure, Frustration, Guillotine, Horn Drill, Jump Kick, Kinesis, Lovely Kiss, Meditate, Mega Kick, Mega Punch, Mimic, Mind Reader, Mirror Move, Poison Gas, Powder Snow, Present, Psych Up, Psywave, Razor Wind, Rolling Kick, Sharpen, Skull Bash, Smog, Snore, Spider Web, Spite, Sweet Scent, Synthesis, Tail Whip, Twister, Vice Grip, and Withdraw.
 * Learnsets have been updated close to Gen VI, with missing moves replaced by similar, egg, TM, or event-exclusive moves.
 
 
@@ -164,21 +163,34 @@ These are *some* of the new features as of 2.2.0. Some would be spoilers.
 ### Pokémon
 
 * Many base stat changes, mostly based on [Drayano's Sacred Gold/Storm Silver](https://gbatemp.net/threads/pok%C3%A9mon-sacred-gold-storm-silver.327567/).
+* Ampharos is Electric/Dragon.
+* Ariados is Bug/Dark.
+* Azumarill and Marill are Water/Fairy.
+* Bellossom is Grass/Fairy.
 * Blastoise is Water/Steel.
 * Butterfree is Bug/Psychic.
-* Meowth and Persian are Dark.
-* Grimer and Muk are Poison/Dark.
-* Farfetch'd is Fighting/Flying.
-* Ninetales is Fire/Ghost.
-* Golduck is Water/Psychic.
-* Meganium is Grass/Fairy.
-* Typhlosion is Fire/Ground.
-* Feraligatr is Water/Dark.
-* Noctowl is Flying/Psychic.
-* Ledian is Bug/Fighting.
-* Sunflora is Grass/Fire.
-* Politoed is Water/Grass.
+* Celebi is Grass/Fairy.
+* Charizard is Fire/Dragon.
+* Cleffa, Clefairy, and Clefable are pure Fairy-type.
 * Dunsparce is Normal/Ground.
+* Feraligatr is Water/Dark.
+* Girafarig is Psychic/Dark.
+* Golduck is Water/Psychic.
+* Granbull and Snubbull are pure Fairy-type.
+* Igglybuff, Jigglypuff, and Wigglytuff are Normal/Fairy.
+* Ledian is Bug/Fighting.
+* Lugia is Water/Flying.
+* Meganium is Grass/Fairy.
+* Mr. Mime is Psychic/Fairy.
+* Ninetales is Fire/Ghost.
+* Noctowl is Ghost/Flying.
+* Octillery is Water/Fire.
+* Politoed is Water/Grass.
+* Rapidash is Fire/Fairy.
+* Stantler is Normal/Psychic.
+* Sunflora is Grass/Fire.
+* Togepi is pure Fairy-type and Togetic is Fairy/Flying.
+* Typhlosion is Fire/Ground.
 * Electivire is Electric/Fighting.
 * Magmortar is Fire/Fighting.
 * Rhyperior is Steel/Rock.
