@@ -12,7 +12,7 @@ These are *some* of the notable features as of **v3.2.0**. Some would be spoiler
 * The Pokédex features **289 species** with numerous regional and cosmetic forms (a total of **391 unique Pokémon**), all obtainable without trading. Many Pokémon, like Houndour, Murkrow, and Misdreavus, are available at sensible locations in Johto without waiting for Kanto.
 * Later-generation evolutions such as Leafeon, Glaceon, Sylveon, Togekiss, Weavile, Honchkrow, Mismagius, Electivire, Magmortar, Magnezone, Tangrowth, Rhyperior, Porygon-Z, Yanmega, Gliscor, Mamoswine, and Munchlax are included.
 * New evolution methods work, like Eevee evolving near Moss or Ice Rocks (or with evolutionary stones), and Yanma evolving into Yanmega when knowing AncientPower.
-* Item trade evolutions (like Seadra holding a Dragon Scale) now evolve by leveling up while holding the item.
+* Item trade evolutions (like Seadra holding a Dragon Scale) now evolve by leveling up while holding that item.
 * Machoke, Graveler, Haunter, and Kadabra now evolve using the **Linking Cord** item.
 * Magneton evolves into Magnezone by leveling up in Magnet Tunnel or Dim Cave, or by using a Thunderstone.
 
