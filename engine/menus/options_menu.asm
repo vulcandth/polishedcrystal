@@ -87,31 +87,55 @@ StringOptions1:
 	done
 
 StringOptions2:
-	text  "Battle Effects"
-	next1 "        :"
-	next1 "Battle Style"
-	next1 "        :"
-	next1 "Running Shoes"
-	next1 "        :"
-	next1 "Turning Speed"
-	next1 "        :"
-	next1 "Clock Format"
-	next1 "        :"
-	next1 "#dex Units"
-	next1 "        :"
-	next1 "Previous"
-	next1 "        " ; no-optimize trailing string space
-	next1 "Done"
-	done
+        text  "Battle Effects"
+        next1 "        :"
+        next1 "Battle Style"
+        next1 "        :"
+        next1 "Running Shoes"
+        next1 "        :"
+        next1 "Turning Speed"
+        next1 "        :"
+        next1 "Clock Format"
+        next1 "        :"
+        next1 "#dex Units"
+        next1 "        :"
+        next1 "Next"
+        next1 "        " ; no-optimize trailing string space
+        next1 "Done"
+        done
+
+StringOptions3:
+        text  "Bike/Surf Music"
+        next1 "        :"
+        next1 "        "
+        next1 "        "
+        next1 "        "
+        next1 "        "
+        next1 "        "
+        next1 "        "
+        next1 "        "
+        next1 "        "
+        next1 "        "
+        next1 "        "
+        next1 "        "
+        next1 "Previous"
+        next1 "        " ; no-optimize trailing string space
+        next1 "Done"
+        done
 
 GetOptionPointer:
-	ld a, [wCurOptionsPage]
-	and a
-	ld a, [wJumptableIndex]
-	jr z, .page1
-	add NUM_OPTIONS + 1
+        ld a, [wCurOptionsPage]
+        and a
+        ld a, [wJumptableIndex]
+        jr z, .page1
+        cp 1
+        jr z, .page2
+        add (NUM_OPTIONS + 1) * 2
+        jr .page1
+.page2
+        add NUM_OPTIONS + 1
 .page1
-	call StackJumpTable
+        call StackJumpTable
 
 .Pointers:
 	dw Options_TextSpeed
@@ -123,14 +147,23 @@ GetOptionPointer:
 	dw Options_Next
 	dw Options_Done
 
-	dw Options_BattleEffects
-	dw Options_BattleStyle
-	dw Options_RunningShoes
-	dw Options_TurningSpeed
-	dw Options_ClockFormat
-	dw Options_PokedexUnits
-	dw Options_Previous
-	dw Options_Done
+        dw Options_BattleEffects
+        dw Options_BattleStyle
+        dw Options_RunningShoes
+        dw Options_TurningSpeed
+        dw Options_ClockFormat
+        dw Options_BikeSurfMusic
+        dw Options_Next
+        dw Options_Done
+
+        dw Options_PokedexUnits
+        dw DoNothing
+        dw DoNothing
+        dw DoNothing
+        dw DoNothing
+        dw DoNothing
+        dw Options_Previous
+        dw Options_Done
 
 Options_TextSpeed:
 	ld a, [wOptions1]
@@ -383,7 +416,31 @@ Options_ClockFormat:
 .Twelve:
 	db "12-hour@"
 .TwentyFour:
-	db "24-hour@"
+        db "24-hour@"
+
+Options_BikeSurfMusic:
+        ld hl, wOptions3
+        ldh a, [hJoyPressed]
+        and D_LEFT | D_RIGHT
+        jr nz, .Toggle
+        bit BIKESURF_MUSIC_F, [hl]
+        jr z, .SetOff
+        jr .SetOn
+.Toggle
+        bit BIKESURF_MUSIC_F, [hl]
+        jr z, .SetOn
+.SetOff:
+        res BIKESURF_MUSIC_F, [hl]
+        ld de, OffString
+        jr .Display
+.SetOn:
+        set BIKESURF_MUSIC_F, [hl]
+        ld de, OnString
+.Display:
+        hlcoord 11, 13
+        rst PlaceString
+        and a
+        ret
 
 Options_PokedexUnits:
 	ld hl, wOptions2
@@ -611,21 +668,29 @@ Options_Keyboard:
 	db "QWERTY@"
 
 Options_Next:
-	ldh a, [hJoyPressed]
-	and A_BUTTON | D_LEFT | D_RIGHT
-	jr z, _SwitchOptionsPage.NonePressed
-	ld hl, wCurOptionsPage
-	inc [hl]
-	ld de, StringOptions2
-	jr _SwitchOptionsPage
+        ldh a, [hJoyPressed]
+        and A_BUTTON | D_LEFT | D_RIGHT
+        jr z, _SwitchOptionsPage.NonePressed
+        ld hl, wCurOptionsPage
+        inc [hl]
+        ld a, [hl]
+        and a
+        ld de, StringOptions2
+        jr z, _SwitchOptionsPage
+        ld de, StringOptions3
+        jr _SwitchOptionsPage
 
 Options_Previous:
-	ldh a, [hJoyPressed]
-	and A_BUTTON | D_LEFT | D_RIGHT
-	jr z, _SwitchOptionsPage.NonePressed
-	ld hl, wCurOptionsPage
-	dec [hl]
-	ld de, StringOptions1
+        ldh a, [hJoyPressed]
+        and A_BUTTON | D_LEFT | D_RIGHT
+        jr z, _SwitchOptionsPage.NonePressed
+        ld hl, wCurOptionsPage
+        dec [hl]
+        ld a, [hl]
+        and a
+        ld de, StringOptions1
+        jr z, _SwitchOptionsPage
+        ld de, StringOptions2
 _SwitchOptionsPage:
 	push de
 	hlcoord 0, 0
@@ -663,14 +728,15 @@ OptionsControl:
 	ret
 
 .DownPressed:
-	ld a, [hl] ; load the cursor position to a
-	cp NUM_OPTIONS
-	jr nz, .Increase
-	ld [hl], -1
+        ld a, [hl] ; load the cursor position to a
+        cp NUM_OPTIONS
+        jr nz, .Increase
+        ld [hl], -1
 .Increase:
-	inc [hl]
-	scf
-	ret
+        inc [hl]
+        call CheckSkipPage3Items
+        scf
+        ret
 
 .UpPressed:
 	ld a, [hl]
@@ -678,22 +744,38 @@ OptionsControl:
 	jr nz, .Decrease
 	ld [hl], NUM_OPTIONS + 1
 .Decrease:
-	dec [hl]
-	scf
-	ret
+        dec [hl]
+        call CheckSkipPage3Items
+        scf
+        ret
 
 Options_UpdateCursorPosition:
-	hlcoord 1, 1
-	ld de, SCREEN_WIDTH
-	ld c, SCREEN_HEIGHT - 2
+        hlcoord 1, 1
+        ld de, SCREEN_WIDTH
+        ld c, SCREEN_HEIGHT - 2
 .loop
-	ld [hl], " "
-	add hl, de
-	dec c
-	jr nz, .loop
-	hlcoord 1, 2
-	ld bc, 2 * SCREEN_WIDTH
-	ld a, [wJumptableIndex]
-	rst AddNTimes
-	ld [hl], "▶"
-	ret
+        ld [hl], " "
+        add hl, de
+        dec c
+        jr nz, .loop
+        hlcoord 1, 2
+        ld bc, 2 * SCREEN_WIDTH
+        ld a, [wJumptableIndex]
+        rst AddNTimes
+        ld [hl], "▶"
+        ret
+
+CheckSkipPage3Items:
+        ld a, [wCurOptionsPage]
+        cp 2
+        ret nz
+        ld a, [hl]
+        cp 1
+        jr c, .no_skip
+        cp 6
+        jr nc, .no_skip
+        xor a
+        ret
+.no_skip
+        or 1
+        ret

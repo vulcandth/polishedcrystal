@@ -19,8 +19,9 @@ DEF JOYPAD_DISABLE_MON_FAINT_F    EQU 6
 DEF JOYPAD_DISABLE_SGB_TRANSFER_F EQU 7
 
 ; wOptions3::
-	const_def
-	const QWERTY_KEYBOARD_F  ; 0
+        const_def
+        const QWERTY_KEYBOARD_F  ; 0
+        const BIKESURF_MUSIC_F   ; 1
 
 ; wOptions1::
 	const_def 3

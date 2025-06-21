@@ -1398,8 +1398,9 @@ SECTION "Options", WRAM0
 
 wOptions3::
 ; bit 0: keyword abc/qwerty
-; bits 3-7: unused
-	db
+; bit 1: bike/surf music on/off
+; bits 2-7: unused
+        db
 
 wOptions::
 

@@ -119,12 +119,15 @@ CheckSpecialMapMusic:
 
 PlayBikeMusic:
 ; Play bike music unless we're in a map with special music handling.
-	call CheckSpecialMapMusic
-	ret z
-	call .get_bike_music
-	ld a, e
-	ld [wMapMusic], a
-	jr PlayMusic
+        call CheckSpecialMapMusic
+        ret z
+        ld hl, wOptions3
+        bit BIKESURF_MUSIC_F, [hl]
+        ret z
+        call .get_bike_music
+        ld a, e
+        ld [wMapMusic], a
+        jr PlayMusic
 
 .get_bike_music
 	call RegionCheck
@@ -415,10 +418,13 @@ GetBugCatchingContestMusic:
 	; fallthrough
 
 GetPlayerStateMusic:
-	ld a, [wPlayerState]
-	cp PLAYER_SURF_PIKA
-	ld e, MUSIC_SURFING_PIKACHU
-	ret z
+        ld a, [wOptions3]
+        bit BIKESURF_MUSIC_F, a
+        jmp z, GetMapMusic
+        ld a, [wPlayerState]
+        cp PLAYER_SURF_PIKA
+        ld e, MUSIC_SURFING_PIKACHU
+        ret z
 	cp PLAYER_SURF
 	jmp nz, GetMapMusic
 	call RegionCheck
