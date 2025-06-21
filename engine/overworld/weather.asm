@@ -63,10 +63,11 @@ DoOverworldWeather:
 	table_width 2
 	dw DoNothing
 	dw DoOverworldRain
-	dw DoOverworldSnow
-	dw DoOverworldRain
-	dw DoOverworldSandstorm
-	assert_table_length NUM_OW_WEATHERS + 1
+        dw DoOverworldSnow
+        dw DoOverworldRain
+        dw DoOverworldSandstorm
+        dw HarshSunlight
+        assert_table_length NUM_OW_WEATHERS + 1
 
 .on_cooldown
 	ld a, [wPrevWeather]
@@ -77,9 +78,10 @@ DoOverworldWeather:
 	dw .cooldown_cleanup
 	dw .rain_cooldown
 	dw .snow_cooldown
-	dw .rain_cooldown
-	dw .sand_cooldown
-	assert_table_length NUM_OW_WEATHERS + 1
+        dw .rain_cooldown
+        dw .sand_cooldown
+        dw .cooldown_cleanup
+        assert_table_length NUM_OW_WEATHERS + 1
 
 .sand_cooldown
 	call DoSandFall
@@ -116,10 +118,14 @@ SpawnRandomWeatherCoords::
 	assert OW_WEATHER_SNOW == 2
 	dec a
 	jr z, .snow
-	assert OW_WEATHER_THUNDERSTORM == 3
-	dec a
-	jr z, .rain
-	assert OW_WEATHER_SANDSTORM == 4
+        assert OW_WEATHER_THUNDERSTORM == 3
+        dec a
+        jr z, .rain
+        assert OW_WEATHER_SANDSTORM == 4
+        dec a
+        jr z, .sand
+        assert OW_WEATHER_HARSH_SUNLIGHT == 5
+        ret
 .sand
 	call .find_oam_and_radomize
 	ret c
@@ -893,8 +899,57 @@ rept TILE_WIDTH - 1
 	dec [hl]
 	inc l
 endr
-	dec [hl]
-	ret
+        dec [hl]
+        ret
+
+HarshSunlight:
+        ldh a, [rSVBK]
+        push af
+        ld a, BANK(wPalFadeDelayFrames)
+        ldh [rSVBK], a
+        ld a, [wPalFadeDelayFrames]
+        and a
+        jr z, .start
+        pop af
+        ldh [rSVBK], a
+        ret
+.start
+        pop af
+        ldh [rSVBK], a
+        ld hl, wHarshSunlightState
+        ld a, [hl]
+        and a
+        jr nz, .to_normal
+        ld [hl], 1
+        call SetWhitePals
+        farcall OWFadePalettesInit
+        ldh a, [rSVBK]
+        push af
+        ld a, BANK(wPalFadeDelayFrames)
+        ldh [rSVBK], a
+        ld a, 30
+        ld [wPalFadeDelayFrames], a
+        pop af
+        ldh [rSVBK], a
+        ret
+.to_normal
+        xor a
+        ld [hl], a
+        farcall LoadMapPals
+        farcall ClearSavedObjPals
+        ld hl, wPalFlags
+        set NO_DYN_PAL_APPLY_UNTIL_RESET_F, [hl]
+        farcall CheckForUsedObjPals
+        farcall OWFadePalettesInit
+        ldh a, [rSVBK]
+        push af
+        ld a, BANK(wPalFadeDelayFrames)
+        ldh [rSVBK], a
+        ld a, 30
+        ld [wPalFadeDelayFrames], a
+        pop af
+        ldh [rSVBK], a
+        ret
 
 Lightning:
 	ld hl, wWeatherFlags
@@ -925,14 +980,18 @@ LoadWeatherGraphics:
 	assert OW_WEATHER_SNOW == 2
 	dec a
 	jr z, .snow
-	assert OW_WEATHER_THUNDERSTORM == 3
-	dec a
-	jr z, .rain
-	assert OW_WEATHER_SANDSTORM == 4
-; sandstorm
-	lb bc, BANK(SandGFX), 1
-	ld de, SandGFX
-	jr .continue
+       assert OW_WEATHER_THUNDERSTORM == 3
+       dec a
+       jr z, .rain
+       assert OW_WEATHER_SANDSTORM == 4
+       dec a
+       jr z, .sand
+       assert OW_WEATHER_HARSH_SUNLIGHT == 5
+       ret
+.sand
+        lb bc, BANK(SandGFX), 1
+        ld de, SandGFX
+        jr .continue
 .rain
 	lb bc, BANK(RainGFX), 2
 	ld de, RainGFX

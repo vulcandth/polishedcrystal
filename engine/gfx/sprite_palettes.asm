@@ -12,11 +12,14 @@ LoadWeatherPal::
 	assert OW_WEATHER_SNOW == 2
 	dec a
 	jr z, .snow
-	assert OW_WEATHER_THUNDERSTORM == 3
-	dec a
-	jr z, .rain ; thunderstorm
-	assert OW_WEATHER_SANDSTORM == 4
-	jr .sandstorm
+        assert OW_WEATHER_THUNDERSTORM == 3
+        dec a
+        jr z, .rain ; thunderstorm
+        assert OW_WEATHER_SANDSTORM == 4
+        dec a
+        jr z, .sandstorm
+        assert OW_WEATHER_HARSH_SUNLIGHT == 5
+        ret
 .snow
 	ldh a, [rSVBK]
 	push af

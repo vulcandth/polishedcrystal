@@ -1393,6 +1393,8 @@ wPrevWeather:: db
 wCurWeather:: db
 wPrevOvercastIndex:: db
 
+wHarshSunlightState:: db
+
 
 SECTION "Options", WRAM0
 
