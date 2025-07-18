@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -13,12 +13,12 @@ import os.path
 import re
 import array
 
-from itertools import izip_longest
+from itertools import zip_longest
 
 import png
 
 def chunk(L, n, fillvalue=None):
-	return izip_longest(*[iter(L)] * n, fillvalue=fillvalue)
+        return zip_longest(*[iter(L)] * n, fillvalue=fillvalue)
 
 def rgb_bytes(rgbs):
 	for px in rgbs:
@@ -74,7 +74,6 @@ class Map(object):
 		self.data = []
 		with open(blockfile_name, 'rb') as blockfile:
 			for mti in blockfile.read():
-				mti = ord(mti)
 				self.data.append(metatiles.tile(mti))
 		if size.startswith('h'):
 			self.height = int(size[1:])
@@ -117,7 +116,7 @@ def main():
 	blockfile = sys.argv[1]
 	size = sys.argv[2]
 	tileset = sys.argv[3]
-	os.system('python utils/metatiles.py %s %s' % (tileset, blockfile))
+	os.system('python3 utils/metatiles.py %s %s' % (tileset, blockfile))
 	metatiles = 'data/tilesets/%s_metatiles.png' % tileset
 
 	process(blockfile, size, metatiles)
