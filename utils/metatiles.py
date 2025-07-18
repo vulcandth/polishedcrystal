@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -14,12 +14,12 @@ import os.path
 import re
 import array
 
-from itertools import izip_longest
+from itertools import zip_longest
 
 import png
 
 def chunk(L, n, fillvalue=None):
-	return izip_longest(*[iter(L)] * n, fillvalue=fillvalue)
+        return zip_longest(*[iter(L)] * n, fillvalue=fillvalue)
 
 def rgb_bytes(rgbs):
 	for px in rgbs:
@@ -247,11 +247,11 @@ class Attributes(object):
 		assert len(self.colors) == 8
 		self.data = []
 		with open(filename, 'rb') as file:
-			while True:
-				tile_attrs = [ord(c) for c in file.read(Metatiles.t_per_m**2)]
-				if not len(tile_attrs):
-					break
-				self.data.append(tile_attrs)
+                        while True:
+                                tile_attrs = list(file.read(Metatiles.t_per_m**2))
+                                if not len(tile_attrs):
+                                        break
+                                self.data.append(tile_attrs)
 
 	def color4(self, i):
 		return self.colors[self.data[i]] if i < len(self.data) else [default_rgb] * 4
@@ -266,7 +266,7 @@ class Metatiles(object):
 		with open(filename, 'rb') as file:
 			i = 0
 			while True:
-				tile_indexes = [ord(c) for c in file.read(Metatiles.t_per_m**2)]
+				tile_indexes = list(file.read(Metatiles.t_per_m**2))
 				if not len(tile_indexes):
 					break
 				attr_indexes = self.attributes.data[i]
