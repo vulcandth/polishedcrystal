@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 """
@@ -343,12 +343,21 @@ def main():
        If a map is specified, its unique palette may be used.'''
 		print(usage % sys.argv[0], file=sys.stderr)
 		sys.exit(1)
-
+	
 	if tileset.endswith('.2bpp.lz') and not os.path.exists(tileset):
 		tileset = tileset[:-3]
-
+	
 	if not tileset.endswith('.png'):
-		os.system('python3 gfx.py png %s' % tileset)
+		if not os.path.exists(tileset):
+			base = tileset[:-8] if tileset.endswith('.2bpp.lz') else tileset[:-5]
+			from glob import glob
+			candidates = glob(f'{base}*.png')
+			if candidates:
+				tileset = candidates[0]
+			else:
+				os.system('python3 gfx.py png %s' % tileset)
+		else:
+			os.system('python3 gfx.py png %s' % tileset)
 	if tileset.endswith('.2bpp'):
 		tileset = tileset[:-5] + '.png'
 	elif tileset.endswith('.2bpp.lz'):
