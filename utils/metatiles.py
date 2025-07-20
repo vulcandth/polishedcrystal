@@ -14,12 +14,12 @@ import os.path
 import re
 import array
 
-from itertools import izip_longest
+from itertools import zip_longest
 
 import png
 
 def chunk(L, n, fillvalue=None):
-	return izip_longest(*[iter(L)] * n, fillvalue=fillvalue)
+	return zip_longest(*[iter(L)] * n, fillvalue=fillvalue)
 
 def rgb_bytes(rgbs):
 	for px in rgbs:
@@ -248,7 +248,7 @@ class Attributes(object):
 		self.data = []
 		with open(filename, 'rb') as file:
 			while True:
-				tile_attrs = [ord(c) for c in file.read(Metatiles.t_per_m**2)]
+				tile_attrs = list(file.read(Metatiles.t_per_m**2))
 				if not len(tile_attrs):
 					break
 				self.data.append(tile_attrs)
@@ -266,7 +266,7 @@ class Metatiles(object):
 		with open(filename, 'rb') as file:
 			i = 0
 			while True:
-				tile_indexes = [ord(c) for c in file.read(Metatiles.t_per_m**2)]
+				tile_indexes = list(file.read(Metatiles.t_per_m**2))
 				if not len(tile_indexes):
 					break
 				attr_indexes = self.attributes.data[i]
@@ -303,7 +303,7 @@ class Metatiles(object):
 			data[d_i] = pixel
 
 		with open(filename, 'wb') as file:
-			writer = png.Writer(overall_w, overall_h)
+			writer = png.Writer(overall_w, overall_h, greyscale=False)
 			writer.write(file, chunk(rgb_bytes(data), overall_w * 3))
 
 def process(key, tileset_name, metatiles_name, attributes_name, map_blk):
@@ -343,12 +343,21 @@ def main():
        If a map is specified, its unique palette may be used.'''
 		print(usage % sys.argv[0], file=sys.stderr)
 		sys.exit(1)
-
+	
 	if tileset.endswith('.2bpp.lz') and not os.path.exists(tileset):
 		tileset = tileset[:-3]
-
+	
 	if not tileset.endswith('.png'):
-		os.system('python gfx.py png %s' % tileset)
+		if not os.path.exists(tileset):
+			base = tileset[:-8] if tileset.endswith('.2bpp.lz') else tileset[:-5]
+			from glob import glob
+			candidates = glob(f'{base}*.png')
+			if candidates:
+				tileset = candidates[0]
+			else:
+				os.system('python3 gfx.py png %s' % tileset)
+		else:
+			os.system('python3 gfx.py png %s' % tileset)
 	if tileset.endswith('.2bpp'):
 		tileset = tileset[:-5] + '.png'
 	elif tileset.endswith('.2bpp.lz'):
