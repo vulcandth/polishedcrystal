@@ -520,7 +520,14 @@ ParsePlayerAction:
 	call SetDefaultBGPAndOBP
 	ld a, [wCurPlayerMove]
 	call GetMoveIndexFromID
-	cphl STRUGGLE
+	ld a, h
+	assert HIGH(STRUGGLE) == 0
+	and a
+	jr nz, .cphl_struggle
+	ld a, l
+	assert LOW(STRUGGLE) != 0
+	cp LOW(STRUGGLE)
+.cphl_struggle
 	call nz, PlayClickSFX
 	ld a, $1
 	ldh [hBGMapMode], a
@@ -725,7 +732,14 @@ PerformMove:
 	ld a, BATTLE_VARS_MOVE
 	call GetBattleVar
 	call GetMoveIndexFromID
-	cphl DESTINY_BOND
+	ld a, h
+	assert HIGH(DESTINY_BOND) == 0
+	and a
+	jr nz, .cphl_destiny_bond
+	ld a, l
+	assert LOW(DESTINY_BOND) != 0
+	cp LOW(DESTINY_BOND)
+.cphl_destiny_bond
 	jr z, .skip_destinybond_reset
 	res SUBSTATUS_DESTINY_BOND, [hl]
 .skip_destinybond_reset
@@ -5866,7 +5880,14 @@ endc
 	ld a, [wCurPlayerMove]
 	call GetMoveIndexFromID
 	ld b, BATTLEACTION_STRUGGLE
-	cphl STRUGGLE
+	ld a, h
+	assert HIGH(STRUGGLE) == 0
+	and a
+	jr nz, .cphl_struggle
+	ld a, l
+	assert LOW(STRUGGLE) != 0
+	cp LOW(STRUGGLE)
+.cphl_struggle
 	jr z, .use_move
 	ld a, [wCurMoveNum]
 	ld b, a
