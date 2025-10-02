@@ -35,18 +35,18 @@ GoldenrodGameCorner_MapScriptHeader:
 	bg_event 12,  9, BGEVENT_READ, GoldenrodGameCornerSlotsMachineScript
 	bg_event 12, 10, BGEVENT_READ, GoldenrodGameCornerSlotsMachineScript
 	bg_event 12, 11, BGEVENT_RIGHT, GoldenrodGameCornerSlotsMachineScript
-	bg_event 13,  6, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 13,  7, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 13,  8, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 13,  9, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 13, 10, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 13, 11, BGEVENT_LEFT, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 18,  6, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 18,  7, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 18,  8, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 18,  9, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 18, 10, BGEVENT_READ, GoldenrodGameCornerCardFlipMachineScript
-	bg_event 18, 11, BGEVENT_RIGHT, GoldenrodGameCornerCardFlipMachineScript
+	bg_event 13,  6, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 13,  7, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 13,  8, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 13,  9, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 13, 10, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 13, 11, BGEVENT_LEFT, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 18,  6, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 18,  7, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 18,  8, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 18,  9, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 18, 10, BGEVENT_READ, GoldenrodGameCornerVoltorbFlipMachineScript
+	bg_event 18, 11, BGEVENT_RIGHT, GoldenrodGameCornerVoltorbFlipMachineScript
 	bg_event 12,  1, BGEVENT_LEFT, GoldenrodGameCornerLeftTheirDrinkScript
 
 	def_object_events
@@ -310,9 +310,9 @@ GoldenrodGameCornerLuckySlotsMachineScript:
 	special Special_SlotMachine
 	endtext
 
-GoldenrodGameCornerCardFlipMachineScript:
+GoldenrodGameCornerVoltorbFlipMachineScript:
 	reanchormap
-	special Special_CardFlip
+	special Special_VoltorbFlip
 	endtext
 
 GoldenrodGameCornerPrizeVendorIntroText:
@@ -422,16 +422,16 @@ GoldenrodGameCornerPokefanM1Text:
 	done
 
 GoldenrodGameCornerCooltrainerMText:
-	text "Life is a gamble."
-	line "I'm going to flip"
-	cont "cards till I drop!"
-	done
+        text "Life is a gamble."
+        line "Voltorb Flip keeps"
+        cont "me on the edge!"
+        done
 
 GoldenrodGameCornerPokefanFText:
-	text "Card flip…"
+        text "Voltorb Flip…"
 
-	para "I prefer it over"
-	line "the slots because"
+        para "I prefer it over"
+        line "the slots because"
 
 	para "it's easier to"
 	line "figure the odds."
@@ -460,8 +460,8 @@ GoldenrodGameCornerPokefanM2Text:
 	text "I couldn't win at"
 	line "the slots, and I"
 
-	para "blew it on card"
-	line "flipping…"
+	para "I blew it playing"
+	line "Voltorb Flip…"
 
 	para "I got so furious,"
 	line "I tossed out my"

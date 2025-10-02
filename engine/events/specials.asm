@@ -168,11 +168,18 @@ Special_SlotMachine:
 	jr Special_StartGameCornerGame
 
 Special_CardFlip:
-	call Special_CheckCoins
-	ret c
-	ld a, BANK(_CardFlip)
-	ld hl, _CardFlip
-	; fallthrough
+        call Special_CheckCoins
+        ret c
+        ld a, BANK(_CardFlip)
+        ld hl, _CardFlip
+        jr Special_StartGameCornerGame
+
+Special_VoltorbFlip:
+        call Special_CheckCoins
+        ret c
+        ld a, BANK(VoltorbFlip)
+        ld hl, VoltorbFlip
+        ; fallthrough
 
 ;Special_UnusedMemoryGame:
 ;	call Special_CheckCoins
