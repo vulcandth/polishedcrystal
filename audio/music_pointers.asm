@@ -45,9 +45,10 @@ Music:
 	dba Music_Gym
 	dba Music_JohtoGymBattle
 	dba Music_FinalPokemonBW
-	dba Music_GymLeaderVictory
-	dba Music_PokemonChannel
-	dba Music_BuenasPassword
+        dba Music_GymLeaderVictory
+        dba Music_PokemonChannel
+        dba Music_SnapOaksLab
+        dba Music_BuenasPassword
 	dba Music_GameCorner
 	dba Music_Bicycle
 	dba Music_LookLass

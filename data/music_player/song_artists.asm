@@ -26,6 +26,7 @@ SongArtists:
 	li "GRonnoc"
 	li "Cat333Pokemon"
 	li "NotFroggestSpirit"
-	li "Toby Fox"
-	li "ShinkoNetCavy,      ShockSlayer"
-	assert_list_length NUM_SONG_ARTISTS
+        li "Toby Fox"
+        li "ShinkoNetCavy,      ShockSlayer"
+        li "Ikuko Mimori"
+        assert_list_length NUM_SONG_ARTISTS
