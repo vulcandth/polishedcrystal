@@ -4763,6 +4763,18 @@ TakeDamage:
 	ld c, a
 	ld b, [hl]
 	farcall DealDamageToOpponent
+	; If the opponent was illusioned, taking damage reveals it.
+	call Illusion_TryRevealOpponentOnDamage
+	jr nc, .did_no_reveal
+	; Reload the revealed mon's graphics.
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .reload_enemy
+	farcall GetMonBackpic
+	jr .did_no_reveal
+.reload_enemy
+	farcall GetMonFrontpic
+.did_no_reveal
 .did_no_damage
 	jmp RefreshBattleHuds
 

@@ -93,6 +93,13 @@ NotificationAbilities:
 	call ShowAbilityActivation
 	pop hl
 	call StdBattleTextbox
+	; Neutralizing Gas immediately dismisses any active Illusion.
+	call Illusion_DismissBoth
+	jr nc, .no_illusion
+	farcall GetMonBackpic
+	farcall GetMonFrontpic
+	call RefreshBattleHuds
+.no_illusion
 	jmp EndAbility
 
 

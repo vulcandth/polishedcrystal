@@ -1351,6 +1351,8 @@ endr
 .enemy_ability
 	call ResetEnemyAbility
 .done_ability
+	; Apply Illusion before any send-out text/graphics.
+	call Illusion_TryApplyOnSwitchIn
 	; Wild Pokémon are already out
 	ldh a, [hBattleTurn]
 	and a
@@ -3957,9 +3959,20 @@ CheckDanger:
 	ret
 
 PrintPlayerHUD:
-	ld de, wBattleMonNickname
+	; Player HUD always shows the true nickname (Illusion reminder).
+	ld a, [wCurBattleMon]
+	ld hl, wPartyMonNicknames
+	call SkipNames
+	ld d, h
+	ld e, l
+	push de
+	ld h, d
+	ld l, e
+	ld bc, MON_NAME_LENGTH - 2
+	add hl, bc
+	ld a, [hl]
+	pop de
 	hlcoord 11, 7
-	ld a, [wBattleMonNickname + MON_NAME_LENGTH - 2]
 	cp '@'
 	jr z, .short_name
 	dec hl ; hlcoord 10, 7
@@ -4044,10 +4057,24 @@ DrawEnemyHUD:
 
 	farcall DrawEnemyHUDBorder
 
+	ld a, [wEnemyIllusionActive]
+	and a
+	jr z, .not_illusion
+	ld a, [wEnemyIllusionSpecies]
+	jr .got_species
+.not_illusion
 	ld a, [wTempEnemyMonSpecies]
+.got_species
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
+	ld a, [wEnemyIllusionActive]
+	and a
+	jr z, .not_illusion_form
+	ld a, [wEnemyIllusionForm]
+	jr .got_form
+.not_illusion_form
 	ld a, [wEnemyMonForm]
+.got_form
 	ld [wCurForm], a
 	call GetBaseData
 
@@ -7770,10 +7797,20 @@ DropPlayerSub:
 	push af
 	ld a, [wCurForm]
 	push af
+	ld a, [wPlayerIllusionActive]
+	and a
+	jr z, .not_illusion
+	ld a, [wPlayerIllusionSpecies]
+	ld [wCurPartySpecies], a
+	ld a, [wPlayerIllusionForm]
+	ld [wCurForm], a
+	jr .got_species
+.not_illusion
 	ld a, [wBattleMonSpecies]
 	ld [wCurPartySpecies], a
 	ld a, [wBattleMonForm]
 	ld [wCurForm], a
+.got_species
 	ld de, vTiles2 tile $31
 	predef GetBackpic
 	pop af
@@ -7804,10 +7841,24 @@ DropEnemySub:
 	push af
 	ld a, [wCurForm]
 	push af
+	ld a, [wEnemyIllusionActive]
+	and a
+	jr z, .not_illusion
+	ld a, [wEnemyIllusionSpecies]
+	jr .got_species
+.not_illusion
 	ld a, [wEnemyMonSpecies]
+.got_species
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
+	ld a, [wEnemyIllusionActive]
+	and a
+	jr z, .not_illusion_form
+	ld a, [wEnemyIllusionForm]
+	jr .got_form
+.not_illusion_form
 	ld a, [wEnemyMonForm]
+.got_form
 	ld [wCurForm], a
 	call GetBaseData
 	call GetFrontpicOrGhostpic

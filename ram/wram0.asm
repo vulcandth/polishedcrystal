@@ -475,6 +475,19 @@ wEnemyPerishCount:: db
 wEnemyProtectCount:: db
 wEnemyFuryCutterCount:: db
 
+; Illusion (Zorua line)
+; Tracks whether the active battler is disguised and who it is mimicking.
+; Target indices are 0..(PARTY_LENGTH-1), or $ff for none.
+wPlayerIllusionActive:: db
+wPlayerIllusionTarget:: db
+wPlayerIllusionSpecies:: db
+wPlayerIllusionForm:: db
+
+wEnemyIllusionActive:: db
+wEnemyIllusionTarget:: db
+wEnemyIllusionSpecies:: db
+wEnemyIllusionForm:: db
+
 wCriticalCount:: ds PARTY_LENGTH ; for g-Farfetch'd evolution
 wBattleSubStatusWRAMEnd::
 

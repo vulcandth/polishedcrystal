@@ -665,6 +665,261 @@ CheckNeutralizingGas::
 	cp NEUTRALIZING_GAS
 	ret
 
+; ----------
+; Illusion
+; ----------
+
+Illusion_ClearSide::
+; a = 0 (player) or 1 (enemy)
+	and a
+	ld hl, wPlayerIllusionActive
+	jr z, .ok
+	ld hl, wEnemyIllusionActive
+.ok
+	xor a
+	ld [hli], a ; active
+	dec a
+	ld [hli], a ; target = $ff
+	xor a
+	ld [hli], a ; species
+	ld [hl], a  ; form
+	ret
+
+Illusion_IsOpponentActive::
+; Returns z if opponent is *not* illusioned, nz if illusion is active.
+	ldh a, [hBattleTurn]
+	xor 1
+	and a
+	ld hl, wPlayerIllusionActive
+	jr z, .ok
+	ld hl, wEnemyIllusionActive
+.ok
+	ld a, [hl]
+	and a
+	ret
+
+Illusion_DismissSide::
+; Dismiss Illusion for side a=0 (player) or a=1 (enemy).
+; Returns carry if something was dismissed.
+	push af
+	and a
+	ld hl, wPlayerIllusionActive
+	jr z, .got_state
+	ld hl, wEnemyIllusionActive
+.got_state
+	ld a, [hl]
+	and a
+	jr z, .nothing
+	pop af
+	push af
+	call Illusion_ClearSide
+
+	; Restore the nickname buffer to the true active mon nickname.
+	pop af
+	push af
+	and a
+	jr nz, .enemy
+	ld a, [wCurBattleMon]
+	ld hl, wPartyMonNicknames
+	call SkipNames
+	ld de, wBattleMonNickname
+	jr .copy
+.enemy
+	ld a, [wBattleMode]
+	dec a
+	jr z, .nothing_after_pop ; wild battle: no party nickname table
+	ld a, [wCurOTMon]
+	ld hl, wOTPartyMonNicknames
+	call SkipNames
+	ld de, wEnemyMonNickname
+.copy
+	ld bc, MON_NAME_LENGTH
+	rst CopyBytes
+	pop af
+	scf
+	ret
+
+.nothing_after_pop
+	pop af
+.nothing
+	pop af
+	or a
+	ret
+
+Illusion_DismissBoth::
+; Dismiss any active Illusion on either side.
+; Returns carry if anything changed.
+	ld b, 0
+	xor a
+	call Illusion_DismissSide
+	jr nc, .enemy
+	inc b
+.enemy
+	ld a, 1
+	call Illusion_DismissSide
+	jr nc, .done
+	inc b
+.done
+	ld a, b
+	and a
+	ret z
+	scf
+	ret
+
+Illusion_TryApplyOnSwitchIn::
+; Called during SendInUserPkmn after ability is set, before sendout text.
+; Applies Illusion silently (no message) and rewrites the battle nickname buffer.
+	; Always clear the switching side's previous illusion state first.
+	ldh a, [hBattleTurn]
+	call Illusion_ClearSide
+
+	; Don't apply if ability is suppressed or not Illusion.
+	call GetTrueUserAbility
+	cp ILLUSION
+	ret nz
+
+	; A transformed mon cannot be illusioned.
+	ld a, BATTLE_VARS_SUBSTATUS2
+	call GetBattleVar
+	bit SUBSTATUS_TRANSFORMED, a
+	ret nz
+
+	; Enemy wildmons have no party to disguise as.
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .player
+	ld a, [wBattleMode]
+	dec a
+	ret z
+
+.player
+	; Select the last non-fainted non-Egg party mon (excluding the active mon).
+	ldh a, [hBattleTurn]
+	and a
+	ld a, [wPartyCount]
+	ld c, a
+	ld a, [wCurBattleMon]
+	ld b, a
+	ld hl, wPartyMon1Species
+	ld de, wPartyMonNicknames
+	jr z, .got_party
+	ld a, [wOTPartyCount]
+	ld c, a
+	ld a, [wCurOTMon]
+	ld b, a
+	ld hl, wOTPartyMon1Species
+	ld de, wOTPartyMonNicknames
+.got_party
+	ld a, c
+	and a
+	ret z
+	dec a
+	ld c, a ; c = candidate index (starts at last)
+
+.loop
+	ld a, c
+	cp b
+	jr z, .next
+
+	push bc
+	push de
+	push hl
+	; hl points to party mon species table; get party location for index c.
+	ld a, c
+	call GetPartyLocation
+	ld a, [hl]
+	cp EGG
+	jr z, .reject
+	and a
+	jr z, .reject
+	; Check HP > 0
+	push hl
+	ld bc, MON_HP - MON_SPECIES
+	add hl, bc
+	ld a, [hli]
+	or [hl]
+	pop hl
+	jr z, .reject
+
+	; Accept this target.
+	pop hl
+	pop de
+	pop bc
+	jr .found
+
+.reject
+	pop hl
+	pop de
+	pop bc
+
+.next
+	ld a, c
+	and a
+	ret z
+	dec c
+	jr .loop
+
+.found
+	; Store active/target/species/form for this side.
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPlayerIllusionActive
+	jr z, .store
+	ld hl, wEnemyIllusionActive
+.store
+	ld a, 1
+	ld [hli], a
+	ld a, c
+	ld [hli], a ; target index
+
+	; Load species/form of target.
+	push hl
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPartyMon1Species
+	jr z, .party_species
+	ld hl, wOTPartyMon1Species
+.party_species
+	ld a, c
+	call GetPartyLocation
+	ld a, [hl]
+	pop de ; de points to species slot in illusion state
+	ld [de], a
+	inc de
+	ld bc, MON_FORM - MON_SPECIES
+	add hl, bc
+	ld a, [hl]
+	ld [de], a
+
+	; Copy target nickname into battle nickname buffer (for battle text + enemy HUD).
+	ldh a, [hBattleTurn]
+	and a
+	ld hl, wPartyMonNicknames
+	jr z, .party_names
+	ld hl, wOTPartyMonNicknames
+.party_names
+	ld a, c
+	call SkipNames
+	ldh a, [hBattleTurn]
+	and a
+	ld de, wBattleMonNickname
+	jr z, .copy_name
+	ld de, wEnemyMonNickname
+.copy_name
+	ld bc, MON_NAME_LENGTH
+	rst CopyBytes
+	ret
+
+Illusion_TryRevealOpponentOnDamage::
+; Called after DealDamageToOpponent (i.e. actual HP damage, not Substitute).
+; Returns carry if opponent Illusion was revealed.
+	call Illusion_IsOpponentActive
+	ret z
+	ldh a, [hBattleTurn]
+	xor 1
+	call Illusion_DismissSide
+	ret
+
 CheckMoveSpeed::
 ; Does speed checks, but includes Quick Claw and Lagging Tail, which are only
 ; taken into account for moves.

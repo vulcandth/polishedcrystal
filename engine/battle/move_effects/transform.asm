@@ -1,6 +1,10 @@
 BattleCommand_transform:
 	call ClearLastMove
 
+	; Cannot transform into a Pokémon that is currently disguised by Illusion.
+	call Illusion_IsOpponentActive
+	jmp nz, BattleEffect_ButItFailed
+
 	ld a, BATTLE_VARS_SUBSTATUS2_OPP
 	call GetBattleVarAddr
 	bit SUBSTATUS_TRANSFORMED, [hl]
@@ -46,6 +50,17 @@ BattleCommand_transform:
 	ld a, BATTLE_VARS_SUBSTATUS2
 	call GetBattleVarAddr
 	set SUBSTATUS_TRANSFORMED, [hl]
+	; A transformed mon cannot remain illusioned.
+	ldh a, [hBattleTurn]
+	and a
+	jr nz, .dismiss_enemy_illusion
+	xor a
+	call Illusion_DismissSide
+	jr .dismiss_done
+.dismiss_enemy_illusion
+	ld a, 1
+	call Illusion_DismissSide
+.dismiss_done
 	call ResetActorDisable
 	ld hl, wBattleMonSpecies
 	ld de, wEnemyMonSpecies

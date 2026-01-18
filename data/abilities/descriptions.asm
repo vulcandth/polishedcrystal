@@ -156,6 +156,7 @@ AbilityDescriptions:
 	dw SharpnessDescription
 	dw ArmorTailDescription
 	dw MindsEyeDescription
+	dw IllusionDescription
 	assert_table_length NUM_ABILITIES
 
 NoAbilityDescription:
@@ -920,4 +921,9 @@ ArmorTailDescription:
 MindsEyeDescription:
 	text "Bypass evasion and"
 	next "Ghost immunity."
+	done
+
+IllusionDescription:
+	text "Takes the form of"
+	next "the last party mon."
 	done
