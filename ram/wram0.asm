@@ -849,6 +849,31 @@ wDiscardPileEnd::
 wCardFlipEnd::
 
 
+
+SECTION UNION "Misc 404", WRAM0
+; voltorb flip
+
+wVoltorbFlip::
+wVoltorbFlipCardProps:: ds 25
+wVoltorbFlipState:: db
+wVoltorbFlipLevel:: db
+wVoltorbFlipCursorX:: db
+wVoltorbFlipCursorY:: db
+wVoltorbFlipLastCursorX:: db
+wVoltorbFlipLastCursorY:: db
+wVoltorbFlipCardsFlipped:: db
+wVoltorbFlipRemainingMultipliers:: db
+        ds $20
+wVoltorbFlipRowNumberTotals:: ds 5
+wVoltorbFlipColumnNumberTotals:: ds 5
+        ds $6
+wVoltorbFlipRowVoltorbTotals:: ds 5
+wVoltorbFlipColumnVoltorbTotals:: ds 5
+        ds $3e
+wVoltorbFlipRoundCoins:: dw
+        ds $6
+wVoltorbFlipEnd::
+
 ;SECTION UNION "Misc 404", WRAM0
 ;; memory game
 ;	ds 172

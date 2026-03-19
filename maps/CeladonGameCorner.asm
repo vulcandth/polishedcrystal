@@ -166,14 +166,14 @@ MapCeladonGameCornerSignpost16Script:
 
 MapCeladonGameCornerSignpost11Script:
 	reanchormap
-	special Special_CardFlip
+	special Special_VoltorbFlip
 	endtext
 
 MapCeladonGameCornerSignpost9Script:
 	opentext
 	writetext CeladonGameCornerSodaCanText
 	waitbutton
-	special Special_CardFlip
+	special Special_VoltorbFlip
 	endtext
 
 CeladonGameCornerRichBoyTobin:
