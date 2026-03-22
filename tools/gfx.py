@@ -7,14 +7,14 @@ from math import sqrt, floor, ceil
 import argparse
 import operator
 
-from lz import Compressed, Decompressed
+from tools.lz import Compressed, Decompressed
 
 
 def split(list_, interval):
     """
     Split a list by length.
     """
-    for i in xrange(0, len(list_), interval):
+    for i in range(0, len(list_), interval):
         j = min(i + interval, len(list_))
         yield list_[i:j]
 
@@ -66,7 +66,7 @@ def transpose(tiles, width=None):
     """
     if width == None:
         width = int(sqrt(len(tiles))) # assume square image
-    tiles = sorted(enumerate(tiles), key= lambda (i, tile): i % width)
+    tiles = sorted(enumerate(tiles), key=lambda it: it[0] % width)
     return [tile for i, tile in tiles]
 
 def transpose_tiles(image, width=None):
@@ -244,7 +244,7 @@ def flatten(planar):
         bottom = bottom
         top = top
         strip = []
-        for i in xrange(7,-1,-1):
+        for i in range(7,-1,-1):
             color = (
                 (bottom >> i & 1) +
                 (top *2 >> i & 2)
@@ -259,14 +259,14 @@ def to_lines(image, width):
     """
     tile_width = 8
     tile_height = 8
-    num_columns = width / tile_width
-    height = len(image) / width
+    num_columns = width // tile_width
+    height = len(image) // width
 
     lines = []
-    for cur_line in xrange(height):
-        tile_row = cur_line / tile_height
+    for cur_line in range(height):
+        tile_row = cur_line // tile_height
         line = []
-        for column in xrange(num_columns):
+        for column in range(num_columns):
             anchor = (
                 num_columns * tile_row * tile_width * tile_height +
                 column * tile_width * tile_height +
@@ -287,7 +287,7 @@ def dmg2rgb(word):
             value >>= 5
     word = shift(word)
     # distribution is less even w/ << 3
-    red, green, blue = [int(color * 8.25) for color in [word.next() for _ in xrange(3)]]
+    red, green, blue = [int(color * 8.25) for color in [next(word) for _ in range(3)]]
     alpha = 255
     return (red, green, blue, alpha)
 
@@ -296,9 +296,9 @@ def rgb_to_dmg(color):
     """
     For PNGs.
     """
-    word =  (color['r'] / 8)
-    word += (color['g'] / 8) << 5
-    word += (color['b'] / 8) << 10
+    word =  (color['r'] // 8)
+    word += (color['g'] // 8) << 5
+    word += (color['b'] // 8) << 10
     return word
 
 
@@ -329,7 +329,7 @@ def png_to_rgb(palette):
     """
     output = ''
     for color in palette:
-        r, g, b = [color[c] / 8 for c in 'rgb']
+        r, g, b = [color[c] // 8 for c in 'rgb']
         output += '\tRGB ' + ', '.join(['%.2d' % hue for hue in (r, g, b)])
         output += '\n'
     return output
@@ -431,7 +431,7 @@ def convert_2bpp_to_png(image, **kwargs):
 
     # Width must be specified to interleave.
     if interleave and width:
-        image = interleave_tiles(image, width / 8)
+        image = interleave_tiles(image, width // 8)
 
     # Pad the image by a given number of tiles if asked.
     image += pad_color * 0x10 * tile_padding
@@ -446,34 +446,34 @@ def convert_2bpp_to_png(image, **kwargs):
         trailing = len(image) % pic_length
 
         pic = []
-        for i in xrange(0, len(image) - trailing, pic_length):
+        for i in range(0, len(image) - trailing, pic_length):
             pic += transpose_tiles(image[i:i+pic_length], h)
         image = bytearray(pic) + image[len(image) - trailing:]
 
         # Pad out trailing lines.
-        image += pad_color * 0x10 * ((w - (len(image) / 0x10) % h) % w)
+        image += pad_color * 0x10 * ((w - (len(image) // 0x10) % h) % w)
 
     def px_length(img):
         return len(img) * 4
     def tile_length(img):
-        return len(img) * 4 / (8*8)
+        return len(img) * 4 // (8*8)
 
     if width and height:
-        tile_width = width / 8
+        tile_width = width // 8
         more_tile_padding = (tile_width - (tile_length(image) % tile_width or tile_width))
         image += pad_color * 0x10 * more_tile_padding
 
     elif width and not height:
-        tile_width = width / 8
+        tile_width = width // 8
         more_tile_padding = (tile_width - (tile_length(image) % tile_width or tile_width))
         image += pad_color * 0x10 * more_tile_padding
-        height = px_length(image) / width
+        height = px_length(image) // width
 
     elif height and not width:
-        tile_height = height / 8
+        tile_height = height // 8
         more_tile_padding = (tile_height - (tile_length(image) % tile_height or tile_height))
         image += pad_color * 0x10 * more_tile_padding
-        width = px_length(image) / height
+        width = px_length(image) // height
 
     # at least one dimension should be given
     if width * height != px_length(image):
@@ -481,15 +481,15 @@ def convert_2bpp_to_png(image, **kwargs):
         matches = []
         # Height need not be divisible by 8, but width must.
         # See pokered gfx/minimize_pic.1bpp.
-        for w in range(8, px_length(image) / 2 + 1, 8):
-            h = px_length(image) / w
+        for w in range(8, px_length(image) // 2 + 1, 8):
+            h = px_length(image) // w
             if w * h == px_length(image):
                 matches += [(w, h)]
         # go for the most square image
         if len(matches):
-            width, height = sorted(matches, key= lambda (w, h): (h % 8 != 0, w + h))[0] # favor height
+            width, height = sorted(matches, key= lambda wh: (wh[1] % 8 != 0, wh[0] + wh[1]))[0] # favor height
         else:
-            raise Exception, 'Image can\'t be divided into tiles (%d px)!' % (px_length(image))
+            raise Exception('Image can\'t be divided into tiles (%d px)!' % (px_length(image)))
         # correct tileset dimensions
         if kwargs.get('is_tileset', False) and not (width * height // 8) % 128:
             area = width * height
@@ -530,7 +530,7 @@ def get_pic_animation(tmap, w, h):
     base = frames.pop(0)
     bitmasks = []
 
-    for i in xrange(len(frames)):
+    for i in range(len(frames)):
         frame_text += '\tdw .frame{}\n'.format(i + 1)
 
     for i, frame in enumerate(frames):
@@ -540,7 +540,7 @@ def get_pic_animation(tmap, w, h):
         which_bitmask = bitmasks.index(bitmask)
 
         mask = iter(bitmask)
-        masked_frame = filter(lambda _: mask.next(), frame)
+        masked_frame = filter(lambda _: next(mask), frame)
 
         frame_text += '.frame{}\n'.format(i + 1)
         frame_text += '\tdb ${:02x} ; bitmask\n'.format(which_bitmask)
@@ -657,16 +657,16 @@ def png_to_2bpp(filein, **kwargs):
     palette = []
     for line in rgba:
         newline = []
-        for px in xrange(0, len(line), len_px):
+        for px in range(0, len(line), len_px):
             color = dict(zip('rgba', line[px:px+len_px]))
             if color not in palette:
                 if len(palette) < 4:
                     palette += [color]
                 else:
                     # TODO Find the nearest match
-                    print 'WARNING: %s: Color %s truncated to' % (filein, color),
+                    print('WARNING: %s: Color %s truncated to' % (filein, color))
                     color = sorted(palette, key=lambda x: sum(x.values()))[0]
-                    print color
+                    print(color)
             newline += [color]
         image += [newline]
 
@@ -713,11 +713,11 @@ def png_to_2bpp(filein, **kwargs):
     num_rows = max(height, tile_height) / tile_height
     image = []
 
-    for row in xrange(num_rows):
-        for column in xrange(num_columns):
+    for row in range(num_rows):
+        for column in range(num_columns):
 
             # Split it up into strips to convert to planar data
-            for strip in xrange(min(tile_height, height)):
+            for strip in range(min(tile_height, height)):
                 anchor = (
                     row * num_columns * tile_width * tile_height +
                     column * tile_width +
@@ -743,13 +743,13 @@ def png_to_2bpp(filein, **kwargs):
 
         tiles = get_tiles(image)
         pic_length = w * h
-        tile_width = width / 8
+        tile_width = width // 8
         trailing = len(tiles) % pic_length
         new_image = []
-        for block in xrange(len(tiles) / pic_length):
+        for block in range(len(tiles) / pic_length):
             offset = (h * tile_width) * ((block * w) / tile_width) + ((block * w) % tile_width)
             pic = []
-            for row in xrange(h):
+            for row in range(h):
                 index = offset + (row * tile_width)
                 pic += tiles[index:index + w]
             new_image += transpose(pic, w)
@@ -876,7 +876,7 @@ def convert_to_2bpp(filenames=[]):
         elif extension == '.png':
             export_png_to_2bpp(filename)
         else:
-            raise Exception, "Don't know how to convert {} to 2bpp!".format(filename)
+            raise Exception("Don't know how to convert {} to 2bpp!".format(filename))
 
 def convert_to_1bpp(filenames=[]):
     for filename in filenames:
@@ -888,7 +888,7 @@ def convert_to_1bpp(filenames=[]):
         elif extension == '.png':
             export_png_to_1bpp(filename)
         else:
-            raise Exception, "Don't know how to convert {} to 1bpp!".format(filename)
+            raise Exception("Don't know how to convert {} to 1bpp!".format(filename))
 
 def convert_to_png(filenames=[]):
     for filename in filenames:
@@ -900,7 +900,7 @@ def convert_to_png(filenames=[]):
         elif extension == '.png':
             pass
         else:
-            raise Exception, "Don't know how to convert {} to png!".format(filename)
+            raise Exception("Don't know how to convert {} to png!".format(filename))
 
 def compress(filenames=[]):
     for filename in filenames:
@@ -944,7 +944,7 @@ def main():
     }.get(args.mode, None)
 
     if method == None:
-        raise Exception, "Unknown conversion method!"
+        raise Exception("Unknown conversion method!")
 
     method(args.filenames)
 

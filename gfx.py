@@ -1,9 +1,13 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 """Supplementary scripts for graphics conversion."""
 
 import os
+import sys
 import argparse
+
+# ensure utils/ is on the module search path for bundled png library
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'utils'))
 
 from tools import gfx, lz
 
@@ -94,7 +98,7 @@ def filepath_rules(filepath):
 	if args.get('pic'):
 		if ext == '.png':
 			w, h = gfx.png.Reader(filepath).asRGBA8()[:2]
-			w = min(w/8, h/8)
+			w = min(w//8, h//8)
 			args['pic_dimensions'] = w, w
 		elif ext == '.2bpp':
 			if pokemon_name and name == 'front':
