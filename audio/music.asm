@@ -113,6 +113,9 @@ INCLUDE "audio/music/gymleadervictory.asm"
 SECTION "Song - pokemonchannel", ROMX
 INCLUDE "audio/music/pokemonchannel.asm"
 
+SECTION "Song - snapoakslab", ROMX
+INCLUDE "audio/music/pokemonsnapoakslab.asm"
+
 SECTION "Song - buenaspassword", ROMX
 INCLUDE "audio/music/buenaspassword.asm"
 
