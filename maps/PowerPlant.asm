@@ -162,7 +162,7 @@ PowerPlantManager:
 	setevent EVENT_ROUTE_24_ROCKET
 	setevent EVENT_RESTORED_POWER_TO_KANTO
 	clearevent EVENT_GOLDENROD_TRAIN_STATION_GENTLEMAN
-	setmapscene ROUTE_10_NORTH, SCENE_ROUTE10NORTH_NOOP
+	setmapscene ROUTE_10_NORTH, SCENE_ROUTE10NORTH_LAWRENCE
 	clearevent EVENT_LAWRENCE_ROUTE_10
 	playsound SFX_SLOT_MACHINE_START
 	special FadeOutPalettes
@@ -180,10 +180,6 @@ PowerPlantManager:
 	waitbutton
 PowerPlantTutorZapCannonScript:
 	writetext Text_PowerPlantTutorZapCannon
-	waitbutton
-	checkitem SILVER_LEAF
-	iffalsefwd .NoSilverLeaf
-	writetext Text_PowerPlantTutorQuestion
 	yesorno
 	iffalsefwd .TutorRefused
 	setval ZAP_CANNON
@@ -196,16 +192,7 @@ PowerPlantTutorZapCannonScript:
 	text "Have it your way."
 	done
 
-.NoSilverLeaf
-	jumpthisopenedtext
-
-	text "Sorry, but I can't"
-	line "teach Zap Cannon"
-	cont "without that Leaf!"
-	done
-
 .TeachMove
-	takeitem SILVER_LEAF
 	jumpthisopenedtext
 
 	text "Now your #mon"
@@ -349,18 +336,10 @@ Text_PowerPlantTutorZapCannon:
 	para "accurate, but it"
 	line "packs a wallop!"
 
-	para "I'll just need one"
-	line "Silver Leaf."
-	done
-
-
-Text_PowerPlantTutorQuestion:
-	text "Should I teach"
+	para "Should I teach"
 	line "your #mon"
 	cont "Zap Cannon?"
 	done
-
-
 
 PowerPlantForestText:
 	text "Magneton behaves"

@@ -97,7 +97,7 @@ DoBattle:
 .not_linked_2
 	call AutomaticBattleWeather
 	call SpikesDamageBoth ; for Air Balloon
-	call BoostGiovannisArmoredMewtwo
+	call CustomTrainerActions
 	call RunBothEntryAbilities
 	jr BattleTurn
 
@@ -266,7 +266,7 @@ HandleBerserkGene:
 	call SwitchTurn
 
 .do_it
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	ld a, b
 	cp HELD_BERSERK_GENE
 	ret nz
@@ -384,7 +384,7 @@ GetSpeed::
 	farcall ApplySpeedAbilities
 
 	; Apply item effects
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	ld a, b
 	cp HELD_QUICK_POWDER
 	jr z, .quick_powder
@@ -514,7 +514,7 @@ ParsePlayerAction:
 	ld a, [wCurPlayerMove]
 	inc a ; cp STRUGGLE
 	call nz, PlayClickSFX
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	pop af
 	ret nz
@@ -710,7 +710,7 @@ PerformMove:
 	call GetBattleVarAddr
 	res SUBSTATUS_IN_ABILITY, [hl]
 
-	farcall TickDisableAfterMove
+	farcall TickDisableAndEncoreAfterMove
 
 	ld a, BATTLE_VARS_SUBSTATUS1_OPP
 	call GetBattleVarAddr
@@ -877,8 +877,7 @@ ForceDeferredSwitch:
 	cp SUCTION_CUPS
 	jr nz, .items_done
 
-	farcall BeginAbility
-	farcall ShowAbilityActivation
+	farcall BeginAndShowUserAbility
 	ld hl, UnaffectedText
 	call StdBattleTextbox
 	farcall EndAbility
@@ -1663,7 +1662,7 @@ ReconsumeLeppaBerry:
 	call GetNonfullPPMove
 	ret z
 	push bc
-	farcall ShowAbilityActivation
+	farcall ShowPendingUserAbility
 	pop bc
 	jr LeppaRestorePP
 
@@ -1888,7 +1887,7 @@ CheckEnigmaBerry:
 	ret c
 
 	; Are we actually holding Enigma Berry?
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	ld a, b
 	cp HELD_ENIGMA_BERRY
 	ret nz
@@ -2530,7 +2529,7 @@ PlayerMonFaintHappinessMod:
 .got_param
 	ld a, [wCurBattleMon]
 	ld [wCurPartyMon], a
-	predef_jump ChangeHappiness
+	farjp ChangeHappiness
 
 AskUseNextPokemon:
 	call EmptyBattleTextbox
@@ -2566,7 +2565,7 @@ SelectBattleMon:
 
 PickPartyMonInBattle:
 .loop
-	ld a, $2 ; Which PKMN?
+	ld a, PARTYMENUACTION_SWITCH
 	ld [wPartyMenuActionText], a
 	call JumpToPartyMenuAndPrintText
 	call SelectBattleMon
@@ -2706,6 +2705,23 @@ LostBattle:
 .end
 	scf
 	ret
+
+PrintWinLossText:
+	ld a, [wBattleResult]
+	and $f
+	ld hl, wWinTextPointer
+	jr z, .got_pointer
+	assert wWinTextPointer + 2 == wLossTextPointer
+	inc hl
+	inc hl
+.got_pointer
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [wMapScriptsBank]
+	call FarPrintText
+	call ApplyTilemapInVBlank
+	jmp WaitPressAorB_BlinkCursor
 
 EnemyMonFaintedAnimation:
 	hlcoord 12, 5
@@ -2974,7 +2990,7 @@ Function_SetEnemyPkmnAndSendOutAnimation:
 	call GetBaseData
 	ld a, OTPARTYMON
 	ld [wMonType], a
-	predef CopyPkmnToTempMon
+	farcall CopyPkmnToTempMon
 	call GetMonFrontpic
 
 	xor a
@@ -2998,7 +3014,7 @@ Function_SetEnemyPkmnAndSendOutAnimation:
 	farcall CheckFaintedFrzSlp
 	call nc, BattleAnimateFrontpic
 	call UpdateEnemyHUD
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	ret
 
@@ -3017,7 +3033,7 @@ BattleAnimateFrontpic:
 .no_substitute
 	hlcoord 12, 0
 	lb de, $0, ANIM_MON_SLOW
-	predef_jump AnimateFrontpic ; also plays cry
+	farjp AnimateFrontpic ; also plays cry
 
 .cry_no_anim
 	ld a, $f
@@ -3167,6 +3183,7 @@ SendOutPlayerMon:
 	call ClearBox
 	call ApplyTilemapInVBlank
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call GetMonBackpic
 	xor a
@@ -3216,7 +3233,7 @@ SendOutPlayerMon:
 
 .statused
 	call UpdatePlayerHUD
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	ret
 
@@ -3363,7 +3380,7 @@ SpikesDamage_GotAbility:
 	jr nz, .end_hazards
 
 	push bc
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	ld a, b
 	cp HELD_HEAVY_BOOTS
 	pop bc
@@ -3400,7 +3417,7 @@ SpikesDamage_GotAbility:
 	ld hl, GetQuarterMaxHP
 .got_hp
 	call _hl_
-	predef SubtractHPFromUser
+	call SubtractHPFromUser
 	call UpdateUserInParty
 
 	ld hl, BattleText_UserHurtBySpikes
@@ -3570,7 +3587,7 @@ QuarterPinchOrGluttony::
 HandleStatBoostBerry:
 	call QuarterPinchOrGluttony
 	ret nz
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	call _HeldStatBoostBerry
 	ret nz
 	farjp ConsumeUserItem
@@ -3595,7 +3612,7 @@ _HeldStatBoostBerry:
 	set SUBSTATUS_FOCUS_ENERGY, [hl]
 	pop hl
 	ret nz
-	farcall ShowPotentialAbilityActivation
+	farcall ShowPendingUserAbility
 	call CurItemRecoveryAnim
 	call GetCurItemName
 	ld hl, BattleText_ItemRaisedCrit
@@ -3622,7 +3639,7 @@ _HeldStatBoostBerry:
 	ld a, [wFailedMessage]
 	and a
 	ret nz
-	farcall ShowPotentialAbilityActivation
+	farcall ShowPendingUserAbility
 	farcall UseStatItemText
 
 	; Don't call CheckMirrorHerb; Bug Bite/Pluck needs to proc the copy later.
@@ -3681,7 +3698,7 @@ HandleHPHealingItem:
 	jr z, .ok
 	ret nc
 .ok
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	ld a, [hl]
 	cp FIGY_BERRY
 	jr nz, .figy_ok
@@ -3689,7 +3706,7 @@ HandleHPHealingItem:
 	call QuarterPinchOrGluttony
 	ret nz
 .figy_ok
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	call _HeldHPHealingItem
 	ret nz
 UseBattleItem:
@@ -3718,8 +3735,7 @@ _HeldHPHealingItem:
 .quarter_maxhp
 	call GetQuarterMaxHP
 .got_hp_to_restore
-	ld a, CUD_CHEW
-	farcall ShowPotentialSpecificAbilityActivation
+	farcall ShowPendingUserAbility
 	call CurItemRecoveryAnim
 	call RestoreHP
 	xor a
@@ -3778,7 +3794,7 @@ _ItemRecoveryAnim::
 	ld [wFXAnimIDLo], a
 	ld a, HIGH(ANIM_HELD_ITEM_TRIGGER)
 	ld [wFXAnimIDHi], a
-	predef PlayBattleAnim
+	farcall PlayBattleAnim
 	xor a
 	ld [wBattleAnimParam], a
 	jmp PopBCDEHL
@@ -3801,7 +3817,7 @@ StealHeldStatusHealingItem:
 UseOpponentHeldStatusHealingItem:
 	call StackCallOpponentTurn
 UseHeldStatusHealingItem:
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	call _HeldStatusHealingItem
 	ret z
 	jmp UseBattleItem
@@ -3843,7 +3859,7 @@ _HeldStatusHealingItem:
 	ld a, b
 	and a
 	ret z
-	farcall ShowPotentialAbilityActivation
+	farcall ShowPendingUserAbility
 	call CurItemRecoveryAnim
 	or 1
 	ret
@@ -3866,7 +3882,7 @@ StealConfusionHealingItem:
 UseOpponentConfusionHealingItem:
 	call StackCallOpponentTurn
 UseConfusionHealingItem:
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	call _HeldConfusionHealingItem
 	ret z
 	jmp UseBattleItem
@@ -3877,8 +3893,7 @@ _HeldConfusionHealingItem:
 	jr nz, .ret_z
 	call DoHeldConfusionHealingItem
 	ret z
-	ld a, CUD_CHEW
-	farcall ShowPotentialSpecificAbilityActivation
+	farcall ShowPendingUserAbility
 	call CurItemRecoveryAnim
 	or 1
 	ret
@@ -3900,10 +3915,12 @@ UpdateBattleHUDs:
 	push bc
 	call DrawPlayerHUD
 	ld hl, wPlayerHPPal
+	ld bc, wBattleMonHP
 	call SetHPPal
 	call CheckDanger
 	call DrawEnemyHUD
 	ld hl, wEnemyHPPal
+	ld bc, wEnemyMonHP
 	call SetHPPal
 	jmp PopBCDEHL
 
@@ -3922,6 +3939,7 @@ DrawPlayerHUD:
 	ret nz
 
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 
 	farcall ClearPlayerHUD
@@ -3940,7 +3958,7 @@ DrawPlayerHUD:
 	hlcoord 11, 9
 	xor a ; PARTYMON
 	ld [wMonType], a
-	predef DrawPlayerHP
+	farcall DrawPlayerHP
 
 	; Exp bar
 	push de
@@ -4039,7 +4057,7 @@ endr
 	ld bc, wBattleMonShiny
 	farcall CheckShininess
 	jr nc, .not_own_shiny
-	ld a, '<STAR>'
+	ld a, '<SHINY>'
 	hlcoord 19, 8
 	ld [hl], a
 
@@ -4076,6 +4094,7 @@ DrawEnemyHUD:
 	ret nz
 
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 
 	farcall ClearEnemyHUD
@@ -4115,7 +4134,7 @@ endr
 	ld bc, wEnemyMonShiny
 	farcall CheckShininess
 	jr nc, .not_shiny
-	ld a, '<STAR>'
+	ld a, '<SHINY>'
 	hlcoord 9, 1
 	ld [hl], a
 
@@ -4214,7 +4233,7 @@ endr
 	jmp FinishBattleAnim
 
 BattleAnimateHPBar:
-	predef AnimateHPBar
+	farcall AnimateHPBar
 	ld a, [wWhichHPBar]
 	and a
 	ld hl, wEnemyHPPal
@@ -4226,22 +4245,26 @@ BattleAnimateHPBar:
 	ret
 
 UpdatePlayerHPPal:
+	ld bc, wBattleMonHP
 	ld hl, wPlayerHPPal
 	jr UpdateHPPal
 
 UpdateEnemyHPPal:
+	ld bc, wEnemyMonHP
 	ld hl, wEnemyHPPal
 	; fallthrough
 UpdateHPPal:
-	ld b, [hl]
-	call SetHPPal
 	ld a, [hl]
-	cp b
+	push af
+	call SetHPPal
+	pop af
+	cp [hl]
 	ret z
 	jmp FinishBattleAnim
 
 BattleMenu:
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call LoadTempTileMapToTileMap
 
@@ -4283,7 +4306,7 @@ BattleMenu:
 	farcall LoadBattleMenu
 
 .next
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	ld a, [wBattleMenuCursorBuffer]
 	dec a
@@ -4483,6 +4506,7 @@ BattleMenu_SafariBall:
 	call ClearTileMap
 .ball
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call _LoadBattleFontsHPBar
 	call ClearSprites
@@ -4531,7 +4555,7 @@ BattleMenuPKMN_ReturnFromStats:
 	call ClearBGPalettes
 BattleMenuPKMN_Loop:
 	call SetUpBattlePartyMenu
-	xor a
+	xor a ; PARTYMENUACTION_CHOOSE_POKEMON
 	ld [wPartyMenuActionText], a
 	call JumpToPartyMenuAndPrintText
 	call SelectBattleMon
@@ -4574,6 +4598,7 @@ BattleMenuPKMN_Loop:
 	ld hl, .MenuHeader
 	call CopyMenuHeader
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call MenuBox
 	call UpdateSprites
@@ -4626,7 +4651,7 @@ AI_UserCanSwitch:
 
 UserCanSwitch:
 ; Returns z if the user can switch, with the message in hl if they can't.
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	ld a, b
 	cp HELD_SHED_SHELL
 	ret z
@@ -4768,8 +4793,7 @@ CheckRunSpeed:
 	cp RUN_AWAY
 	jr nz, .no_flee_ability
 	call SetPlayerTurn
-	farcall BeginAbility
-	farcall ShowAbilityActivation
+	farcall BeginAndShowUserAbility
 	jmp .can_escape
 .no_flee_ability
 	push hl
@@ -5022,6 +5046,7 @@ MoveSelectionScreen:
 	ld bc, NUM_MOVES
 	rst CopyBytes
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 
 	hlcoord 4, 17 - NUM_MOVES - 1
@@ -5041,7 +5066,7 @@ MoveSelectionScreen:
 .got_start_coord
 	ld a, SCREEN_WIDTH
 	ld [wListMovesLineSpacing], a
-	predef ListMoves
+	farcall ListMoves
 
 	ld a, [wMoveSelectionMenuType]
 	dec a
@@ -5105,7 +5130,7 @@ MoveSelectionScreen:
 	ld [hl], '▷'
 
 .interpret_joypad
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	call DoMenuJoypadLoop
 	bit B_PAD_UP, a
@@ -5270,23 +5295,15 @@ MoveSelectionScreen:
 	ret
 
 .pressed_start
-	ld hl, wBattleMonMoves
+	call ClearSprites ; hide weather icon
 	ld a, [wMenuCursorY]
-	dec a
-	ld b, 0
-	ld c, a
-	add hl, bc
-	ld c, [hl]
-	dec c
-	ld hl, MoveDescriptions
-	add hl, bc
-	add hl, bc
-	ld a, BANK(MoveDescriptions)
-	call GetFarWord
-	push hl
-	call ClearSprites
-	pop hl
-	call BattleMoveDescTextbox
+	add LOW(wBattleMonMoves - 1)
+	ld l, a
+	adc HIGH(wBattleMonMoves - 1)
+	sub l
+	ld h, a
+	ld a, [hl]
+	farcall PrintMoveDescInBattle
 	ld a, [wOptions1]
 	and TEXT_DELAY_MASK
 	cp INST_TEXT
@@ -5468,6 +5485,7 @@ SwapBattleMoves:
 
 MoveInfoBox:
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 
 	hlcoord 0, 8
@@ -5739,7 +5757,7 @@ CheckUsableMove:
 
 .GetItemHeldEffect:
 	push bc
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	ld a, b
 	pop bc
 	ret
@@ -5971,7 +5989,7 @@ LoadEnemyWildmon:
 	; set [wCurForm] before TryAddMonToParty calls GetBaseData
 	call GenerateWildForm
 
-	predef TryAddMonToParty
+	farcall TryAddMonToParty
 
 	call CheckValidMagikarpLength
 	jr c, LoadEnemyWildmon
@@ -6009,36 +6027,25 @@ else
 endc
 
 .compound_eyes:
-	; 60% chance of getting Item1
-	call BattleRandom
-	cp 60 percent
-	ld a, [wBaseItems]
-	jr c, .UpdateItem
-
-	; 20% chance of getting Item2 (50% of (100% - 60%) = 20%)
-	call BattleRandom
-	cp 50 percent
-	ld a, [wBaseItems+1]
-	jr c, .UpdateItem
-
-	; 20% chance of not getting an item (100% - 60% - 20% = 20%)
-	ld a, NO_ITEM
-	jr .UpdateItem
-
+	ld a, 5
+	call BattleRandomRange
+	cp 3 ; c 60% of the time, z 20% of the time
+	jr .check_item
 .no_compound_eyes_or_amulet_coin:
-	; 50% chance of getting Item1
-	call BattleRandom
-	cp 50 percent
+	ld a, 20
+	call BattleRandomRange
+	cp 10 ; c 50% of the time, z 5% of the time
+
+.check_item:
+	; 60%/50% chance of getting Item1
 	ld a, [wBaseItems]
 	jr c, .UpdateItem
 
-	; 5% chance of getting Item2 (10% of (100% - 50%) = 5%)
-	call BattleRandom
-	cp 10 percent
+	; 20%/5% chance of getting Item2
 	ld a, [wBaseItems+1]
-	jr c, .UpdateItem
+	jr z, .UpdateItem
 
-	; 45% chance of not getting an item (100% - 50% - 5% = 45%)
+	; 20%/45% chance of not getting an item
 	xor a ; NO_ITEM
 .UpdateItem:
 	ld [wOTPartyMon1Item], a
@@ -6096,7 +6103,7 @@ endc
 	; Fill wild PP
 	ld hl, wOTPartyMon1Moves
 	ld de, wOTPartyMon1PP
-	predef_jump FillPP
+	farjp FillPP
 
 ApplyLegendaryDVs:
 	push de
@@ -6221,18 +6228,20 @@ CheckValidMagikarpLength:
 	jr nz, .CheckMagikarpArea
 
 ; 5% chance of skipping both size checks
-	call Random
-	cp 5 percent
-	jr c, .CheckMagikarpArea
+	ld a, 20
+	call RandomRange
+	and a
+	jr z, .CheckMagikarpArea
 ; Try again if length >= 1616 mm (i.e. if LOW(length) >= 4 inches)
 	ld a, [wMagikarpLengthMmLo]
 	cp LOW(1616)
 	jr nc, .redo
 
 ; 20% chance of skipping this check
-	call Random
-	cp 20 percent - 1
-	jr c, .CheckMagikarpArea
+	ld a, 5
+	call RandomRange
+	and a
+	jr z, .CheckMagikarpArea
 ; Try again if length >= 1600 mm (i.e. if LOW(length) >= 3 inches)
 	ld a, [wMagikarpLengthMmLo]
 	cp LOW(1600)
@@ -6247,8 +6256,9 @@ CheckValidMagikarpLength:
 	jr nz, .okay
 .LakeOfRageMagikarp
 ; 40% chance of not flooring
-	call Random
-	cp 40 percent - 2
+	ld a, 5
+	call RandomRange
+	cp 2
 	jr c, .okay
 ; Try again if length < 1024 mm (i.e. if HIGH(length) < 3 feet)
 	ld a, [wMagikarpLengthMmHi]
@@ -6275,6 +6285,7 @@ FinalPkmnSlideInEnemyMonFrontpic:
 	cp 9
 	ret z
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	ldh [hBGMapHalf], a
 	ld d, $0
@@ -6290,7 +6301,7 @@ FinalPkmnSlideInEnemyMonFrontpic:
 	dec c
 	jr nz, .inner_loop
 
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	ld c, 4
 	call DelayFrames
@@ -6337,6 +6348,7 @@ BattleWinSlideInEnemyTrainerFrontpic:
 	cp 7
 	ret z
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	ldh [hBGMapHalf], a
 	ld d, $0
@@ -6352,7 +6364,7 @@ BattleWinSlideInEnemyTrainerFrontpic:
 	dec c
 	jr nz, .inner_loop
 
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	ld c, 4
 	call DelayFrames
@@ -6463,7 +6475,7 @@ PlayBattleAnimDE:
 	ld a, d
 	ld [wFXAnimIDHi], a
 	call ApplyTilemapInVBlank
-	predef_jump PlayBattleAnim
+	farjp PlayBattleAnim
 
 FinishBattleAnim:
 	push hl
@@ -6671,7 +6683,7 @@ GiveExperiencePoints:
 .not_max_exp
 	xor a ; PARTYMON
 	ld [wMonType], a
-	predef CopyPkmnToTempMon
+	farcall CopyPkmnToTempMon
 	farcall CalcLevel
 	pop bc
 	ld hl, MON_LEVEL
@@ -6737,7 +6749,7 @@ GiveExperiencePoints:
 	call UpdatePlayerHUD
 	call EmptyBattleTextbox
 	call LoadTileMapToTempTileMap
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 
 .skip_animation
@@ -6757,7 +6769,7 @@ GiveExperiencePoints:
 .skip_animation2
 	xor a ; PARTYMON
 	ld [wMonType], a
-	predef CopyPkmnToTempMon
+	farcall CopyPkmnToTempMon
 	farcall PrintStatDifferences
 	call SafeLoadTempTileMapToTileMap
 	call GetMemCGBLayout
@@ -6776,7 +6788,7 @@ GiveExperiencePoints:
 	ld a, b
 	ld [wCurPartyLevel], a
 	push bc
-	predef LearnLevelMoves
+	farcall LearnLevelMoves
 	pop bc
 	ld a, b
 	cp c
@@ -6801,7 +6813,7 @@ GiveExperiencePoints:
 	ld a, [wCurPartyMon]
 	ld c, a
 	ld b, SET_FLAG
-	predef FlagPredef
+	farcall SmallFlagAction
 
 .evolve_logic_done
 	pop af
@@ -6826,7 +6838,7 @@ GiveExperiencePoints:
 	ld c, a
 	ld b, CHECK_FLAG
 	ld d, $0
-	predef FlagPredef
+	farcall SmallFlagAction
 	ld a, c
 	and a
 	ret
@@ -7167,13 +7179,9 @@ Text_PkmnGainedExpPoint:
 	ret
 
 TextJump_ABoostedStringBuffer2ExpPoints:
-	text_far Text_ABoostedStringBuffer2ExpPoints
-	text_end
-
+	text_farend Text_ABoostedStringBuffer2ExpPoints
 TextJump_StringBuffer2ExpPoints:
-	text_far Text_StringBuffer2ExpPoints
-	text_end
-
+	text_farend Text_StringBuffer2ExpPoints
 AnimateExpBar:
 	push bc
 
@@ -7197,7 +7205,7 @@ AnimateExpBar:
 	push af
 	xor a ; PARTYMON
 	ld [wMonType], a
-	predef CopyPkmnToTempMon
+	farcall CopyPkmnToTempMon
 	ld a, [wTempMonLevel]
 	ld b, a
 	ld e, a
@@ -7351,7 +7359,7 @@ AnimateExpBar:
 	cp b
 	jr nz, .anim_loop
 .end_animation
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	ret
 
@@ -7359,11 +7367,13 @@ AnimateExpBar:
 	xor a
 	ldh [hCGBPalUpdate], a
 	inc a
+	assert TRANSFER_TILEMAP == 1
 	ldh [hBGMapMode], a
 	ldh [hBGMapHalf], a
 	ld c, d
 	call DelayFrames
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	inc a
 	ldh [hCGBPalUpdate], a
@@ -7451,7 +7461,7 @@ _GetNewBaseExp:
 	ld a, h
 	cp b
 	jr nz, .is_evo
-	predef GetEvosAttacksPointer
+	farcall GetEvosAttacksPointer
 	ld a, BANK(EvosAttacks)
 	call GetFarByte
 	inc a
@@ -7465,7 +7475,7 @@ _GetNewBaseExp:
 	push bc
 	ld b, h
 	ld c, l
-	predef GetEvosAttacksPointer
+	farcall GetEvosAttacksPointer
 	pop bc
 .evos_loop
 	ld a, BANK(EvosAttacks)
@@ -7624,9 +7634,7 @@ Function_TextJump_BattleMonNick01:
 	ret
 
 TextJump_BattleMonNick01:
-	text_far Text_BattleMonNick01
-	text_end
-
+	text_farend Text_BattleMonNick01
 WithdrawPkmnText:
 	ld hl, .WithdrawPkmnText
 	jmp BattleTextbox
@@ -7683,21 +7691,13 @@ WithdrawPkmnText:
 	ret
 
 TextJump_ThatsEnoughComeBack:
-	text_far Text_ThatsEnoughComeBack
-	text_end
-
+	text_farend Text_ThatsEnoughComeBack
 TextJump_OKComeBack:
-	text_far Text_OKComeBack
-	text_end
-
+	text_farend Text_OKComeBack
 TextJump_GoodComeBack:
-	text_far Text_GoodComeBack
-	text_end
-
+	text_farend Text_GoodComeBack
 TextJump_ComeBack:
-	text_far Text_ComeBack
-	text_end
-
+	text_farend Text_ComeBack
 HandleSafariAngerEatingStatus:
 	ld hl, wSafariMonEating
 	ld a, [hl]
@@ -7880,7 +7880,7 @@ DropPlayerSub:
 	ld a, [wBattleMonForm]
 	ld [wCurForm], a
 	ld de, vTiles2 tile $31
-	predef GetBackpic
+	farcall GetBackpic
 	pop af
 	ld [wCurForm], a
 	pop af
@@ -7933,7 +7933,7 @@ GetFrontpicOrGhostpic:
 
 .not_ghost_battle
 	ld de, vTiles2
-	predef_jump FrontpicPredef
+	farjp PrepareAnimatedFrontpic
 
 GetFrontpic_DoAnim:
 	ldh a, [hBattleTurn]
@@ -7961,7 +7961,7 @@ StartBattle:
 	call ExitBattle
 	farcall LoadWeatherGraphics
 	farcall LoadWeatherPal
-	xor a
+	xor a ; TRAINERPAL_NONE
 	ld [wTrainerPal], a
 	pop af
 	ld [wTimeOfDayPal], a
@@ -7973,7 +7973,6 @@ BattleIntro:
 	xor a
 	ld [wTempBattleMonSpecies], a
 	ld [wBattleMenuCursorBuffer], a
-	xor a
 	ldh [hMapAnims], a
 	ld a, [wOtherTrainerClass]
 	cp LYRA2
@@ -8001,7 +8000,7 @@ BattleIntro:
 	ld hl, SilphScopeRevealText
 	call StdBattleTextbox
 	ld de, vTiles0
-	predef GetFrontpic
+	farcall GetFrontpic
 	ld de, ANIM_GHOST_TRANSFORM
 	call PlayBattleAnimDE
 	ld hl, WildPokemonAppearedText
@@ -8019,6 +8018,7 @@ BattleIntro:
 	ld hl, rLCDC
 	set B_LCDC_WIN_MAP, [hl]
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call EmptyBattleTextbox
 	hlcoord 9, 7
@@ -8031,7 +8031,7 @@ BattleIntro:
 	ld a, [wBattleMode]
 	dec a
 	call z, UpdateEnemyHUD
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	ret
 
@@ -8092,7 +8092,7 @@ InitEnemy:
 	ld [wEnemyItemState], a
 	hlcoord 12, 0
 	lb bc, 7, 7
-	predef PlaceGraphic
+	farcall PlaceGraphic
 	ld a, -1
 	ld [wCurOTMon], a
 	ld a, TRAINER_BATTLE
@@ -8112,7 +8112,7 @@ InitEnemy:
 	or [hl]
 	jr z, .skipfaintedmon
 	ld c, HAPPINESS_GYMBATTLE
-	predef ChangeHappiness
+	farcall ChangeHappiness
 .skipfaintedmon
 	pop bc
 	dec b
@@ -8135,7 +8135,7 @@ InitEnemy:
 	ldh [hGraphicStartTile], a
 	hlcoord 12, 0
 	lb bc, 7, 7
-	predef_jump PlaceGraphic
+	farjp PlaceGraphic
 
 ExitBattle:
 	call PostBattleTasks
@@ -8712,15 +8712,16 @@ InitBattleDisplay:
 	ldh [rWY], a
 	call ApplyTilemapInVBlank
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	farcall BattleIntroSlidingPics
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	ld a, $31
 	ldh [hGraphicStartTile], a
 	hlcoord 2, 6
 	lb bc, 6, 6
-	predef PlaceGraphic
+	farcall PlaceGraphic
 	call ApplyTilemapInVBlank
 	call HideSprites
 	ld a, CGB_BATTLE_COLORS
@@ -8785,7 +8786,7 @@ CopyBackpic:
 	ldh [hGraphicStartTile], a
 	hlcoord 2, 6
 	lb bc, 6, 6
-	predef_jump PlaceGraphic
+	farjp PlaceGraphic
 
 .LoadTrainerBackpicAsOAM:
 	ld hl, wShadowOAM
@@ -8963,10 +8964,21 @@ AutomaticBattleWeather:
 	call StdBattleTextbox
 	jmp EmptyBattleTextbox
 
-BoostGiovannisArmoredMewtwo:
+CustomTrainerActions:
 	ld a, [wOtherTrainerClass]
 	cp GIOVANNI
+	jr z, .maybe_giovanni_armored_mewtwo
+	cp FIREBREATHER
 	ret nz
+	ld a, [wOtherTrainerID]
+	cp DICK
+	ret nz
+	ld a, FIREBREATHER_ASHES
+	ld [wOtherTrainerClass], a
+	ld [wTrainerClass], a
+	ret
+
+.maybe_giovanni_armored_mewtwo
 	ld a, [wOtherTrainerID]
 	cp GIOVANNI1
 	ret nz

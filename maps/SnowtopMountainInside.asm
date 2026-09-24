@@ -32,7 +32,7 @@ SnowtopMountainInsideFixFacing:
 .FixFacing:
 	ld hl, wPrevWarp
 	ld a, [hli]
-	dec a ; warp 1?
+	dec a ; warp #1 of SNOWTOP_MOUNTAIN_OUTSIDE comes here
 	ret nz
 	assert wPrevWarp + 1 == wPrevMapGroup
 	ld a, [hli]
@@ -74,8 +74,7 @@ KimonoGirlAmiScript:
 	opentext
 	writetext .AfterText
 	promptbutton
-	verbosegiveitem PP_MAX
-	iffalse_endtext
+	verbosegiveitem PP_MAX, iffalse_endtext
 	setevent EVENT_GOT_PP_MAX_FROM_KIMONO_GIRL_AMI
 	jumpthisopenedtext
 
@@ -196,4 +195,3 @@ Text_SnowtopMountainInsideTutorQuestion:
 Text_SnowtopMountainInsideTutorRefused: ; text > text
 	text "Brr…"
 	done
-

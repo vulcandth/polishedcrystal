@@ -17,20 +17,8 @@ MenuTextboxWaitButton::
 ExitMenu::
 	push af
 	farcall _ExitMenu
-	call UpdateFollowPalette
+	farcall UpdateFollowPalette
 	pop af
-	ret
-
-UpdateFollowPalette:
-	lb de, 0, 0
-	ld a, LOW(PIKACHU)
-	ld [wCurIcon], a
-	ld hl, wCurIconPersonality
-	ld a, d
-	ld [hli], a
-	ld [hl], e
-	farcall GetOverworldMonIconPalette
-	ld [wFollowerPalIndex], a
 	ret
 
 GetTileBackupMenuBoxDims::
@@ -257,6 +245,7 @@ MenuTextboxDataHeader:
 
 VerticalMenu::
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call MenuBox
 	call UpdateSprites
@@ -446,6 +435,7 @@ SetUpVariableDataMenu:
 
 MenuWriteText::
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call GetMenuIndexSet ; sort out the text
 	call RunMenuItemPrintingFunction ; actually write it
@@ -640,6 +630,9 @@ GetMenuDataPointerTableEntry::
 	ret
 
 ClearWindowData::
+	; Text and menus may overwrite a rectangle's selected map palette.
+	ld a, TRUE
+	ld [wPaletteSwapNeedsReload], a
 	ld hl, wMenuMetadata
 	call .bytefill
 	ld hl, wMenuHeader
@@ -705,28 +698,6 @@ _2DMenu::
 	ld [wMenuData_2DMenuItemStringsBank], a
 	farcall _2DMenu_
 	ld a, [wMenuCursorBuffer]
-	ret
-
-SetMenuAttributes::
-	push hl
-	push bc
-	ld hl, w2DMenuCursorInitY
-	ld b, $8
-.loop
-	ld a, [de]
-	inc de
-	ld [hli], a
-	dec b
-	jr nz, .loop
-	ld a, $1
-	ld [hli], a
-	ld [hli], a
-	xor a
-	ld [hli], a
-	ld [hli], a
-	ld [hl], a
-	pop bc
-	pop hl
 	ret
 
 DoMenuJoypadLoop::

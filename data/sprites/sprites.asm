@@ -187,7 +187,7 @@ SpriteHeaders:
 	overworld_sprite SlowpoketailSpriteGFX, STANDING_SPRITE, PAL_OW_PINK
 	overworld_sprite WeirdTreeSpriteGFX, STANDING_SPRITE, PAL_OW_GREEN
 	overworld_sprite BallCutTreeSpriteGFX, STANDING_SPRITE, PAL_OW_COPY_BG_GREEN
-	overworld_sprite BoulderRockFossilSpriteGFX, STANDING_SPRITE, PAL_OW_COPY_BG_BROWN
+	overworld_sprite BoulderRockSpriteGFX, STANDING_SPRITE, PAL_OW_COPY_BG_BROWN
 	overworld_sprite BookPaperPokedexSpriteGFX, STANDING_SPRITE, PAL_OW_BROWN
 	overworld_sprite SnesSpriteGFX, STANDING_SPRITE, PAL_OW_BROWN
 	overworld_sprite N64SpriteGFX, STANDING_SPRITE, PAL_OW_GRAY
@@ -198,11 +198,11 @@ SpriteHeaders:
 	overworld_sprite ElectricFenceLeftSpriteGFX, STANDING_SPRITE, PAL_OW_ELECTRIC_FENCE
 	overworld_sprite ElectricFenceRightSpriteGFX, STANDING_SPRITE, PAL_OW_ELECTRIC_FENCE
 	overworld_sprite SailboatSpriteGFX, STANDING_SPRITE, PAL_OW_SAILBOAT
-	overworld_sprite IceBoulderSpriteGFX, STANDING_SPRITE, PAL_OW_COPY_BG_BROWN
+	overworld_sprite IceBoulderFossilsSpriteGFX, STANDING_SPRITE, PAL_OW_COPY_BG_BROWN
 	overworld_sprite BeachGuySpriteGFX, WALKING_SPRITE, PAL_OW_RED
 	overworld_sprite BeachGirlSpriteGFX, WALKING_SPRITE, PAL_OW_GREEN
 	overworld_sprite PiersSpriteGFX, STANDING_SPRITE, PAL_OW_RED
-	overworld_sprite KatySpriteGFX, WALKING_SPRITE, PAL_OW_BROWN
+	overworld_sprite LarrySpriteGFX, STANDING_SPRITE, PAL_OW_GRAY
 	overworld_sprite AlolanExeggutorSpriteGFX, BIG_GYARADOS_SPRITE, PAL_OW_BROWN
 	overworld_sprite SoldierSpriteGFX, WALKING_SPRITE, PAL_OW_GREEN
 	overworld_sprite CrysSpriteGFX, WALKING_SPRITE, PAL_OW_GREEN
@@ -219,4 +219,9 @@ SpriteHeaders:
 	overworld_sprite BetaBikeSpriteGFX, WALKING_SPRITE, PAL_OW_PURPLE
 	overworld_sprite BetaSurfSpriteGFX, WALKING_SPRITE, PAL_OW_PURPLE
 	overworld_sprite BetaRunSpriteGFX, WALKING_SPRITE, PAL_OW_PURPLE
+	overworld_sprite FloatingBallSpriteGFX, STANDING_SPRITE, PAL_OW_ENV_RED
+	overworld_sprite SpinarakCartSpriteGFX, WALKING_SPRITE, PAL_OW_GREEN
+	overworld_sprite PearlSpriteGFX, STANDING_SPRITE, PAL_OW_COPY_BG_GREEN
+	overworld_sprite PagodaSpriteGFX, STANDING_SPRITE, PAL_OW_COPY_BG_WHITE
+	overworld_sprite CampfireSpriteGFX, STANDING_SPRITE, PAL_OW_CAMPFIRE
 	assert_table_length NUM_OVERWORLD_SPRITES

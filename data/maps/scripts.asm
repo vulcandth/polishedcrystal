@@ -75,7 +75,6 @@ SECTION "New Bark Scripts", ROMX
 INCLUDE "maps/NewBarkTown.asm"
 INCLUDE "maps/ElmsHouse.asm"
 INCLUDE "maps/ElmsLab.asm"
-INCLUDE "maps/PlayersNeighborsHouse.asm"
 
 
 SECTION "New Bark Scripts 2", ROMX
@@ -83,7 +82,8 @@ SECTION "New Bark Scripts 2", ROMX
 INCLUDE "maps/PlayersHouse1F.asm"
 INCLUDE "maps/PlayersHouse2F.asm"
 INCLUDE "maps/LyrasHouse1F.asm"
-INCLUDE "maps/LyrasHouse2F.asm"
+INCLUDE "maps/LyrasHouse2F.asm" ; shares text with PlayersHouse2F.asm
+INCLUDE "maps/PlayersNeighborsHouse.asm" ; shares text with PlayersHouse2F.asm
 
 
 SECTION "Cherrygrove Scripts", ROMX
@@ -101,6 +101,7 @@ SECTION "Cherrygrove Bay Scripts", ROMX
 INCLUDE "maps/CherrygroveBay.asm"
 INCLUDE "maps/Route32Coast.asm"
 INCLUDE "maps/Route32CoastHouse.asm"
+INCLUDE "maps/CherrygroveTrainTrackDual.asm"
 
 
 SECTION "Dark Cave Scripts", ROMX
@@ -656,7 +657,7 @@ INCLUDE "maps/CeladonDeptStore2F.asm"
 INCLUDE "maps/CeladonDeptStore3F.asm"
 INCLUDE "maps/CeladonDeptStore4F.asm"
 INCLUDE "maps/CeladonDeptStore5F.asm"
-INCLUDE "maps/CeladonDeptStore6F.asm"
+INCLUDE "maps/CeladonDeptStoreRoof.asm"
 INCLUDE "maps/CeladonDeptStoreElevator.asm"
 
 
@@ -765,6 +766,8 @@ INCLUDE "maps/FuchsiaGym.asm"
 INCLUDE "maps/FuchsiaBillSpeechHouse.asm"
 INCLUDE "maps/FuchsiaSafariBallHouse.asm"
 INCLUDE "maps/SafariZoneWardensHome.asm"
+INCLUDE "maps/FuchsiaAquarium1F.asm"
+INCLUDE "maps/FuchsiaAquarium2F.asm"
 INCLUDE "maps/LuckyIsland.asm"
 
 
@@ -908,7 +911,8 @@ INCLUDE "maps/NavelRockRoof.asm"
 
 SECTION "Faraway Island Scripts", ROMX
 
-INCLUDE "maps/FarawayIsland.asm"
+INCLUDE "maps/FarawayIslandNorth.asm"
+INCLUDE "maps/FarawayIslandSouth.asm"
 INCLUDE "maps/FarawayJungle.asm"
 
 
@@ -956,9 +960,9 @@ INCLUDE "maps/Route12Gate2F.asm"
 INCLUDE "maps/Route12North.asm"
 INCLUDE "maps/Route12South.asm"
 INCLUDE "maps/Route12SuperRodHouse.asm"
-INCLUDE "maps/Route13East.asm"
-INCLUDE "maps/Route13West.asm"
+INCLUDE "maps/Route13.asm"
 INCLUDE "maps/Route14.asm"
+INCLUDE "maps/Route14LuckyIslandDual.asm"
 
 
 SECTION "Routes 15-17 Scripts", ROMX

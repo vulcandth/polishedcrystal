@@ -234,7 +234,7 @@ Gen2ToGen2LinkComms:
 	assert PLAYER_BETA + 1 == EUNA
 	inc a
 	ld [wOtherTrainerClass], a
-	xor a
+	xor a ; TRAINERPAL_NONE
 	ld [wTrainerPal], a
 
 	call ClearScreen
@@ -258,7 +258,7 @@ Gen2ToGen2LinkComms:
 	pop af
 	ldh [rIF], a
 
-	predef StartBattle
+	farcall StartBattle
 
 	ldh a, [rIF]
 	ld h, a
@@ -309,9 +309,7 @@ LinkTimeout:
 
 .LinkTimeoutText:
 	; Too much time has elapsed. Please try again.
-	text_far _LinkTimeoutText
-	text_end
-
+	text_farend _LinkTimeoutText
 ExchangeBytes:
 ; This is similar to Serial_ExchangeBytes,
 ; but without a SERIAL_PREAMBLE_BYTE check.
@@ -925,6 +923,7 @@ LinkTradeMenu:
 	pop af
 	ldh [hOAMUpdate], a
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	ret
 
@@ -1188,18 +1187,14 @@ LinkTrade_TradeSummaryMenu:
 
 .Text_CantTradeLastMon:
 	; If you trade that #MON, you won't be able to battle.
-	text_far _LinkTradeCantBattleText
-	text_end
-
+	text_farend _LinkTradeCantBattleText
 .String_Summary_Trade:
 	text "Summary   Trade"
 	done
 
 .Text_Abnormal:
 	; Your friend's @  appears to be abnormal!
-	text_far _LinkAbnormalMonText
-	text_end
-
+	text_farend _LinkAbnormalMonText
 ValidateOTTrademon:
 ; Returns carry if level isn't within 1-100.
 	ld a, [wCurOTTradePartyMon]
@@ -1491,9 +1486,6 @@ LinkTrade:
 .got_tradeparty_species
 	ld [wPlayerTrademonSpecies], a
 	push af
-; caught data
-	xor a
-	ld [wPlayerTrademonCaughtData], a
 ; OT name
 	ld a, [wCurTradePartyMon]
 	ld hl, wPartyMonOTs
@@ -1519,6 +1511,13 @@ LinkTrade:
 	ld [wPlayerTrademonDVs + 1], a
 	ld a, [hl]
 	ld [wPlayerTrademonDVs + 2], a
+; Caught ball
+	ld hl, wPartyMon1CaughtBall
+	ld a, [wCurTradePartyMon]
+	call GetPartyLocation
+	ld a, [hl]
+	and CAUGHT_BALL_MASK
+	ld [wPlayerTrademonCaughtBall], a
 
 ; Buffer other player data
 ; nickname
@@ -1566,9 +1565,13 @@ LinkTrade:
 	ld [wOTTrademonDVs + 1], a
 	ld a, [hl]
 	ld [wOTTrademonDVs + 2], a
-; caught data
-	xor a
-	ld [wOTTrademonCaughtData], a
+; Caught ball
+	ld hl, wOTPartyMon1CaughtBall
+	ld a, [wCurOTTradePartyMon]
+	call GetPartyLocation
+	ld a, [hl]
+	and CAUGHT_BALL_MASK
+	ld [wOTTrademonCaughtBall], a
 
 	ld a, [wCurTradePartyMon]
 	ld [wCurPartyMon], a
@@ -1578,7 +1581,7 @@ LinkTrade:
 
 	xor a ; REMOVE_PARTY
 	ld [wPokemonWithdrawDepositParameter], a
-	predef RemoveMonFromParty
+	farcall RemoveMonFromParty
 	ld a, [wPartyCount]
 	dec a
 	ld [wCurPartyMon], a
@@ -1600,7 +1603,7 @@ LinkTrade:
 	ldh a, [hSerialConnectionStatus]
 	cp USING_EXTERNAL_CLOCK
 	jr z, .player_2
-	predef TradeAnimation
+	call TradeAnimation
 	jr .done_animation
 .player_2
 	call TradeAnimationPlayer2
@@ -1685,9 +1688,7 @@ LinkTrade:
 
 .TradeThisForThat:
 	; Trade @ for @ ?
-	text_far _LinkAskTradeForText
-	text_end
-
+	text_farend _LinkAskTradeForText
 .TradeCompleted:
 	text "Trade completed!"
 	done

@@ -641,6 +641,13 @@ CheckIfHPIsZero::
 	or [hl]
 	ret
 
+GetSolarizedWeather::
+; Returns z if user's ability is Mega Sol. Always sets a to WEATHER_SUN
+	call GetTrueUserIgnorableAbility
+	cp MEGA_SOL
+	ld a, WEATHER_SUN
+	ret
+
 GetWeatherAfterOpponentUmbrella::
 	call StackCallOpponentTurn
 GetWeatherAfterUserUmbrella::
@@ -653,7 +660,7 @@ GetWeatherAfterUserUmbrella::
 	ret z
 	push bc
 	push hl
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	ld a, b
 	xor HELD_UTILITY_UMBRELLA
 	pop hl
@@ -729,15 +736,14 @@ CheckMoveSpeed::
 	cp 30
 	jr nc, .quick_draw_done
 
-	farcall BeginAbility
-	farcall ShowAbilityActivation
+	farcall BeginAndShowUserAbility
 	ld hl, BattleText_UserItemLetItMoveFirst
 	call StdBattleTextbox
 	farcall EndAbility
 	jr .go_first
 
 .quick_draw_done
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	ld a, b
 	cp HELD_QUICK_CLAW
 	jr z, .quick_claw
@@ -767,7 +773,7 @@ CheckMoveSpeed::
 .activate_item
 	push de
 	farcall ItemRecoveryAnim
-	predef GetUserItemAfterUnnerve
+	farcall GetUserItemAfterUnnerve
 	call GetCurItemName
 	ld hl, BattleText_UserItemLetItMoveFirst
 	call StdBattleTextbox
@@ -862,10 +868,6 @@ BattleTextbox::
 	call ApplyTilemap
 	pop hl
 	jmp PrintTextboxText
-
-BattleMoveDescTextbox::
-	homecall BattleTextbox, BANK(MoveDescriptions)
-	ret
 
 GetBattleAnimPointer::
 	anonbankpush BattleAnimations

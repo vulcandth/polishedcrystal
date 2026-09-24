@@ -17,7 +17,7 @@ FollowerScript::
 	writetext .found_item
 	yesorno
 	iffalsefwd .done
-	verbosegiveitem NUGGET
+	verbosegiveitem NUGGET, iffalsefwd .done
 .done
 	closetext
 	end
@@ -61,3 +61,27 @@ StoreFollowerNickInBuffer:
 	ld de, wStringBuffer1
 	ld bc, MON_NAME_LENGTH
 	jmp CopyBytes
+
+UpdateFollowPalette::
+	lb de, 0, 0
+	ld a, LOW(PIKACHU)
+	ld [wCurIcon], a
+	ld hl, wCurIconPersonality
+	ld a, d
+	ld [hli], a
+	ld [hl], e
+	farcall GetOverworldMonIconPalette
+	ld [wFollowerPalIndex], a
+	ret
+
+
+CheckFollowerBetweenObjectAndPlayer::
+	push bc
+	farcall GetFollowerDirectionFromPlayer
+	ld a, c
+	xor 1
+	add a
+	add a
+	pop bc
+	cp c
+	ret

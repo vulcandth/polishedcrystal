@@ -3,6 +3,7 @@ INCLUDE "data/sprites/map_objects.asm"
 BlankScreen:
 	call DisableSpriteUpdates
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	call ClearBGPalettes
 	call ClearSprites
@@ -166,7 +167,7 @@ MapPlayerCoordConnected:
 	ld b, FOLLOWER
 	call GetObjectCoord
 
-	ld a, [wPlayerStepDirection]
+	ldh a, [hPlayerStepDirection]
 	and a
 	jr z, .south
 	dec a
@@ -416,7 +417,7 @@ InitializeVisibleSprites:
 	ret
 
 CheckObjectEnteringVisibleRange::
-	ld a, [wPlayerStepDirection]
+	ldh a, [hPlayerStepDirection]
 	cp STANDING
 	ret z
 	call StackJumpTable
@@ -587,6 +588,10 @@ CopyTempObjectToObjectStruct:
 	; the "radius" for Pokémon icons is the species, so don't alter it
 	ld a, [wTempObjectCopySprite]
 	cp SPRITE_MON_ICON
+	ld a, [wTempObjectCopyRadius]
+	jr z, .keep_radius
+	ld a, [wTempObjectCopySprite]
+	cp SPRITE_AQUARIUM_MON
 	ld a, [wTempObjectCopyRadius]
 	jr z, .keep_radius
 	; add 1 to the y and x radii
@@ -1050,9 +1055,13 @@ GetRelativeFacing::
 	ret
 
 QueueFollowerFirstStep:
+	ld a, [wFollowInSync]
+	and a
+	jr nz, .sync
 	call .QueueFirstStep
 	jr c, .same
 	ld [wFollowMovementQueue], a
+.sync
 	xor a
 	ld [wFollowerMovementQueueLength], a
 	ret

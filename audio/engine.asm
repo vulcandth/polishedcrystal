@@ -2103,8 +2103,9 @@ _PlayCry::
 	ld hl, Cries
 	add hl, de
 	add hl, de
+	add hl, de
 
-	ld a, BANK("Cries")
+	ld a, [hli]
 	ld [wMusicBank], a
 
 	ld a, [hli]
@@ -2362,7 +2363,12 @@ endr
 
 INCLUDE "audio/notes.asm"
 
+; Keep `table_width` and `assert_table_length` out of audio/wave_samples.asm
+; for compatibility with Crystal Tracker.
+WaveSamples::
+	table_width 16
 INCLUDE "audio/wave_samples.asm"
+	assert_table_length NUM_WAVEFORMS
 
 INCLUDE "audio/drumkits.asm"
 

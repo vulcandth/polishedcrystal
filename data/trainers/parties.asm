@@ -1313,7 +1313,6 @@ endc
 		tr_moves EXTREMESPEED, FIRE_SPIN, PLAY_ROUGH, FIRE_BLAST
 	end_trainer
 
-
 	def_trainer 2, "Blaine"
 	tr_mon 71, MAGCARGO @ FOCUS_SASH, MALE
 		tr_extra WEAK_ARMOR, SPE_UP_ATK_DOWN
@@ -1940,7 +1939,11 @@ endc
 		tr_evs 252 SAt, 4 Def, 252 Spe
 		tr_moves PSYCHIC_M, TRI_ATTACK, FOCUS_BLAST, RECOVER
 	tr_mon 72, MEGANIUM @ LEFTOVERS, MALE, MALE
+if DEF(FAITHFUL)
 		tr_extra LEAF_GUARD, ATK_UP_SATK_DOWN
+else
+		tr_extra NATURAL_CURE, ATK_UP_SATK_DOWN
+endc
 		tr_evs 252 HP, 4 SDf, 252 Spe
 		tr_moves SEED_BOMB, PLAY_ROUGH, EARTHQUAKE, SWORDS_DANCE
 	end_trainer
@@ -2180,7 +2183,11 @@ Lyra2Group:
 		tr_evs 252 HP, 4 Def, 252 SAt
 		tr_moves PSYCHIC_M, DARK_PULSE, THUNDER_WAVE, SUBSTITUTE
 	tr_mon 72, "Chicory", MEGANIUM @ LEFTOVERS, FEMALE
+if DEF(FAITHFUL)
 		tr_extra LEAF_GUARD, SATK_UP_ATK_DOWN
+else
+		tr_extra NATURAL_CURE, SATK_UP_ATK_DOWN
+endc
 		tr_evs 252 HP, 4 Def, 252 SAt
 		tr_moves GIGA_DRAIN, MOONBLAST, EARTH_POWER, HEALINGLIGHT
 	end_trainer
@@ -2948,7 +2955,6 @@ FisherGroup:
 	tr_mon 9, POLIWAG
 	end_trainer
 
-
 	def_trainer MARVIN, "Marvin"
 	tr_mon 20, MAGIKARP, MALE | MAGIKARP_CALICO1_FORM
 	tr_mon 25, MAGIKARP, MALE | MAGIKARP_CALICO2_FORM
@@ -2958,7 +2964,6 @@ FisherGroup:
 	def_trainer ANDRE, "Andre"
 	tr_mon 32, GYARADOS
 	end_trainer
-
 
 	def_trainer RAYMOND, "Raymond"
 	tr_mon 30, MAGIKARP, MALE | MAGIKARP_CALICO2_FORM
@@ -3067,6 +3072,12 @@ FisherGroup:
 	tr_mon 61, QWILFISH
 	tr_mon 63, LANTURN
 	tr_mon 65, GYARADOS
+	end_trainer
+
+	def_trainer CARLOS, "Carlos"
+	tr_mon LEVEL_FROM_BADGES + 0, GOLDEEN
+	tr_mon LEVEL_FROM_BADGES + 1, SEAKING
+	tr_mon LEVEL_FROM_BADGES + 3, QWILFISH, HISUIAN_FORM
 	end_trainer
 
 
@@ -3238,6 +3249,12 @@ BirdKeeperGroup:
 	tr_mon 33, PIDGEY
 	tr_mon 44, PIDGEOTTO
 	tr_mon 55, PIDGEOT
+	end_trainer
+
+	def_trainer SALIM, "Salim"
+	tr_mon LEVEL_FROM_BADGES + 1, MURKROW, MALE
+	tr_mon LEVEL_FROM_BADGES + 2, FARFETCH_D, MALE | GALARIAN_FORM
+	tr_mon LEVEL_FROM_BADGES + 3, FEAROW, MALE
 	end_trainer
 
 
@@ -3450,6 +3467,17 @@ HikerGroup:
 	tr_mon 57, STEELIX
 	end_trainer
 
+	def_trainer ELIJAH, "Elijah"
+	tr_mon LEVEL_FROM_BADGES + 1, GRAVELER
+	tr_mon LEVEL_FROM_BADGES + 2, GLIGAR
+	end_trainer
+
+	def_trainer MAYNARD, "Maynard"
+	tr_mon LEVEL_FROM_BADGES + 0, GRAVELER, MALE | ALOLAN_FORM
+	tr_mon LEVEL_FROM_BADGES + 1, DONPHAN, MALE
+	tr_mon LEVEL_FROM_BADGES + 2, SHUCKLE, MALE
+	end_trainer
+
 
 SECTION "GruntMGroup", ROMX
 GruntMGroup:
@@ -3464,7 +3492,6 @@ GruntMGroup:
 	tr_mon 10, ZUBAT
 	tr_mon 10, GASTLY
 	end_trainer
-
 
 	def_trainer 3, "Grunt"
 	tr_mon 33, RATICATE, MALE | ALOLAN_FORM
@@ -3864,7 +3891,7 @@ PokemaniacGroup:
 		tr_moves ROLLOUT, ATTRACT, RETURN, FRESH_SNACK
 	end_trainer
 
-	def_trainer LARRY, "Larry"
+	def_trainer POKEMANIAC_LARRY, "Larry"
 	tr_mon 12, SLOWPOKE
 	end_trainer
 
@@ -4209,7 +4236,6 @@ endc
 		tr_moves THUNDERBOLT, SURF, THUNDER_WAVE, SUBSTITUTE
 	end_trainer
 
-
 	def_trainer ALICE, "Alice"
 	tr_mon 60, "VuiVui", EEVEE @ EVIOLITE, FEMALE
 		tr_extra SPE_UP_DEF_DOWN
@@ -4445,9 +4471,7 @@ FirebreatherGroup:
 	end_trainer
 
 	def_trainer DICK, "Dick"
-	tr_mon 53, CHARMANDER
-	tr_mon 55, CHARMELEON
-	tr_mon 57, CHARIZARD
+	tr_mon 17, CHARMELEON
 	end_trainer
 
 	def_trainer NED, "Ned"
@@ -4492,6 +4516,12 @@ FirebreatherGroup:
 	def_trainer TALA, "Tala"
 	tr_mon 61, WEEZING
 	tr_mon 62, MAGMORTAR
+	end_trainer
+
+	def_trainer CYD, "Cyd"
+	tr_mon 53, CHARMANDER
+	tr_mon 55, CHARMELEON
+	tr_mon 57, CHARIZARD
 	end_trainer
 
 
@@ -6124,6 +6154,12 @@ BattleGirlGroup:
 	tr_mon 54, RAPIDASH
 	end_trainer
 
+	def_trainer MEI, "Mei"
+	tr_mon LEVEL_FROM_BADGES + 2, HITMONTOP, FEMALE
+	tr_mon LEVEL_FROM_BADGES + 2, MACHOKE, FEMALE
+	tr_mon LEVEL_FROM_BADGES + 3, SNEASEL, FEMALE | HISUIAN_FORM
+	end_trainer
+
 
 SECTION "DragonTamerGroup", ROMX
 DragonTamerGroup:
@@ -6503,7 +6539,6 @@ ArtistGroup:
 	tr_mon 55, MR__MIME
 	tr_mon 55, SUDOWOODO
 	end_trainer
-
 
 	def_trainer ALINA, "Alina"
 	tr_mon 57, SMEARGLE @ MIRACLE_SEED
@@ -7453,7 +7488,6 @@ GiovanniGroup:
 		tr_moves SHADOW_BALL, PSYSTRIKE, NASTY_PLOT, AURA_SPHERE
 	end_trainer
 
-
 	def_trainer GIOVANNI2, "Giovanni"
 	tr_mon 64, NIDOKING @ LIFE_ORB, MALE
 		tr_extra SHEER_FORCE, SPE_UP_ATK_DOWN
@@ -7999,7 +8033,6 @@ endc
 		tr_evs 252 HP, 4 Def, 252 Spe
 		tr_moves SWORDS_DANCE, EARTHQUAKE, FLY, ROOST
 	end_trainer
-
 
 INCLUDE "data/trainers/psychic_inver.asm"
 
@@ -8962,66 +8995,92 @@ endc
 	end_trainer
 
 
-SECTION "KatyGroup", ROMX
-KatyGroup:
+SECTION "LarryGroup", ROMX
+LarryGroup:
 
-	def_trainer_class KATY
-	def_trainer 1, "Katy"
-	tr_mon 55, ARIADOS, FEMALE
-		tr_extra SWARM
-		tr_evs 252 Atk, 36 Spe
-		tr_moves  LEECH_LIFE, POISON_JAB, SUCKER_PUNCH, AGILITY
-	tr_mon 55, BUTTERFREE, FEMALE
-		tr_extra COMPOUND_EYES
-		tr_evs 252 Spe, 36 SAt
-		tr_moves SLEEP_POWDER, PSYCHIC, AIR_SLASH, BUG_BUZZ
-	tr_mon 56, SHUCKLE, FEMALE
+	def_trainer_class LARRY
+	def_trainer 1, "Larry"
+	tr_mon 55, TAUROS @ ASSAULT_VEST, MALE
+		tr_extra INTIMIDATE
+		tr_evs 252 Atk, 4 Def, 252 Spe
+		tr_moves BODY_SLAM, EARTHQUAKE, STONE_EDGE, ZEN_HEADBUTT
+	tr_mon 55, FEAROW @ SCOPE_LENS, MALE
+		tr_extra SNIPER
+		tr_evs 4 HP, 252 Atk, 252 Spe
+		tr_moves DRILL_PECK, FACADE, U_TURN, THIEF
 if DEF(FAITHFUL)
-		tr_extra STURDY
+	tr_mon 56, FARIGIRAF @ LIGHT_CLAY, MALE
+		tr_extra ARMOR_TAIL
+		tr_evs 4 HP, 252 SAt, 252 Spe
+		tr_moves PSYCHIC_M, LIGHT_SCREEN, REFLECT, RETURN
 else
-		tr_extra SOLID_ROCK
+	tr_mon 56, ARCANINE @ CHOICE_BAND, MALE
+		tr_extra INTIMIDATE
+		tr_evs 252 Atk, 4 Def, 252 Spe
+		tr_moves EXTREMESPEED, FLARE_BLITZ, WILD_CHARGE, CLOSE_COMBAT
 endc
-		tr_evs 252 HP, 36 SDf
-		tr_moves DEFENSE_CURL, ROLLOUT, REST, SLEEP_TALK
-	tr_mon 56, KLEAVOR, FEMALE
-		tr_extra SHEER_FORCE
-		tr_evs 252 Atk, 36 HP
-		tr_moves ROCK_SLIDE, CRUNCH, X_SCISSOR, CLOSE_COMBAT
-	tr_mon 54, HERACROSS, FEMALE
-		tr_extra MOXIE
-		tr_evs 252 Spe, 36 Atk
-		tr_moves ENDURE, MEGAHORN, NIGHT_SLASH, REVERSAL
-	tr_mon 57, URSARING @ TOXIC_ORB, FEMALE
+	tr_mon 56, RATICATE @ LUM_BERRY, MALE | ALOLAN_FORM
+		tr_extra GLUTTONY
+		tr_evs 4 HP, 252 Atk, 252 Spe
+		tr_moves FACADE, SUCKER_PUNCH, U_TURN, SWORDS_DANCE
+	tr_mon 54, URSARING @ TOXIC_ORB, MALE
 		tr_extra QUICK_FEET
 		tr_evs 252 Spe, 36 Atk
 		tr_moves GUNK_SHOT, SLASH, CRUNCH, PLAY_ROUGH
+	tr_mon 57, DUDUNSPARCE @ LEFTOVERS, MALE | DUDUNSPARCE_TWO_SEGMENT_FORM
+if DEF(FAITHFUL)
+		tr_extra RATTLED
+else
+		tr_extra SERENE_GRACE
+endc
+		tr_evs 252 HP, 252 Atk, 4 Spe
+if DEF(FAITHFUL)
+		tr_moves RETURN, EARTHQUAKE, GLARE, ROCK_SLIDE
+else
+		tr_moves RETURN, EARTHQUAKE, GLARE, ANCIENTPOWER
+endc
 	end_trainer
 
-	def_trainer 2, "Katy"
-	tr_mon 73, ARIADOS @ FOCUS_SASH, FEMALE
-		tr_extra SWARM, ATK_UP_SATK_DOWN
+	def_trainer 2, "Larry"
+	tr_mon 73, TAUROS @ ASSAULT_VEST, MALE
+		tr_extra INTIMIDATE, ATK_UP_SATK_DOWN
 		tr_evs 252 Atk, 4 Def, 252 Spe
-		tr_moves MEGAHORN, POISON_JAB, SUCKER_PUNCH, TOXIC_SPIKES
-	tr_mon 73, BUTTERFREE @ CHOICE_SPECS, FEMALE
-		tr_extra TINTED_LENS, SPE_UP_ATK_DOWN
-		tr_evs 252 SAt, 4 SDf, 252 Spe
-		tr_moves BUG_BUZZ, AIR_SLASH, PSYCHIC, ENERGY_BALL
-	tr_mon 74, SHUCKLE @ LEFTOVERS, FEMALE
-		tr_extra CONTRARY, DEF_UP_SATK_DOWN
-		tr_evs 252 HP, 4 SDf, 252 Def
-		tr_moves SHELL_SMASH, TOXIC, WRAP, REST
-	tr_mon 74, KLEAVOR @ CHOICE_SCARF, FEMALE
-		tr_extra SHARPNESS, SPE_UP_SATK_DOWN
+		tr_moves DOUBLE_EDGE, EARTHQUAKE, STONE_EDGE, ZEN_HEADBUTT
+	tr_mon 73, FEAROW @ SCOPE_LENS, MALE
+		tr_extra SNIPER, ATK_UP_SATK_DOWN
+		tr_evs 4 HP, 252 Atk, 252 Spe
+		tr_moves DRILL_PECK, FACADE, U_TURN, THIEF
+if DEF(FAITHFUL)
+	tr_mon 74, FARIGIRAF @ LIGHT_CLAY, MALE
+		tr_extra ARMOR_TAIL, SPE_UP_ATK_DOWN
+		tr_evs 4 HP, 252 SAt, 252 Spe
+		tr_moves PSYCHIC_M, LIGHT_SCREEN, REFLECT, THUNDER_WAVE
+else
+	tr_mon 74, ARCANINE @ CHOICE_BAND, MALE
+		tr_extra INTIMIDATE, ATK_UP_SATK_DOWN
 		tr_evs 252 Atk, 4 Def, 252 Spe
-		tr_moves CLOSE_COMBAT, STONE_EDGE, X_SCISSOR, NIGHT_SLASH
-	tr_mon 72, HERACROSS @ LOADED_DICE, FEMALE
-		tr_extra SKILL_LINK, SPE_UP_SATK_DOWN
-		tr_evs 252 Atk, 4 Def, 252 Spe
-		tr_moves CLOSE_COMBAT, PIN_MISSILE, ROCK_BLAST, SWORDS_DANCE
-	tr_mon 75, URSALUNA @ FLAME_ORB, FEMALE
+		tr_moves EXTREMESPEED, FLARE_BLITZ, WILD_CHARGE, CLOSE_COMBAT
+endc
+	tr_mon 74, RATICATE @ LUM_BERRY, MALE | ALOLAN_FORM
+		tr_extra GLUTTONY, ATK_UP_SATK_DOWN
+		tr_evs 4 HP, 252 Atk, 252 Spe
+		tr_moves FACADE, SUCKER_PUNCH, U_TURN, SWORDS_DANCE
+	tr_mon 72, URSALUNA @ FLAME_ORB, MALE
 		tr_extra GUTS, ATK_UP_SATK_DOWN
 		tr_evs 252 HP, 4 Def, 252 Atk
 		tr_moves FACADE, EARTHQUAKE, CRUNCH, DRAIN_PUNCH
+	tr_mon 75, DUDUNSPARCE @ LEFTOVERS, MALE | DUDUNSPARCE_TWO_SEGMENT_FORM
+if DEF(FAITHFUL)
+		tr_extra RATTLED, ATK_UP_SATK_DOWN
+else
+		tr_extra SERENE_GRACE, SPE_UP_SATK_DOWN
+endc
+		tr_evs 252 HP, 252 Atk, 4 Spe
+if DEF(FAITHFUL)
+		tr_moves ROOST, EARTHQUAKE, GLARE, ROCK_SLIDE
+else
+		tr_moves ROOST, EARTHQUAKE, GLARE, ANCIENTPOWER
+endc
 	end_trainer
 
 

@@ -59,7 +59,7 @@ CheckTrainerBattle::
 	jr c, .next
 
 ; ...and no follower in the way
-	call CheckFollowerBetweenObjectAndPlayer
+	farcall CheckFollowerBetweenObjectAndPlayer
 	jr z, .next
 
 ; And hasn't already been beaten
@@ -107,17 +107,6 @@ CheckTrainerBattle::
 	scf ; set carry (start trainer battle)
 	jr .done
 
-CheckFollowerBetweenObjectAndPlayer::
-	push bc
-	farcall GetFollowerDirectionFromPlayer
-	ld a, c
-	xor 1
-	add a
-	add a
-	pop bc
-	cp c
-	ret
-
 TalkToTrainer::
 	lb bc, 1, -1
 TalkToTrainerAtBC::
@@ -128,7 +117,7 @@ TalkToTrainerAtBC::
 	ld a, [wMapScriptsBank]
 	ld [wSeenTrainerBank], a
 
-	xor a
+	xor a ; TRAINERPAL_NONE
 	ld [wTrainerPal], a
 
 	ldh a, [hLastTalked]
@@ -369,20 +358,3 @@ FacingPlayerDistance::
 	pop bc ; b = distance, c = direction
 	scf
 	ret
-
-PrintWinLossText::
-	ld a, [wBattleResult]
-	and $f
-	ld hl, wWinTextPointer
-	jr z, .got_pointer
-	assert wWinTextPointer + 2 == wLossTextPointer
-	inc hl
-	inc hl
-.got_pointer
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	ld a, [wMapScriptsBank]
-	call FarPrintText
-	call ApplyTilemapInVBlank
-	jmp WaitPressAorB_BlinkCursor

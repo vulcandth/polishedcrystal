@@ -149,6 +149,7 @@ AbilityFlags:
 	abilflag SAP_SIPPER, IGNORABLE
 	abilflag PRANKSTER
 	abilflag SAND_FORCE
+	abilflag IRON_BARBS, IGNORABLE
 	abilflag FUR_COAT, IGNORABLE
 	abilflag BULLETPROOF, IGNORABLE
 	abilflag COMPETITIVE
@@ -174,4 +175,5 @@ AbilityFlags:
 	abilflag SHARPNESS
 	abilflag ARMOR_TAIL
 	abilflag MINDS_EYE, IGNORABLE
+	abilflag MEGA_SOL
 	assert_table_length NUM_ABILITIES

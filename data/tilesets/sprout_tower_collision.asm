@@ -149,5 +149,25 @@
 	tilecoll WALL, WALL, WALL, WALL ; 94
 	tilecoll FLOOR, FLOOR, LADDER, FLOOR ; 95
 	tilecoll FLOOR, FLOOR, LADDER, FLOOR ; 96
-	tilecoll WALL, WALL, FLOOR, WALL ; 97
-	tilecoll WALL, WALL, WALL, FLOOR ; 98
+	tilecoll WALL, WALL, LANTERN_GLOW, WALL ; 97
+	tilecoll WALL, WALL, WALL, LANTERN_GLOW ; 98
+	tilecoll FLOOR, FLOOR, FLOOR, WALL ; 99
+	tilecoll WALL, WALL, FLOOR, FLOOR ; 9a
+	tilecoll WALL, WALL, FLOOR, FLOOR ; 9b
+	tilecoll WALL, WALL, WALL, FLOOR ; 9c
+	tilecoll WALL, WALL, FLOOR, WALL ; 9d
+	tilecoll WALL, WALL, WALL, FLOOR ; 9e
+	tilecoll WALL, WALL, FLOOR, WALL ; 9f
+	tilecoll WALL, WALL, WALL, WALL ; a0
+	tilecoll WALL, WALL, WALL, WALL ; a1
+	tilecoll WALL, WALL, WALL, WALL ; a2
+	tilecoll WALL, WALL, FLOOR, FLOOR ; a3
+	tilecoll WALL, WALL, LEDGE_RIGHT, WALL ; a4
+	tilecoll WALL, WALL, WALL, LEDGE_LEFT ; a5
+	tilecoll WALL, WALL, FLOOR, WALL ; a6
+	tilecoll FLOOR, FLOOR, FLOOR, WALL ; a7
+	tilecoll FLOOR, LADDER, FLOOR, FLOOR ; a8
+	tilecoll FLOOR, WARP_CARPET_RIGHT, FLOOR, WARP_CARPET_RIGHT ; a9
+	tilecoll FLOOR, LANTERN_GLOW, FLOOR, FLOOR ; aa
+	tilecoll LANTERN_GLOW, FLOOR, FLOOR, FLOOR ; ab
+	tilecoll WALL, WALL, LANTERN_GLOW, LANTERN_GLOW ; ac

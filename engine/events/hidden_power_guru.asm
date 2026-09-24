@@ -6,7 +6,7 @@ Special_HiddenPowerGuru:
 	bit MON_IS_EGG_F, a
 	jr nz, .egg
 	call GetPartyPokemonName
-	farcall CopyPokemonName_Buffer1_Buffer3
+	call CopyPokemonName_Buffer1_Buffer3
 	ld a, [wCurPartyMon]
 	ld hl, wPartyMon1DVs
 	call GetPartyLocation

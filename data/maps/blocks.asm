@@ -255,6 +255,10 @@ SECTION "CherrygroveBay_BlockData", ROMX
 CherrygroveBay_BlockData:
 	INCBIN "maps/CherrygroveBay.ablk.lzp"
 
+SECTION "CherrygroveTrainTrackDual_BlockData", ROMX
+CherrygroveTrainTrackDual_BlockData:
+	INCBIN "maps/CherrygroveTrainTrackDual.ablk.lzp"
+
 SECTION "Route32Coast_BlockData", ROMX
 Route32Coast_BlockData:
 	INCBIN "maps/Route32Coast.ablk.lzp"
@@ -1241,9 +1245,9 @@ SECTION "CeladonDeptStore5F_BlockData", ROMX
 CeladonDeptStore5F_BlockData:
 	INCBIN "maps/CeladonDeptStore5F.ablk.lzp"
 
-SECTION "CeladonDeptStore6F_BlockData", ROMX
-CeladonDeptStore6F_BlockData:
-	INCBIN "maps/CeladonDeptStore6F.ablk.lzp"
+SECTION "CeladonDeptStoreRoof_BlockData", ROMX
+CeladonDeptStoreRoof_BlockData:
+	INCBIN "maps/CeladonDeptStoreRoof.ablk.lzp"
 
 SECTION "CeladonDeptStoreElevator_BlockData", ROMX
 CeladonDeptStoreElevator_BlockData:
@@ -1433,6 +1437,14 @@ FuchsiaGym_BlockData:
 SECTION "FuchsiaCity_BlockData", ROMX
 FuchsiaCity_BlockData:
 	INCBIN "maps/FuchsiaCity.ablk.lzp"
+
+SECTION "FuchsiaAquarium1F_BlockData", ROMX
+FuchsiaAquarium1F_BlockData:
+	INCBIN "maps/FuchsiaAquarium1F.ablk.lzp"
+
+SECTION "FuchsiaAquarium2F_BlockData", ROMX
+FuchsiaAquarium2F_BlockData:
+	INCBIN "maps/FuchsiaAquarium2F.ablk.lzp"
 
 SECTION "LuckyIsland_BlockData", ROMX
 LuckyIsland_BlockData:
@@ -1666,9 +1678,13 @@ SECTION "NavelRockRoof_BlockData", ROMX
 NavelRockRoof_BlockData:
 	INCBIN "maps/NavelRockRoof.ablk.lzp"
 
-SECTION "FarawayIsland_BlockData", ROMX
-FarawayIsland_BlockData:
-	INCBIN "maps/FarawayIsland.ablk.lzp"
+SECTION "FarawayIslandNorth_BlockData", ROMX
+FarawayIslandNorth_BlockData:
+	INCBIN "maps/FarawayIslandNorth.ablk.lzp"
+
+SECTION "FarawayIslandSouth_BlockData", ROMX
+FarawayIslandSouth_BlockData:
+	INCBIN "maps/FarawayIslandSouth.ablk.lzp"
 
 SECTION "FarawayJungle_BlockData", ROMX
 FarawayJungle_BlockData:
@@ -1739,25 +1755,28 @@ SECTION "Route12South_BlockData", ROMX
 Route12South_BlockData:
 	INCBIN "maps/Route12South.ablk.lzp"
 
-SECTION "Route13East_BlockData", ROMX
-Route13East_BlockData:
-	INCBIN "maps/Route13East.ablk.lzp"
-
-SECTION "Route13West_BlockData", ROMX
-Route13West_BlockData:
-	INCBIN "maps/Route13West.ablk.lzp"
+SECTION "Route13_BlockData", ROMX
+Route13_BlockData:
+	INCBIN "maps/Route13.ablk.lzp"
 
 SECTION "Route14_BlockData", ROMX
 Route14_BlockData:
 	INCBIN "maps/Route14.ablk.lzp"
 
+SECTION "Route14LuckyIslandDual_BlockData", ROMX
+Route14LuckyIslandDual_BlockData:
+	INCBIN "maps/Route14LuckyIslandDual.ablk.lzp"
+
 SECTION "Route15_BlockData", ROMX
 Route15_BlockData:
 	INCBIN "maps/Route15.ablk.lzp"
 
+SECTION "Route16North_BlockData", ROMX
+Route16North_BlockData:
+	INCBIN "maps/Route16North.ablk.lzp"
+
 SECTION "Route16East_BlockData", ROMX
 Route16East_BlockData:
-Route16North_BlockData:
 	INCBIN "maps/Route16East.ablk.lzp"
 
 SECTION "Route16West_BlockData", ROMX

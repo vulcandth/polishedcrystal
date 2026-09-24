@@ -2,7 +2,7 @@ ROM0
 	org $0000
 	"NULL"
 	org $0000
-	"rst00 EntryPoint"
+	"rst00 CrashRst0"
 	org $0008
 	"rst08 Bankswitch"
 	org $0010
@@ -16,7 +16,7 @@ ROM0
 	org $0030
 	"rst30 PlaceString"
 	org $0038
-	"rst38 Predef"
+	"rst38 CrashRst38"
 	org $0040
 	"vblank"
 	org $0048
@@ -207,6 +207,9 @@ ROMX $49
 	"Psychic Inver"
 	"PsychicInverGroup"
 
+ROMX $4A
+	"Dynamic Pals System"
+
 VRAM $0
 	"VRAM0"
 
@@ -225,7 +228,6 @@ WRAM0
 	"Misc 404"
 	"Misc 1300"
 	"WRAM 0"
-	"Unused"
 	org $cff0
 	"Options"
 	org $cffd

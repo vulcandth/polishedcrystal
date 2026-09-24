@@ -105,6 +105,7 @@ EvolutionAnimation:
 	ld [wLowHealthAlarm], a
 	call ApplyTilemapInVBlank
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	ld a, [wEvolutionOldSpecies]
 	ld [wPlayerHPPal], a
@@ -122,7 +123,7 @@ EvolutionAnimation:
 	ld bc, 7 * 7
 	call Request2bpp
 
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	call .check_statused
 	jr c, .skip_cry
@@ -218,7 +219,7 @@ EvolutionAnimation:
 	ld [wCurPartySpecies], a
 	hlcoord 7, 2
 	lb de, $0, ANIM_MON_EVOLVE
-	predef AnimateFrontpic
+	farcall AnimateFrontpic
 
 	pop af
 	ld [wCurForm], a
@@ -260,7 +261,7 @@ EvolutionAnimation:
 	ld a, $1
 	ld [wBoxAlignment], a
 	ld de, vTiles2
-	predef FrontpicPredef
+	farcall PrepareAnimatedFrontpic
 	xor a
 	ld [wBoxAlignment], a
 	ret
@@ -301,6 +302,7 @@ EvolutionAnimation:
 .ReplaceFrontpic:
 	push bc
 	xor a
+	assert NO_BG_MAP_TRANSFER == 0
 	ldh [hBGMapMode], a
 	hlcoord 7, 2
 	lb bc, 7, 7
@@ -317,7 +319,7 @@ EvolutionAnimation:
 	add hl, de
 	dec b
 	jr nz, .loop1
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	call ApplyTilemapInVBlank
 	pop bc

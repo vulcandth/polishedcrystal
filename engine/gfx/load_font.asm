@@ -86,9 +86,8 @@ LoadBattleFontsHPBar:
 
 LoadSummaryStatusIcon:
 	push de
-	xor a
 	ld de, wTempMonStatus
-	call GetStatusConditionIndex
+	call GetStatusConditionOrFaintIndex
 	ld hl, SummaryStatusIconGFX
 	ld bc, 2 tiles
 	rst AddNTimes
@@ -104,7 +103,6 @@ LoadSummaryStatusIcon:
 
 LoadPlayerStatusIcon:
 	push de
-	ld a, [wPlayerSubStatus2]
 	ld de, wBattleMonStatus
 	call GetStatusConditionIndex
 	ld hl, StatusIconGFX
@@ -125,7 +123,6 @@ LoadStatusIcons:
 
 LoadEnemyStatusIcon:
 	push de
-	ld a, [wEnemySubStatus2]
 	ld de, wEnemyMonStatus
 	call GetStatusConditionIndex
 	ld hl, EnemyStatusIconGFX
@@ -186,16 +183,16 @@ CopyColoredMaleFemaleShinyTiles:
 ; Copy dark '♂', light '♀', and light '★' to de.
 ; Must be in VRAM bank 0.
 	call LoadStandardFontPointer
-	push hl
 	ld bc, ('♂' - $80) * TILE_1BPP_SIZE
 	add hl, bc
 	call Copy1bppTileAsDark
 	assert '♂' + 1 == '♀'
 	call Copy1bppTileAsLight
-	pop hl
-	ld bc, ('★' - $80) * TILE_1BPP_SIZE
-	add hl, bc
-	; fallthrough
+	ld h, d
+	ld l, e
+	ld de, ShinyIconGFX
+	lb bc, BANK(ShinyIconGFX), 1
+	jmp Get2bpp
 
 Copy1bppTileAsLight:
 ; Copy one 1bpp tile from hl to de, with the

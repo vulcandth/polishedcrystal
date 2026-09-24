@@ -39,7 +39,7 @@ _PlayBattleAnim:
 	pop af
 	ldh [hVBlank], a
 
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 
 	ld c, 3
@@ -149,7 +149,7 @@ BattleAnimClearHUD:
 	call DelayFrame
 	call WaitTop
 	call ClearActorHUD
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	call Delay2
 	jmp WaitTop
@@ -168,7 +168,7 @@ BattleAnimRestoreHUDs:
 	pop af
 	ldh [rWBK], a
 
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	call Delay2
 	jmp WaitTop
@@ -841,7 +841,7 @@ BattleAnimCmd_Transform:
 	ld a, [wBattleMonForm]
 	ld [wCurForm], a
 	ld de, vTiles0 tile $00
-	predef GetFrontpic
+	farcall GetFrontpic
 	jr .done
 
 .player
@@ -850,7 +850,7 @@ BattleAnimCmd_Transform:
 	ld a, [wEnemyMonForm]
 	ld [wCurForm], a
 	ld de, vTiles0 tile $00
-	predef GetBackpic
+	farcall GetBackpic
 
 .done
 	pop af
@@ -1044,14 +1044,14 @@ BattleAnimCmd_BeatUp:
 	ld a, [wBattleMonForm]
 	ld [wCurForm], a
 	ld de, vTiles2 tile $00
-	predef GetFrontpic
+	farcall GetFrontpic
 	jr .done
 
 .player
 	ld a, [wEnemyMonForm]
 	ld [wCurForm], a
 	ld de, vTiles2 tile $31
-	predef GetBackpic
+	farcall GetBackpic
 
 .done
 	pop af
@@ -1271,7 +1271,7 @@ BattleAnim_RevertPals:
 	ldh [hSCX], a
 	ldh [hSCY], a
 	call DelayFrame
-	ld a, $1
+	ld a, TRANSFER_TILEMAP
 	ldh [hBGMapMode], a
 	ret
 

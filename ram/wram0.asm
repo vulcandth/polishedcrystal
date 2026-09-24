@@ -113,7 +113,6 @@ wBGMapBufferEnd::
 wBGMapPalBuffer:: ds 48
 wBGMapPalBufferEnd::
 wBGMapBufferPtrs:: ds 48 ; 24 bg map addresses (16x8 tiles)
-
 wTileAnimationTimer:: db
 
 SECTION "Sprite Animations", WRAM0
@@ -166,6 +165,9 @@ wShadowOAMEnd::
 SECTION "Tilemap and Attrmap", WRAM0
 
 ; Some code depend on these being next to each other in memory.
+; Walking streams directly to wBGMapBuffer/wBGMapPalBuffer and does not
+; maintain these screen buffers. Call LoadMapPart before consuming a full
+; overworld screen (as map loading and ReanchorBGMap already do).
 wTilemap::
 ; 20x18 grid of 8x8 tiles
 	ds SCREEN_AREA
@@ -577,7 +579,13 @@ wEnemyCharging:: db
 
 wGivingExperienceToExpShareHolders:: db
 
-wInAbility:: db ; disables animations for abilities among other things
+wInAbility::
+; bit 4: enemy ability visible
+; bit 3: player ability visible
+; bit 2: enemy ability pending
+; bit 1: player ability pending
+; bit 0: ongoing ability trigger
+	db
 
 wBattleEnded:: db
 
@@ -717,6 +725,7 @@ wPokegearRadioChannelAddr:: dw
 wPokegearRadioMusicPlaying:: db
 wPokegearNumberBuffer:: db
 wPokegearMapCursorSpawnpoint:: db
+wPokegearPhoneMaxContact:: db
 
 
 SECTION UNION "Misc 404", WRAM0
@@ -758,25 +767,6 @@ wCardFlipFaceUpCard:: db
 wDiscardPile:: ds 24
 wDiscardPileEnd::
 wCardFlipEnd::
-
-
-;SECTION UNION "Misc 404", WRAM0
-;; memory game
-;	ds 172
-;
-;wMemoryGame::
-;wMemoryGameCards:: ds 9 * 5
-;wMemoryGameCardsEnd::
-;wMemoryGameLastCardPicked:: db
-;wMemoryGameCard1:: db
-;wMemoryGameCard2:: db
-;wMemoryGameCard1Location:: db
-;wMemoryGameCard2Location:: db
-;wMemoryGameNumberTriesRemaining:: db
-;wMemoryGameLastMatches:: ds 5
-;wMemoryGameCounter:: db
-;wMemoryGameNumCardsMatched:: db
-;wMemoryGameEnd::
 
 
 SECTION UNION "Misc 404", WRAM0
@@ -901,12 +891,8 @@ wSummaryMoveSwap:: db
 ds 9
 assert @ % 16 == 0
 
-UNION
 wSummaryScreenWindowBuffer:: ds 32 * 10
 wSummaryScreenPPTileBuffer:: ds 3 * TILE_1BPP_SIZE
-NEXTU
-wColoredMaleFemaleShinyTiles:: ds 3 tiles
-ENDU
 
 
 SECTION UNION "Misc 1300", WRAM0
@@ -1062,7 +1048,8 @@ wLinkMode::
 	db
 
 wPlayerNextMovement:: db
-wPlayerMovement:: db
+
+wNumHits:: db
 
 wFollowerNextMovement:: db
 
@@ -1199,10 +1186,6 @@ wCardFlipCursorY:: db
 wCardFlipCursorX:: db
 wCardFlipWhichCard:: db
 
-;NEXTU
-;; unused memory game
-;wMemoryGameCardChoice:: db
-
 NEXTU
 ; magnet train
 wMagnetTrainOffset:: db
@@ -1236,8 +1219,8 @@ wRandomValue::
 wEchoRAMTest::
 	db
 wPrinterQueueLength::
-wFrameCounter2:: db
-wUnusedTradeAnimPlayEvolutionMusic:: db
+wFrameCounter2::
+	db
 
 ENDU
 
@@ -1384,8 +1367,6 @@ wBGP:: db
 wOBP0:: db
 wOBP1:: db
 
-wNumHits:: db
-
 wOverworldWeatherTimer:: db
 wOverworldWeatherCooldown:: db
 wSpriteOverlapCount:: db
@@ -1413,10 +1394,12 @@ wCurPalTimeOfDayPalState:: db
 ; volatile footprints in sand
 wFootprintQueue:: ds 3 * 2 + 1
 
+wColoredMaleFemaleShinyTiles:: ds 3 tiles
 
-SECTION "Unused", WRAM0
+wSpecialPalStart:: db
+wSpecialPalCount:: db
 
-	ds 363 ; it's free real estate
+wSPBuffer:: dw
 
 
 SECTION "Options", WRAM0
@@ -1435,7 +1418,7 @@ wOptions1::
 ; bit 0-1: text delay
 ;   inst 0; fast 1; mid 2; slow 3
 ; bit 2-3: text autoscroll
-;   none 0; start 1; a+b 2; a or b 3
+;   none 0; start 1; b 2; a or b 3
 ; bit 4: turning step
 ; bit 5: no text delay
 ; bit 6: stereo off/on
@@ -1512,3 +1495,13 @@ SECTION "ROM Checksum", WRAM0
 ; protection against people trying to load a save state for a save in
 ; a different rom version.
 wRomChecksum:: dw
+
+
+SECTION "Object Palette Scan Scratch", WRAM0
+
+; Per-call results of the first dynamic object palette allocation pass.
+wResolvedObjectPals:: ds NUM_OBJECT_STRUCTS
+
+; Invalidate the selected map rectangle palettes across text/menu rendering.
+wPaletteSwapNeedsReload:: db
+wPaletteSwapReloadMask:: db
