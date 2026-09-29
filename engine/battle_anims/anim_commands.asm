@@ -1136,21 +1136,16 @@ endr
 
 	ld a, $f0
 	ld [wCryTracks], a
-	ld a, [wBattleMonSpecies]
-	ld c, a
-	ld a, [wBattleMonForm]
-	ld b, a
 	jr .done_cry_tracks
 
 .enemy
 	ld a, $f
 	ld [wCryTracks], a
-	ld a, [wEnemyMonSpecies]
-	ld c, a
-	ld a, [wEnemyMonForm]
-	ld b, a
 
 .done_cry_tracks
+	push hl
+	farcall GetUserBattleAppearance
+	pop hl
 	push hl
 	call LoadCry
 	pop hl

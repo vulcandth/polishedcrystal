@@ -122,28 +122,18 @@ GetDefaultBattlePalette:
 	rst AddNTimes
 	jmp FarCopyWRAM
 
-GetPartyMonDVs:
-	ld hl, wPartyMon1DVs
-	ld a, [wCurBattleMon]
-	jmp GetPartyLocation
-
-GetEnemyMonDVs:
-	ld hl, wOTPartyMon1DVs
-	ld a, [wCurOTMon]
-	jmp GetPartyLocation
-
 SetBattlePal_Player:
 	ld hl, wTempBattleMonSpecies
 	push hl
 	call GetBattlemonBackpicPalettePointer
-	ld bc, GetPartyMonDVs
+	ld bc, GetPlayerPaletteDVs
 	jr SetBattlePal_Pokepic
 
 SetBattlePal_Enemy:
 	ld hl, wTempEnemyMonSpecies
 	push hl
 	call GetEnemyFrontpicPalettePointer
-	ld bc, GetEnemyMonDVs
+	ld bc, GetEnemyPaletteDVs
 	; fallthrough
 SetBattlePal_Pokepic:
 	push bc
@@ -1575,3 +1565,43 @@ _CGB_ForceUpdateLayout:
 	ld a, $1
 	ldh [hCGBPalUpdate], a
 	ret
+
+GetPartyMonDVs:
+	ld hl, wPartyMon1DVs
+	ld a, [wPlayerIllusion]
+	and a
+	jr z, .actual
+	dec a
+	jmp GetPartyLocation
+.actual
+	ld a, [wCurBattleMon]
+	jmp GetPartyLocation
+
+GetEnemyMonDVs:
+	ld hl, wOTPartyMon1DVs
+	ld a, [wEnemyIllusion]
+	and a
+	jr z, .actual
+	dec a
+	jmp GetPartyLocation
+.actual
+	ld a, [wCurOTMon]
+	jmp GetPartyLocation
+
+GetPlayerPaletteDVs:
+	ld a, [wPlayerIllusion]
+	and a
+	jr z, GetPartyMonDVs
+	farcall GetPlayerBattleAppearance
+	ld d, b
+	ld e, c
+	jr GetPartyMonDVs
+
+GetEnemyPaletteDVs:
+	ld a, [wEnemyIllusion]
+	and a
+	jr z, GetEnemyMonDVs
+	farcall GetEnemyBattleAppearance
+	ld d, b
+	ld e, c
+	jr GetEnemyMonDVs

@@ -336,6 +336,11 @@ INCLUDE "engine/battle/abilities.asm"
 INCLUDE "engine/battle/text.asm"
 
 
+SECTION "Illusion", ROMX
+
+INCLUDE "engine/battle/illusion.asm"
+
+
 SECTION "bank21", ROMX
 
 INCLUDE "engine/events/halloffame.asm"

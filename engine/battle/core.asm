@@ -1342,6 +1342,7 @@ endr
 .enemy_ability
 	call ResetEnemyAbility
 .done_ability
+	farcall InitUserIllusion
 	; Wild Pokémon are already out
 	ldh a, [hBattleTurn]
 	and a
@@ -1423,6 +1424,8 @@ endr
 .send_out_player_mon
 	call SendOutPlayerMon
 .send_out_anim_done
+	; Gas removes disguises on arrival, even if entry hazards then KO its user.
+	farcall CheckNeutralizingGasIllusion
 	; Give a "X was dragged out!" message if applicable
 	ld hl, DraggedOutText
 	ld a, [wDeferredSwitch]
@@ -1761,11 +1764,22 @@ LeppaRestorePP:
 
 DealDamageToOpponent:
 ; ONLY runs from attacking damage.
+	farcall GetOpponentIllusion
+	jr nz, .illusion
 	call GetOpponentIgnorableAbility
 	cp BERSERK
 	jr z, .berserk
 	call SwitchTurn
 	call SubtractHPFromUser
+	call CheckEnigmaBerry
+	jmp SwitchTurn
+
+.illusion
+	; Reveal after HP loss, before any healing item or subsequent hit.
+	call SwitchTurn
+	call SubtractHPFromUser_SkipItems
+	farcall BreakUserIllusion
+	call HandleUserHealingItems
 	call CheckEnigmaBerry
 	jmp SwitchTurn
 
@@ -2154,13 +2168,7 @@ FaintUserPokemon:
 .got_cry_tracks
 	ld [wCryTracks], a
 
-	ld hl, wBattleMonSpecies
-	call GetUserMonAttr
-	ld c, [hl]
-	assert wBattleMonForm - wBattleMonSpecies == wEnemyMonForm - wEnemyMonSpecies
-	ld de, wBattleMonForm - wBattleMonSpecies
-	add hl, de
-	ld b, [hl]
+	farcall GetUserBattleAppearance
 	farcall PlaySlowCryBC
 	ld de, SFX_KINESIS
 	call PlaySFX
@@ -2211,6 +2219,8 @@ FaintUserPokemon:
 	ret
 
 SuppressUserAbilities:
+	farcall GetUserIllusion
+	ld [hl], 0
 	ld a, BATTLE_VARS_ABILITY
 	call GetBattleVarAddr
 	ld a, [hl]
@@ -2933,6 +2943,8 @@ OfferSwitch:
 	ld bc, MON_NAME_LENGTH
 	rst CopyBytes
 
+	farcall GetEnemySwitchIllusionName
+
 	; Actually print the message
 	ld a, [wOptions2]
 	bit BATTLE_PREDICT, a
@@ -2991,6 +3003,14 @@ Function_SetEnemyPkmnAndSendOutAnimation:
 	ld a, OTPARTYMON
 	ld [wMonType], a
 	farcall CopyPkmnToTempMon
+	farcall GetEnemyBattleAppearance
+	ld a, c
+	ld [wCurSpecies], a
+	ld [wCurPartySpecies], a
+	ld [wTempMonSpecies], a
+	ld a, b
+	ld [wCurForm], a
+	ld [wTempMonForm], a
 	call GetMonFrontpic
 
 	xor a
@@ -3169,11 +3189,23 @@ BattleCheckShininess:
 
 GetPartyMonPersonality:
 	ld hl, wPartyMon1Personality
+	ld a, [wPlayerIllusion]
+	and a
+	jr z, .actual
+	dec a
+	jmp GetPartyLocation
+.actual
 	ld a, [wCurBattleMon]
 	jmp GetPartyLocation
 
 GetEnemyMonPersonality:
 	ld hl, wOTPartyMon1Personality
+	ld a, [wEnemyIllusion]
+	and a
+	jr z, .actual
+	dec a
+	jmp GetPartyLocation
+.actual
 	ld a, [wCurOTMon]
 	jmp GetPartyLocation
 
@@ -3225,10 +3257,7 @@ SendOutPlayerMon:
 	jr c, .statused
 	ld a, $f0
 	ld [wCryTracks], a
-	ld a, [wCurPartySpecies]
-	ld c, a
-	ld a, [wCurForm]
-	ld b, a
+	farcall GetPlayerBattleAppearance
 	call PlayStereoCry
 
 .statused
@@ -4013,9 +4042,15 @@ CheckDanger:
 	ret
 
 PrintPlayerHUD:
-	ld de, wBattleMonNickname
+	ld hl, wPartyMonNicknames
+	ld a, [wCurBattleMon]
+	call SkipNames
+	ld d, h
+	ld e, l
+	ld bc, MON_NAME_LENGTH - 2
+	add hl, bc
+	ld a, [hl]
 	hlcoord 11, 7
-	ld a, [wBattleMonNickname + MON_NAME_LENGTH - 2]
 	cp '@'
 	jr z, .short_name
 	dec hl ; hlcoord 10, 7
@@ -4102,9 +4137,18 @@ DrawEnemyHUD:
 	farcall DrawEnemyHUDBorder
 
 	ld a, [wTempEnemyMonSpecies]
+	ld c, a
+	ld a, [wEnemyMonForm]
+	ld b, a
+	ld a, [wEnemyIllusion]
+	and a
+	jr z, .got_appearance
+	farcall GetEnemyBattleAppearance
+.got_appearance
+	ld a, c
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
-	ld a, [wEnemyMonForm]
+	ld a, b
 	ld [wCurForm], a
 	call GetBaseData
 
@@ -4131,7 +4175,12 @@ endr
 	ld a, [hl]
 	ld [de], a
 
+	ld a, [wEnemyIllusion]
+	and a
 	ld bc, wEnemyMonShiny
+	jr z, .got_shiny
+	ld bc, wTempMonShiny
+.got_shiny
 	farcall CheckShininess
 	jr nc, .not_shiny
 	ld a, '<SHINY>'
@@ -6611,9 +6660,7 @@ GiveExperiencePoints:
 	ld [wStringBuffer2 + 1], a
 	ldh a, [hQuotient]
 	ld [wStringBuffer2], a
-	ld a, [wCurPartyMon]
-	ld hl, wPartyMonNicknames
-	call GetNickname
+	farcall GetBattleOrPartyNickname
 	ld hl, Text_PkmnGainedExpPoint
 	call BattleTextbox
 	ld a, [wStringBuffer2 + 2]
@@ -7875,9 +7922,10 @@ DropPlayerSub:
 	push af
 	ld a, [wCurForm]
 	push af
-	ld a, [wBattleMonSpecies]
+	farcall GetPlayerBattleAppearance
+	ld a, c
 	ld [wCurPartySpecies], a
-	ld a, [wBattleMonForm]
+	ld a, b
 	ld [wCurForm], a
 	ld de, vTiles2 tile $31
 	farcall GetBackpic
@@ -7909,10 +7957,11 @@ DropEnemySub:
 	push af
 	ld a, [wCurForm]
 	push af
-	ld a, [wEnemyMonSpecies]
+	farcall GetEnemyBattleAppearance
+	ld a, c
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
-	ld a, [wEnemyMonForm]
+	ld a, b
 	ld [wCurForm], a
 	call GetBaseData
 	call GetFrontpicOrGhostpic

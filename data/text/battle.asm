@@ -2126,3 +2126,8 @@ LawrenceFinalPkmnText:
 ReiFinalPkmnText:
 	text "I'm not done yet."
 	prompt
+
+IllusionWoreOffText:
+	text "<USER>'s"
+	line "illusion wore off!"
+	prompt

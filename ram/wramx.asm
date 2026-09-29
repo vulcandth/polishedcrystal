@@ -743,7 +743,9 @@ wCurEnemyItem:: db
 
 ENDU
 
-	ds 2 ; unused
+; One-based disguise party slots; zero when inactive. Reuses unsaved padding.
+wPlayerIllusion:: db
+wEnemyIllusion:: db
 
 wEnemyMon:: battle_struct wEnemyMon
 

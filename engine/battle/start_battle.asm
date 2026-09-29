@@ -178,6 +178,8 @@ INCLUDE "data/battle/music.asm"
 
 ClearBattleRAM:
 	xor a
+	ld [wPlayerIllusion], a
+	ld [wEnemyIllusion], a
 	ld [wBattlePlayerAction], a
 	ld [wBattleResult], a
 

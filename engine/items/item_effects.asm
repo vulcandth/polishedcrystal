@@ -1189,9 +1189,7 @@ UseItem_GetBaseDataAndNickParameters:
 	and SPECIESFORM_MASK
 	ld [wCurForm], a
 	call GetBaseData
-	ld a, [wCurPartyMon]
-	ld hl, wPartyMonNicknames
-	jmp GetNickname
+	farjp GetBattleOrPartyNickname
 
 UseItem_GetHPParameter:
 	ld a, MON_HP

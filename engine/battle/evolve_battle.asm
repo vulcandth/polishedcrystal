@@ -95,6 +95,8 @@ EvolveDuringBattle::
 	ld a, [wCurBattleMon]
 	ld [wCurPartyMon], a
 	call .load_mon_data
+	call SetPlayerTurn
+	farcall RefreshUserIllusionName
 	pop af
 	ld [wCurPartyMon], a
 

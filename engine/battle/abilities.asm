@@ -89,6 +89,8 @@ UnnerveAbility:
 	jr NotificationAbilities
 NeutralizingGasAbility:
 	ld hl, NotifyNeutralizingGas
+	call NotificationAbilities
+	farjp BreakOpponentIllusion
 NotificationAbilities:
 	call BeginAndShowUserAbility
 	call StdBattleTextbox

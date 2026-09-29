@@ -1,6 +1,9 @@
 BattleCommand_transform:
 	call ClearLastMove
 
+	farcall GetOpponentIllusion
+	jmp nz, BattleEffect_ButItFailed
+
 	ld a, BATTLE_VARS_SUBSTATUS2_OPP
 	call GetBattleVarAddr
 	bit SUBSTATUS_TRANSFORMED, [hl]
@@ -32,6 +35,9 @@ BattleCommand_transform:
 .bypass_sub
 	call CheckHiddenOpponent
 	jmp nz, BattleEffect_ButItFailed
+
+	; A successful Transform ends the user's own disguise as well.
+	farcall BreakUserIllusion
 
 	farcall GetDisableEncoreMoves
 	push de

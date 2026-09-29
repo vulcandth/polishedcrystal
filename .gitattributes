@@ -24,3 +24,6 @@ Makefile text
 *.ablk binary diff=hex
 *.tilemap binary diff=hex
 *.ips  binary diff=hex
+
+# Preserve emulator video captures byte-for-byte.
+*.mp4 binary

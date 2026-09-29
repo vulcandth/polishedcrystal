@@ -565,6 +565,16 @@ GetBattlemonBackpicPalettePointer:
 	ld c, l
 	ld b, h
 	ld a, [wTempBattleMonSpecies]
+	and a
+	jr z, .got_species
+	ld a, [wPlayerIllusion]
+	and a
+	ld a, [wTempBattleMonSpecies]
+	jr z, .got_species
+	ld de, MON_SPECIES - MON_PERSONALITY
+	add hl, de
+	ld a, [hl]
+.got_species
 	call GetPlayerOrMonPalettePointer
 	pop de
 	ret
@@ -575,6 +585,16 @@ GetEnemyFrontpicPalettePointer:
 	ld c, l
 	ld b, h
 	ld a, [wTempEnemyMonSpecies]
+	and a
+	jr z, .got_species
+	ld a, [wEnemyIllusion]
+	and a
+	ld a, [wTempEnemyMonSpecies]
+	jr z, .got_species
+	ld de, MON_SPECIES - MON_PERSONALITY
+	add hl, de
+	ld a, [hl]
+.got_species
 	call GetFrontpicPalettePointer
 	pop de
 	ret
