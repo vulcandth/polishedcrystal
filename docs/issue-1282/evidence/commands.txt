@@ -1,0 +1,174 @@
+# Boot and Continue the local seed save.
+run 500
+press 8 7f
+run 90
+press 10 7f
+run 100
+press 8 ef
+run 100
+press 8 ef
+run 180
+until OverworldLoop.loop
+# Controlled prerequisite state, set once before any observed dialogue.
+# Elite Four, fought Ho-Oh, fought Suicune, received Rainbow Wing.
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+# Tower Eusine hidden; house Eusine visible (0 means visible).
+event 2154 1
+event 2156 0
+# Native catches of all three beasts and Ho-Oh; no Suicune arrival scene.
+write wPlayerCaught 1d
+write wTinTower1FSceneID 01
+# Enter tower at (6,4), below Eusine. Normal map setup/callbacks execute.
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2154 0
+press 8 fb
+run 8
+press 8 ef
+run 60
+shot 01-first-farewell.ppm
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+run 180
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+shot 02-farewell-complete.ppm
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+shot 03-house-after-farewell.ppm
+press 8 fb
+run 8
+press 8 ef
+run 60
+press 8 ef
+run 60
+press 8 ef
+run 60
+press 8 ef
+run 60
+press 8 ef
+run 60
+shot 04-stale-rumor.ppm
+press 8 ef
+run 60
+shot 05-stale-rumor-tower.ppm
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+run 180
+expect_event 2154 1
+expect_event 2156 1
+expect wScriptRunning 00
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect_event 2154 0
+press 8 fb
+run 8
+press 8 ef
+run 60
+shot 06-repeated-farewell.ppm
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+press 8 ef
+run 45
+run 180
+expect_event 2154 1
+expect wScriptRunning 00
+until OverworldLoop.loop
+warp 3 5 8 3
+run 100
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect_event 2154 0
+shot 07-repeat-without-house.ppm
+expect_event 671 1
+expect wPlayerCaught 1d
+quit

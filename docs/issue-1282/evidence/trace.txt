@@ -1,0 +1,187 @@
+ok run 500 pc=4f40 dots=35112000
+ok press 8 7f pc=0dd4 dots=35673792
+ok run 90 pc=0dd4 dots=41993952
+ok press 10 7f pc=0dd4 dots=42696192
+ok run 100 pc=6c08 dots=49718594
+ok press 8 ef pc=2b6d dots=50280386
+ok run 100 pc=0dd4 dots=57302786
+ok press 8 ef pc=4e1c dots=57864584
+ok run 180 pc=0dd4 dots=70504904
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70597472
+ok event 73 1 pc=510e dots=70597472
+ok event 671 1 pc=510e dots=70597472
+ok event 717 1 pc=510e dots=70597472
+ok event 718 1 pc=510e dots=70597472
+ok event 2154 1 pc=510e dots=70597472
+ok event 2156 0 pc=510e dots=70597472
+ok write wPlayerCaught 1d pc=510e dots=70597472
+ok write wTinTower1FSceneID 01 pc=510e dots=70597472
+ok warp 3 4 6 4 pc=510e dots=70597472
+ok run 150 pc=0dd4 dots=81131072
+PASS expect wMapGroup 03 04 04 06
+ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=81131072
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=0dd4 dots=81131072
+ok press 8 fb pc=0dd4 dots=81692864
+ok run 8 pc=0dd4 dots=82254656
+ok press 8 ef pc=0ca4 dots=82816448
+ok run 60 pc=0dd4 dots=87029888
+ok shot 01-first-farewell.ppm pc=0dd4 dots=87029888
+ok press 8 ef pc=0dd4 dots=87591680
+ok run 45 pc=0dd4 dots=90751760
+ok press 8 ef pc=0dd4 dots=91313552
+ok run 45 pc=0dd4 dots=94473632
+ok press 8 ef pc=0dd4 dots=95035424
+ok run 45 pc=0dd4 dots=98195504
+ok press 8 ef pc=0dd4 dots=98757296
+ok run 45 pc=0dd4 dots=101917376
+ok press 8 ef pc=0dd4 dots=102479168
+ok run 45 pc=0dd4 dots=105639248
+ok press 8 ef pc=0dd4 dots=106201040
+ok run 45 pc=0dd4 dots=109361120
+ok press 8 ef pc=0dd4 dots=109922912
+ok run 45 pc=0dd4 dots=113082992
+ok press 8 ef pc=0dd4 dots=113644784
+ok run 45 pc=0dd4 dots=116804864
+ok press 8 ef pc=0dd4 dots=117366656
+ok run 45 pc=0dd4 dots=120526736
+ok press 8 ef pc=0dd4 dots=121088528
+ok run 45 pc=0dd4 dots=124248608
+ok press 8 ef pc=0dd4 dots=124810400
+ok run 45 pc=0dd4 dots=127970480
+ok press 8 ef pc=0dd4 dots=128532272
+ok run 45 pc=0dd4 dots=131692352
+ok press 8 ef pc=0dd4 dots=132254144
+ok run 45 pc=0dd4 dots=135414224
+ok press 8 ef pc=0dd4 dots=135976016
+ok run 45 pc=0dd4 dots=139136096
+ok press 8 ef pc=0dd4 dots=139697888
+ok run 45 pc=0dd4 dots=142857968
+ok press 8 ef pc=0dd4 dots=143419760
+ok run 45 pc=0dd4 dots=146579840
+ok run 180 pc=0dd4 dots=159220160
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=0dd4 dots=159220160
+PASS event 2156 = 0
+ok expect_event 2156 0 pc=0dd4 dots=159220160
+PASS expect wScriptRunning 00
+ok expect wScriptRunning 00 pc=0dd4 dots=159220160
+ok shot 02-farewell-complete.ppm pc=0dd4 dots=159220160
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=159263868
+ok warp 21 32 2 4 pc=510e dots=159263868
+ok run 150 pc=0dd4 dots=169797468
+PASS expect wMapGroup 15 20 04 02
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=169797468
+ok shot 03-house-after-farewell.ppm pc=0dd4 dots=169797468
+ok press 8 fb pc=0dd4 dots=170359260
+ok run 8 pc=0dd4 dots=170921052
+ok press 8 ef pc=0dd4 dots=171482844
+ok run 60 pc=0dd4 dots=175696284
+ok press 8 ef pc=0dd4 dots=176258076
+ok run 60 pc=0dd4 dots=180471516
+ok press 8 ef pc=0dd4 dots=181033308
+ok run 60 pc=0dd4 dots=185246748
+ok press 8 ef pc=0dd4 dots=185808540
+ok run 60 pc=0dd4 dots=190021980
+ok press 8 ef pc=0dd4 dots=190583772
+ok run 60 pc=0dd4 dots=194797212
+ok shot 04-stale-rumor.ppm pc=0dd4 dots=194797212
+ok press 8 ef pc=0dd4 dots=195359004
+ok run 60 pc=0dd4 dots=199572444
+ok shot 05-stale-rumor-tower.ppm pc=0dd4 dots=199572444
+ok press 8 ef pc=0dd4 dots=200134236
+ok run 45 pc=0dd4 dots=203294316
+ok press 8 ef pc=0dd4 dots=203856108
+ok run 45 pc=0dd4 dots=207016188
+ok press 8 ef pc=0dd4 dots=207577980
+ok run 45 pc=0dd4 dots=210738060
+ok press 8 ef pc=0dd4 dots=211299852
+ok run 45 pc=0dd4 dots=214459932
+ok press 8 ef pc=0dd4 dots=215021724
+ok run 45 pc=0dd4 dots=218181804
+ok press 8 ef pc=0dd4 dots=218743596
+ok run 45 pc=0dd4 dots=221903676
+ok press 8 ef pc=0dd4 dots=222465468
+ok run 45 pc=0dd4 dots=225625548
+ok press 8 ef pc=0dd4 dots=226187340
+ok run 45 pc=0dd4 dots=229347420
+ok press 8 ef pc=0dd4 dots=229909212
+ok run 45 pc=0dd4 dots=233069292
+ok press 8 ef pc=0dd4 dots=233631084
+ok run 45 pc=0dd4 dots=236791164
+ok press 8 ef pc=0dd4 dots=237352956
+ok run 45 pc=0dd4 dots=240513036
+ok press 8 ef pc=0dd4 dots=241074828
+ok run 45 pc=0dd4 dots=244234908
+ok run 180 pc=0dd4 dots=256875228
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=0dd4 dots=256875228
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=0dd4 dots=256875228
+PASS expect wScriptRunning 00
+ok expect wScriptRunning 00 pc=0dd4 dots=256875228
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=256892764
+ok warp 3 4 6 4 pc=510e dots=256892764
+ok run 150 pc=0dd4 dots=267426364
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=0dd4 dots=267426364
+ok press 8 fb pc=0dd4 dots=267988156
+ok run 8 pc=0dd4 dots=268549948
+ok press 8 ef pc=0c80 dots=269111740
+ok run 60 pc=0dd4 dots=273325180
+ok shot 06-repeated-farewell.ppm pc=0dd4 dots=273325180
+ok press 8 ef pc=0dd4 dots=273886972
+ok run 45 pc=0dd4 dots=277047052
+ok press 8 ef pc=0dd4 dots=277608844
+ok run 45 pc=0dd4 dots=280768924
+ok press 8 ef pc=0dd4 dots=281330716
+ok run 45 pc=0dd4 dots=284490796
+ok press 8 ef pc=0dd4 dots=285052588
+ok run 45 pc=0dd4 dots=288212668
+ok press 8 ef pc=0dd4 dots=288774460
+ok run 45 pc=0dd4 dots=291934540
+ok press 8 ef pc=0dd4 dots=292496332
+ok run 45 pc=0dd4 dots=295656412
+ok press 8 ef pc=0dd4 dots=296218204
+ok run 45 pc=0dd4 dots=299378284
+ok press 8 ef pc=0dd4 dots=299940076
+ok run 45 pc=0dd4 dots=303100156
+ok press 8 ef pc=0dd4 dots=303661948
+ok run 45 pc=0dd4 dots=306822028
+ok press 8 ef pc=0dd4 dots=307383820
+ok run 45 pc=0dd4 dots=310543900
+ok press 8 ef pc=0dd4 dots=311105692
+ok run 45 pc=0dd4 dots=314265772
+ok press 8 ef pc=0dd4 dots=314827564
+ok run 45 pc=0dd4 dots=317987644
+ok press 8 ef pc=0dd4 dots=318549436
+ok run 45 pc=0dd4 dots=321709516
+ok press 8 ef pc=0dd4 dots=322271308
+ok run 45 pc=0dd4 dots=325431388
+ok press 8 ef pc=0dd4 dots=325993180
+ok run 45 pc=0dd4 dots=329153260
+ok press 8 ef pc=0dd4 dots=329715052
+ok run 45 pc=0dd4 dots=332875132
+ok run 180 pc=0dd4 dots=345515452
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=0dd4 dots=345515452
+PASS expect wScriptRunning 00
+ok expect wScriptRunning 00 pc=0dd4 dots=345515452
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=345543170
+ok warp 3 5 8 3 pc=510e dots=345543170
+ok run 100 pc=5204 dots=352565570
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=352566526
+ok warp 3 4 6 4 pc=510e dots=352566526
+ok run 150 pc=0dd4 dots=363100126
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=0dd4 dots=363100126
+ok shot 07-repeat-without-house.ppm pc=0dd4 dots=363100126
+PASS event 671 = 1
+ok expect_event 671 1 pc=0dd4 dots=363100126
+PASS expect wPlayerCaught 1d
+ok expect wPlayerCaught 1d pc=0dd4 dots=363100126

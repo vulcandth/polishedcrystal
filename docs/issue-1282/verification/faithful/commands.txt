@@ -1,0 +1,2376 @@
+run 500
+press 8 7f
+run 90
+press 10 7f
+run 100
+press 8 ef
+run 100
+press 8 ef
+run 180
+until OverworldLoop.loop
+snapshot neutral.state
+matrix
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1d
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+press 8 fb
+run 8
+press 8 ef
+run 60
+shot first-farewell.ppm
+finish
+run 180
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+shot house-after-farewell.ppm
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+shot tower-after-farewell.ppm
+until OverworldLoop.loop
+warp 3 5 8 3
+run 150
+expect wMapGroup 03 05 03 08
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+until OverworldLoop.loop
+call SaveGameData
+call SaveCurrentVersion
+checksave
+reset
+run 500
+press 8 7f
+run 90
+press 10 7f
+run 100
+press 8 ef
+run 100
+press 8 ef
+run 180
+until OverworldLoop.loop
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+shot continue-pending-tower.ppm
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+until OverworldLoop.loop
+call SaveGameData
+call SaveCurrentVersion
+checksave
+reset
+run 500
+press 8 7f
+run 90
+press 10 7f
+run 100
+press 8 ef
+run 100
+press 8 ef
+run 180
+until OverworldLoop.loop
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+shot continue-complete-tower.ppm
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+until OverworldLoop.loop
+call SaveGameData
+call SaveCurrentVersion
+checksave
+reset
+run 500
+press 8 7f
+run 90
+press 10 7f
+run 100
+press 8 ef
+run 100
+press 8 ef
+run 180
+until OverworldLoop.loop
+expect wMapGroup 15 20 04 02
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+shot continue-home.ppm
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+until OverworldLoop.loop
+call SaveGameData
+call SaveCurrentVersion
+checksave
+reset
+run 500
+press 8 7f
+run 90
+press 10 7f
+run 100
+press 8 ef
+run 100
+press 8 ef
+run 180
+until OverworldLoop.loop
+expect wMapGroup 15 20 04 02
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+shot continue-complete-house.ppm
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+until OverworldLoop.loop
+call SaveGameData
+call SaveCurrentVersion
+checksave
+reset
+run 500
+press 8 7f
+run 90
+press 10 7f
+run 100
+press 8 ef
+run 100
+press 8 ef
+run 180
+until OverworldLoop.loop
+expect wMapGroup 0f 0a 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+shot continue-roof.ppm
+restore neutral.state
+event 73 0
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 00
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 00
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 0
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 04
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 04
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 0
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 08
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 08
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 0
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 0c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 0c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 0
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 10
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 10
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 0
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 14
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 14
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 0
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 18
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 18
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 0
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 1
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 1
+expect wScriptRunning 00
+restore neutral.state
+event 73 0
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 00
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 2289 1
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 0
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 00
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+call RespawnOneOffs
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 1 3
+run 150
+expect wMapGroup 15 20 03 01
+press 8 fe
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 2 2
+run 150
+expect wMapGroup 15 20 02 02
+press 8 f7
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 4 5 3
+run 150
+expect wMapGroup 03 04 03 05
+press 8 fe
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 4 7 3
+run 150
+expect wMapGroup 03 04 03 07
+press 8 fd
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 4 6 2
+run 150
+expect wMapGroup 03 04 02 06
+press 8 f7
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 5 4
+run 150
+expect wMapGroup 15 20 04 05
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 589 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 5 4
+run 150
+expect wMapGroup 15 20 04 05
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 589 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 5 4
+run 150
+expect wMapGroup 15 20 04 05
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 589 0
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 21 32 5 4
+run 150
+expect wMapGroup 15 20 04 05
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 589 1
+expect wScriptRunning 00
+press 8 fb
+run 8
+press 8 ef
+run 60
+finish
+run 180
+expect_event 589 1
+expect wScriptRunning 00
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+call RespawnOneOffs
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect_event 671 0
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1d
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+call RespawnOneOffs
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect_event 671 1
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+call RespawnOneOffs
+expect_event 2289 1
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 1
+expect_event 671 0
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 0
+event 2291 0
+write wPlayerCaught 1d
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+call RespawnOneOffs
+expect_event 2289 1
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 1
+expect_event 671 1
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+call RespawnOneOffs
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+expect_event 671 0
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1d
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+call RespawnOneOffs
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+expect_event 671 1
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+call RespawnOneOffs
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+expect_event 671 0
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1d
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+call RespawnOneOffs
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+expect_event 671 1
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+until OverworldLoop.loop
+script TinTowerHoOh
+until Script_startbattle
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+expect_event 671 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+until OverworldLoop.loop
+script TinTowerHoOh
+until Script_startbattle
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+expect_event 671 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+until OverworldLoop.loop
+script TinTowerHoOh
+until Script_startbattle
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+expect_event 671 1
+restore neutral.state
+event 73 1
+event 671 1
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wLastSpawnMapGroup 04 02
+write wBattleResult 01
+until OverworldLoop.loop
+script TinTowerHoOh.nocatch
+call Script_reloadmapafterbattle
+run 90
+finish
+run 180
+expect wMapGroup 04 02
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+until OverworldLoop.loop
+warp 21 32 2 4
+run 150
+expect wMapGroup 15 20 04 02
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wLastSpawnMapGroup 04 02
+until OverworldLoop.loop
+script TinTowerHoOh
+until StartBattle
+battle_result 00
+run 90
+finish
+run 180
+expect wPlayerCaught 1c
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wLastSpawnMapGroup 04 02
+until OverworldLoop.loop
+script TinTowerHoOh
+until StartBattle
+battle_result 02
+run 90
+finish
+run 180
+expect wPlayerCaught 1c
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wLastSpawnMapGroup 04 02
+until OverworldLoop.loop
+script TinTowerHoOh
+until StartBattle
+battle_result 40
+run 90
+finish
+run 180
+expect wPlayerCaught 1d
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wLastSpawnMapGroup 04 02
+until OverworldLoop.loop
+script TinTowerHoOh
+until StartBattle
+battle_result 01
+run 90
+finish
+run 180
+expect wPlayerCaught 1c
+expect wScriptRunning 00
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+expect wMapGroup 04 02
+restore neutral.state
+event 73 0
+event 671 0
+event 717 0
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 00
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+event 1854 0
+event 2143 0
+event 2146 0
+write wLastSpawnMapGroup 04 02
+write wTinTower1FSceneID 00
+until OverworldLoop.loop
+warp 3 4 7 15
+until StartBattle 1800
+battle_result 00
+run 90
+finish
+run 180
+expect_event 717 1
+expect wTinTower1FSceneID 01
+expect wScriptRunning 00
+expect wPlayerCaught 00
+expect_event 1854 1
+expect_event 2143 1
+expect_event 2146 1
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+restore neutral.state
+event 73 0
+event 671 0
+event 717 0
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 00
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+event 1854 0
+event 2143 0
+event 2146 0
+write wLastSpawnMapGroup 04 02
+write wTinTower1FSceneID 00
+until OverworldLoop.loop
+warp 3 4 7 15
+until StartBattle 1800
+battle_result 02
+run 90
+finish
+run 180
+expect_event 717 1
+expect wTinTower1FSceneID 01
+expect wScriptRunning 00
+expect wPlayerCaught 00
+expect_event 1854 1
+expect_event 2143 1
+expect_event 2146 1
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+restore neutral.state
+event 73 0
+event 671 0
+event 717 0
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 00
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+event 1854 0
+event 2143 0
+event 2146 0
+write wLastSpawnMapGroup 04 02
+write wTinTower1FSceneID 00
+until OverworldLoop.loop
+warp 3 4 7 15
+until StartBattle 1800
+battle_result 40
+run 90
+finish
+run 180
+expect_event 717 1
+expect wTinTower1FSceneID 01
+expect wScriptRunning 00
+expect wPlayerCaught 10
+expect_event 1854 1
+expect_event 2143 1
+expect_event 2146 1
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+restore neutral.state
+event 73 0
+event 671 0
+event 717 0
+event 718 0
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 00
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+event 1854 0
+event 2143 0
+event 2146 0
+write wLastSpawnMapGroup 04 02
+write wTinTower1FSceneID 00
+until OverworldLoop.loop
+warp 3 4 7 15
+until StartBattle 1800
+battle_result 01
+run 90
+finish
+run 180
+expect_event 717 1
+expect wTinTower1FSceneID 01
+expect wScriptRunning 00
+expect wPlayerCaught 00
+expect_event 1854 1
+expect_event 2143 1
+expect_event 2146 1
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+expect wMapGroup 04 02
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 4 6 4
+run 150
+expect wMapGroup 03 04 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 5 6 4
+run 150
+expect wMapGroup 03 05 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 6 6 4
+run 150
+expect wMapGroup 03 06 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 7 6 4
+run 150
+expect wMapGroup 03 07 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 8 6 4
+run 150
+expect wMapGroup 03 08 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 9 6 4
+run 150
+expect wMapGroup 03 09 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 10 6 4
+run 150
+expect wMapGroup 03 0a 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 11 6 4
+run 150
+expect wMapGroup 03 0b 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 12 6 4
+run 150
+expect wMapGroup 03 0c 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 13 6 4
+run 150
+expect wMapGroup 03 0d 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 01
+call CheckFlyAllowedOnMap 01 00
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+until OverworldLoop.loop
+write wDigWarpNumber 03 10 0f
+call EscapeRopeOrDig.CheckCanDig 02
+call CheckFlyAllowedOnMap 00 80
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 13 6 4
+run 150
+expect wMapGroup 03 0d 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint ff
+write wCurPartyMon 00
+until OverworldLoop.loop
+script EscapeRopeOrDig.UsedEscapeRopeScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 10 0f
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 13 6 4
+run 150
+expect wMapGroup 03 0d 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint ff
+write wCurPartyMon 00
+until OverworldLoop.loop
+script EscapeRopeOrDig.UsedEscapeRopeScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 10 0f
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 13 6 4
+run 150
+expect wMapGroup 03 0d 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint ff
+write wCurPartyMon 00
+until OverworldLoop.loop
+script EscapeRopeOrDig.UsedEscapeRopeScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 10 0f
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 13 6 4
+run 150
+expect wMapGroup 03 0d 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint ff
+write wCurPartyMon 00
+until OverworldLoop.loop
+script EscapeRopeOrDig.UsedDigScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 10 0f
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 13 6 4
+run 150
+expect wMapGroup 03 0d 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint ff
+write wCurPartyMon 00
+until OverworldLoop.loop
+script EscapeRopeOrDig.UsedDigScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 10 0f
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 3 13 6 4
+run 150
+expect wMapGroup 03 0d 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint ff
+write wCurPartyMon 00
+until OverworldLoop.loop
+script EscapeRopeOrDig.UsedDigScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 10 0f
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint 0b
+write wCurPartyMon 00
+until OverworldLoop.loop
+script TeleportFunction.TeleportScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 15 07
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint 0b
+write wCurPartyMon 00
+until OverworldLoop.loop
+script TeleportFunction.TeleportScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 15 07
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint 0b
+write wCurPartyMon 00
+until OverworldLoop.loop
+script TeleportFunction.TeleportScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 15 07
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 0
+event 2290 0
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint 0b
+write wCurPartyMon 00
+until OverworldLoop.loop
+script FlyFunction.FlyScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 15 07
+expect_event 2289 0
+expect_event 2290 0
+expect_event 2291 0
+expect_event 2154 1
+expect_event 2156 0
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 0
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint 0b
+write wCurPartyMon 00
+until OverworldLoop.loop
+script FlyFunction.FlyScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 15 07
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 0
+expect_event 2154 0
+expect_event 2156 1
+restore neutral.state
+event 73 1
+event 671 0
+event 717 1
+event 718 1
+event 589 0
+event 2154 1
+event 2156 0
+event 2289 1
+event 2290 1
+event 2291 1
+write wPlayerCaught 1c
+write wTinTower1FSceneID 01
+call UpdateEusineVisibility
+until OverworldLoop.loop
+warp 15 10 6 4
+run 150
+expect wMapGroup 0f 0a 04 06
+write wDigWarpNumber 03 10 0f
+write wNextWarp 03 10 0f
+write wDefaultSpawnpoint 0b
+write wCurPartyMon 00
+until OverworldLoop.loop
+script FlyFunction.FlyScript
+run 90
+finish
+run 180
+expect wScriptRunning 00
+expect wMapGroup 15 07
+expect_event 2289 1
+expect_event 2290 1
+expect_event 2291 1
+expect_event 2154 1
+expect_event 2156 1
+quit

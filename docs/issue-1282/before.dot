@@ -1,0 +1,37 @@
+digraph before {
+graph [rankdir=TB, bgcolor="white", pad="0.3", nodesep="0.35", ranksep="0.45", label="Before: replayable story", labelloc=t, fontsize=22, fontname="DejaVu Sans"];
+node [fontname="DejaVu Sans", fontsize=11, style="rounded,filled", fillcolor="#eef2ff", color="#4f46a5", margin="0.15,0.1"];
+edge [fontname="DejaVu Sans", fontsize=10, color="#475569"];
+suicune [label="Suicune tower battle ends", shape=box];
+home [label="House Eusine enabled", shape=box];
+encounter [label="Start Ho-Oh battle: set fought flag", shape=box];
+outcome [label="Battle outcome", shape=diamond];
+choose [label="Next destination", shape=diamond];
+respawn [label="Respawn outside tower", shape=box];
+homeTalk [label="If visible: check three beast\ncatches only", shape=box];
+rumors [label="Fresh rumors; leave house", shape=box];
+research [label="Research notes", shape=box];
+callback [label="Wing or eligibility branch; fought\nflag set", shape=box];
+show [label="Appear at tower", shape=box];
+farewell [label="Farewell; hide tower Eusine", shape=box];
+league [label="Hall of Fame; native Ho-Oh not\ncaught", shape=box];
+reset [label="Clear fought flag; enable house\nEusine", shape=box];
+suicune -> home [label=""];
+encounter -> outcome [label=""];
+outcome -> choose [label="Catch, defeat, or escape"];
+outcome -> respawn [label="Whiteout"];
+respawn -> choose [label=""];
+choose -> homeTalk [label="House, including bypass of 1F"];
+home -> homeTalk [label=""];
+homeTalk -> rumors [label="All caught"];
+homeTalk -> research [label="Not all caught"];
+choose -> callback [label="Tower 1F"];
+callback -> show [label=""];
+show -> farewell [label=""];
+farewell -> callback [label="Any later 1F load"];
+farewell -> homeTalk [label="Visit house if still visible"];
+rumors -> callback [label="Visit 1F"];
+league -> reset [label=""];
+reset -> homeTalk [label=""];
+reset -> encounter [label="Ho-Oh available again"];
+}
