@@ -18,7 +18,7 @@ league [label="Hall of Fame; native Ho-Oh not\ncaught", shape=box];
 reset [label="Clear fought flag; enable house\nEusine", shape=box];
 suicune -> home [label=""];
 encounter -> outcome [label=""];
-outcome -> choose [label="Catch, defeat, or escape"];
+outcome -> choose [label="Catch, defeat, or Poké Doll escape"];
 outcome -> respawn [label="Whiteout"];
 respawn -> choose [label=""];
 choose -> homeTalk [label="House, including bypass of 1F"];

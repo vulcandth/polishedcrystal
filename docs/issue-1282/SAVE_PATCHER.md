@@ -35,9 +35,6 @@ For the reviewed layout, the event array begins at flat SRAM offset `$25ea` in p
 | Rainbow Wing received | event 718 (`$2ce`) | Permanent Ho-Oh unlock |
 | Native Ho-Oh caught | `wPlayerCaught & $01` | Do not substitute Pokédex ownership or party contents |
 | Three native beasts caught | `(wPlayerCaught & $1c) == $1c` | Same semantics as `SpecialBeastsCheck` |
-| Burned Tower 1F Eusine hidden | event 1854 (`$73e`) | Superseded early appearance |
-| Burned Tower B1F Eusine hidden | event 2143 (`$85f`) | Superseded early appearance |
-| Cianwood Eusine hidden | event 2146 (`$862`) | Superseded early appearance; not the battle-win flag |
 | Tower 1F Eusine hidden | event 2154 (`$86a`) | Set means absent |
 | House Eusine hidden | event 2156 (`$86c`) | Set means absent |
 
@@ -55,7 +52,7 @@ Compute `eligible = receivedWing || (beatLeague && caughtAllThreeBeasts)` from t
 
 Always overwrite all three newly allocated bits, even when the old reserved bits happen to be set. Never infer farewell completion from the tower hidden bit. Never clear the doll, native-catch flags, fought flags, Rainbow Wing, League completion, or earlier battle-win flags.
 
-For every state beyond the early search (Suicune fought or any inferred milestone), also set the three early Eusine visibility bits: 1854, 2143, and 2146. Do not set `EVENT_BEAT_EUSINE`: skipping his optional encounter is not winning that battle. Preserve the patcher's existing early-scene translations. Valid released saves already have the Suicune and sighting scenes consumed after `EVENT_FOUGHT_SUICUNE`; include those cases in tests so conversion does not revive those scenes.
+Preserve early Eusine visibility and the patcher's existing early-scene translations. No new repair of events 1854, 2143, or 2146 is required: reachable released saves already hide those appearances by this stage. Do not set `EVENT_BEAT_EUSINE`; it records consumption of the optional Cianwood encounter, including a loss. Valid released saves already have the Suicune and sighting scenes consumed after `EVENT_FOUGHT_SUICUNE`; include those cases in tests so conversion does not revive those scenes.
 
 Suggested code for the existing `patchVersion10to11` function, using its existing `flag`, `player`, and `events` helpers:
 
@@ -74,16 +71,13 @@ flag(save11, events, 2290, encounter);
 flag(save11, events, 2291, farewell);
 flag(save11, events, 2156, !(suicune && !left));
 flag(save11, events, 2154, !(encounter && !farewell));
-if (suicune || left) {
-    for (unsigned bit : {1854u, 2143u, 2146u}) flag(save11, events, bit, true);
-}
 ```
 
 Prefer named constants for these IDs in the final patcher implementation. The source/destination event IDs and field offsets used here are stable across the released v10 layout and this v11 change. The existing final primary-to-backup copy, both checksum rewrites, and version-11 write should remain after this block.
 
 **Legacy limitations and logging**
 
-Old saves never stored farewell completion. A hidden tower Eusine can mean a completed farewell or an exit by whiteout/Fly/Rope without hearing it; a visible one can be an old callback replay. The approved policy preserves unseen dialogue, so a legacy player who already heard the farewell may hear it once more after migration. Afterward the new completion bit prevents further replays. An existing Abra Doll is treated as completion to preserve that reward outcome.
+Old saves never stored farewell completion. A hidden tower Eusine can mean a completed farewell or an exit by whiteout/Fly/Rope without hearing it; a visible one can be an old callback replay. The approved policy preserves unseen dialogue, so a legacy player who already heard the farewell may hear it once more after migration. Afterward the new completion bit prevents further replays. An existing Abra Doll is treated as completion to preserve that reward outcome. The old game could award it before the farewell; its ownership is not proof that the farewell was heard.
 
 A later Hall of Fame visit can erase the fought-Ho-Oh evidence after an unsuccessful encounter. If no native catch/doll evidence remains, that history cannot be reconstructed exactly. Log the inferred state and explain this limitation; do not present a visibility heuristic as certainty. Keep the normal conversion automatic. An explicit user-selected completed-story override could be a separate patcher feature, but is not required here.
 
@@ -92,11 +86,11 @@ Already-version-11 development saves are not released v10 inputs. Since the vers
 **Required patcher tests**
 
 - Every row of the inference table, both old tower visibility values, all eight old values of the three reserved bits, and contradictory old house visibility.
-- All eight beast-caught masks with League and Wing independently present/absent; native Ho-Oh catch independently of current fought-Ho-Oh; a traded-only Ho-Oh must not count as native.
+- Defensive inference cases: all eight beast-caught masks with League and Wing independently present/absent; native Ho-Oh catch independently of current fought-Ho-Oh. These include impossible fresh-save histories and must not be labeled gameplay routes. A traded-only Ho-Oh must not count as native.
 - Doll precedence, including a missing fought-Ho-Oh flag after a later League victory; doll remains owned and is never re-awarded.
 - Pending farewell after a legacy whiteout or roof exit, and completed farewell with no doll: document that both may map to pending because old history is ambiguous.
 - Ho-Oh failed encounter followed by League reset; verify deterministic fallback and no fabricated native catch.
-- Preserve unrelated event bits (especially the other five bits sharing byte `$2708`), all native-catch fields, key items, party/box data, and early scene progression.
+- Preserve unrelated event bits (especially the other five bits sharing byte `$2708`), all native-catch fields, key items, party/box data, early scene progression, and early Eusine visibility (events 1854, 2143, and 2146).
 - Check converted primary and backup equality, both checksums, unchanged lengths and save version 11; retain the existing invalid-checksum/interrupted-write/wrong-location/version rejection tests.
 - Load representative converted saves in vibeEmu, exit the Pokémon Center, and visit house/tower in both orders. Pending farewell survives another Hall of Fame respawn; completing it suppresses both NPCs and enables Grandpa's one-time doll.
 

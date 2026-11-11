@@ -22,6 +22,7 @@ parser.add_argument("--rom", type=Path, default=ROOT / "polishedcrystal-3.2.3.gb
 parser.add_argument("--sym", type=Path, default=ROOT / "polishedcrystal-3.2.3.sym")
 parser.add_argument("--save", type=Path, default=ROOT / "polishedcrystal-debug-3.2.3.sav")
 parser.add_argument("--output", type=Path, default=Path("/tmp/issue1282-replay"))
+parser.add_argument("--vibe-emu", type=Path, default=ROOT.parent / "vibeEmu")
 args = parser.parse_args()
 out = args.output.resolve()
 out.mkdir(parents=True, exist_ok=True)
@@ -111,7 +112,7 @@ with tempfile.TemporaryDirectory(prefix="eusine-vibeemu-") as tmp:
     build = Path(tmp)
     (build / "src").mkdir()
     shutil.copyfile(Path(__file__).with_name("probe.rs"), build / "src/main.rs")
-    core = ROOT.parent / "vibeEmu/crates/vibe-emu-core"
+    core = args.vibe_emu.resolve() / "crates/vibe-emu-core"
     (build / "Cargo.toml").write_text(
         '[package]\nname = "eusine-probe"\nversion = "0.1.0"\nedition = "2024"\n'
         '[dependencies]\nserde_json = "1"\nvibe-emu-core = { path = ' + json.dumps(str(core)) + ' }\n'

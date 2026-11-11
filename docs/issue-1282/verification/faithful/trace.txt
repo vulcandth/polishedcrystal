@@ -10,7 +10,7 @@ ok run 180 pc=0dd4 dots=70504902
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=70548950
 ok snapshot neutral.state pc=510e dots=70548950
-PASS 32768 state combinations, idempotence, and unrelated event preservation
+PASS 32768 defensive input combinations, idempotence, and all other event preservation
 ok matrix pc=510e dots=70548950
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
@@ -20,105 +20,108 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1d pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 4 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 4 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=81082684
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=81082732
+ok expect_event 2289 1 pc=0dd4 dots=81082684
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=0dd4 dots=81082732
+ok expect_event 2290 1 pc=0dd4 dots=81082684
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=81082732
+ok expect_event 2291 0 pc=0dd4 dots=81082684
 PASS event 2154 = 0
-ok expect_event 2154 0 pc=0dd4 dots=81082732
+ok expect_event 2154 0 pc=0dd4 dots=81082684
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=81082732
-ok press 8 fb pc=0dd4 dots=81644524
-ok run 8 pc=0dd4 dots=82206316
-ok press 8 ef pc=0dd4 dots=82768108
-ok run 60 pc=0dd4 dots=86981548
-ok shot first-farewell.ppm pc=0dd4 dots=86981548
+ok expect_event 2156 1 pc=0dd4 dots=81082684
+ok press 8 fb pc=0dd4 dots=81644476
+ok run 8 pc=0dd4 dots=82206268
+ok press 8 ef pc=0dd4 dots=82768060
+ok run 60 pc=0dd4 dots=86981500
+ok shot first-farewell.ppm pc=0dd4 dots=86981500
 PASS script returned to idle after 749 frames
-ok finish pc=0dd4 dots=139579330
-ok run 180 pc=0dd4 dots=152219650
+ok finish pc=0dd4 dots=139579278
+ok run 180 pc=0dd4 dots=152219598
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=152219650
+ok expect wScriptRunning 00 pc=0dd4 dots=152219598
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=152219650
+ok expect_event 2289 1 pc=0dd4 dots=152219598
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=0dd4 dots=152219650
+ok expect_event 2290 1 pc=0dd4 dots=152219598
 PASS event 2291 = 1
-ok expect_event 2291 1 pc=0dd4 dots=152219650
+ok expect_event 2291 1 pc=0dd4 dots=152219598
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=152219650
+ok expect_event 2154 1 pc=0dd4 dots=152219598
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=152219650
+ok expect_event 2156 1 pc=0dd4 dots=152219598
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=152243266
-ok warp 21 32 2 4 pc=510e dots=152243266
-ok run 150 pc=2684 dots=162776870
+ok until OverworldLoop.loop pc=510e dots=152243222
+ok warp 21 32 2 4 pc=510e dots=152243222
+ok run 150 pc=268f dots=162776822
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=2684 dots=162776870
+ok expect wMapGroup 15 20 04 02 pc=268f dots=162776822
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=2684 dots=162776870
+ok expect_event 2289 1 pc=268f dots=162776822
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=2684 dots=162776870
+ok expect_event 2290 1 pc=268f dots=162776822
 PASS event 2291 = 1
-ok expect_event 2291 1 pc=2684 dots=162776870
+ok expect_event 2291 1 pc=268f dots=162776822
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=2684 dots=162776870
+ok expect_event 2154 1 pc=268f dots=162776822
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=2684 dots=162776870
-ok shot house-after-farewell.ppm pc=2684 dots=162776870
+ok expect_event 2156 1 pc=268f dots=162776822
+ok shot house-after-farewell.ppm pc=268f dots=162776822
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=162843038
-ok warp 3 4 6 4 pc=510e dots=162843038
-ok run 150 pc=2b80 dots=173376638
+ok until OverworldLoop.loop pc=510e dots=162842946
+ok warp 3 4 6 4 pc=510e dots=162842946
+ok run 150 pc=2b7f dots=173376546
 PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=2b80 dots=173376638
+ok expect wMapGroup 03 04 04 06 pc=2b7f dots=173376546
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=2b80 dots=173376638
+ok expect_event 2289 1 pc=2b7f dots=173376546
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=2b80 dots=173376638
+ok expect_event 2290 1 pc=2b7f dots=173376546
 PASS event 2291 = 1
-ok expect_event 2291 1 pc=2b80 dots=173376638
+ok expect_event 2291 1 pc=2b7f dots=173376546
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=2b80 dots=173376638
+ok expect_event 2154 1 pc=2b7f dots=173376546
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=2b80 dots=173376638
-ok shot tower-after-farewell.ppm pc=2b80 dots=173376638
+ok expect_event 2156 1 pc=2b7f dots=173376546
+ok shot tower-after-farewell.ppm pc=2b7f dots=173376546
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=173379650
-ok warp 3 5 8 3 pc=510e dots=173379650
-ok run 150 pc=523a dots=183913252
+ok until OverworldLoop.loop pc=510e dots=173379514
+ok warp 3 5 8 3 pc=510e dots=173379514
+ok run 150 pc=523b dots=183913114
 PASS expect wMapGroup 03 05 03 08
-ok expect wMapGroup 03 05 03 08 pc=523a dots=183913252
+ok expect wMapGroup 03 05 03 08 pc=523b dots=183913114
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=183914106
-ok warp 3 4 6 4 pc=510e dots=183914106
-ok run 150 pc=0dd4 dots=194447706
+ok until OverworldLoop.loop pc=510e dots=183913966
+ok warp 3 4 6 4 pc=510e dots=183913966
+ok run 150 pc=0dd4 dots=194447566
 PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=194447706
+ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=194447566
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=194447706
+ok expect_event 2289 1 pc=0dd4 dots=194447566
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=0dd4 dots=194447706
+ok expect_event 2290 1 pc=0dd4 dots=194447566
 PASS event 2291 = 1
-ok expect_event 2291 1 pc=0dd4 dots=194447706
+ok expect_event 2291 1 pc=0dd4 dots=194447566
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=194447706
+ok expect_event 2154 1 pc=0dd4 dots=194447566
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=194447706
+ok expect_event 2156 1 pc=0dd4 dots=194447566
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 1 pc=510e dots=70548950
@@ -127,27 +130,30 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 4 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 4 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=81106504
+ok until OverworldLoop.loop pc=510e dots=81106464
 PASS call SaveGameData A=00 F=70
-ok call SaveGameData pc=510e dots=81379290
+ok call SaveGameData pc=510e dots=81379250
 PASS call SaveCurrentVersion A=0b F=70
-ok call SaveCurrentVersion pc=510e dots=81379506
+ok call SaveCurrentVersion pc=510e dots=81379466
 PASS coherent primary/backup, both checksums, save version 11
-ok checksave pc=510e dots=81379506
+ok checksave pc=510e dots=81379466
 ok reset pc=0100 dots=0
 ok run 500 pc=4f40 dots=35112000
 ok press 8 7f pc=0dd4 dots=35673792
@@ -157,22 +163,22 @@ ok run 100 pc=6bb8 dots=49718596
 ok press 8 ef pc=2b67 dots=50280388
 ok run 100 pc=0dd4 dots=57302788
 ok press 8 ef pc=7afd dots=57864580
-ok run 180 pc=418c dots=70504902
+ok run 180 pc=418d dots=70504900
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70519144
+ok until OverworldLoop.loop pc=510e dots=70519136
 PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=510e dots=70519144
+ok expect wMapGroup 03 04 04 06 pc=510e dots=70519136
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=510e dots=70519144
+ok expect_event 2289 1 pc=510e dots=70519136
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=510e dots=70519144
+ok expect_event 2290 1 pc=510e dots=70519136
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=510e dots=70519144
+ok expect_event 2291 0 pc=510e dots=70519136
 PASS event 2154 = 0
-ok expect_event 2154 0 pc=510e dots=70519144
+ok expect_event 2154 0 pc=510e dots=70519136
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=510e dots=70519144
-ok shot continue-pending-tower.ppm pc=510e dots=70519144
+ok expect_event 2156 1 pc=510e dots=70519136
+ok shot continue-pending-tower.ppm pc=510e dots=70519136
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 1 pc=510e dots=70548950
@@ -181,27 +187,30 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 1 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
+ok call UpdateEusineVisibility pc=510e dots=70549050
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549098
-ok warp 3 4 6 4 pc=510e dots=70549098
-ok run 150 pc=268c dots=81082700
+ok until OverworldLoop.loop pc=510e dots=70549050
+ok warp 3 4 6 4 pc=510e dots=70549050
+ok run 150 pc=268e dots=81082650
 PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=268c dots=81082700
+ok expect wMapGroup 03 04 04 06 pc=268e dots=81082650
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=81151492
+ok until OverworldLoop.loop pc=510e dots=81151456
 PASS call SaveGameData A=00 F=70
-ok call SaveGameData pc=510e dots=81424278
+ok call SaveGameData pc=510e dots=81424242
 PASS call SaveCurrentVersion A=0b F=70
-ok call SaveCurrentVersion pc=510e dots=81424494
+ok call SaveCurrentVersion pc=510e dots=81424458
 PASS coherent primary/backup, both checksums, save version 11
-ok checksave pc=510e dots=81424494
+ok checksave pc=510e dots=81424458
 ok reset pc=0100 dots=0
 ok run 500 pc=4f40 dots=35112000
 ok press 8 7f pc=0dd4 dots=35673792
@@ -229,33 +238,36 @@ ok expect_event 2156 1 pc=510e dots=70566518
 ok shot continue-complete-tower.ppm pc=510e dots=70566518
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
 ok event 717 1 pc=510e dots=70548950
 ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=81103860
+ok until OverworldLoop.loop pc=510e dots=81103808
 PASS call SaveGameData A=00 F=70
-ok call SaveGameData pc=510e dots=81376646
+ok call SaveGameData pc=510e dots=81376594
 PASS call SaveCurrentVersion A=0b F=70
-ok call SaveCurrentVersion pc=510e dots=81376862
+ok call SaveCurrentVersion pc=510e dots=81376810
 PASS coherent primary/backup, both checksums, save version 11
-ok checksave pc=510e dots=81376862
+ok checksave pc=510e dots=81376810
 ok reset pc=0100 dots=0
 ok run 500 pc=4f40 dots=35112000
 ok press 8 7f pc=0dd4 dots=35673792
@@ -289,27 +301,30 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 1 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
+ok call UpdateEusineVisibility pc=510e dots=70549050
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549098
-ok warp 21 32 2 4 pc=510e dots=70549098
-ok run 150 pc=26cc dots=81082698
+ok until OverworldLoop.loop pc=510e dots=70549050
+ok warp 21 32 2 4 pc=510e dots=70549050
+ok run 150 pc=000a dots=81082652
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=26cc dots=81082698
+ok expect wMapGroup 15 20 04 02 pc=000a dots=81082652
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=81149228
+ok until OverworldLoop.loop pc=510e dots=81149180
 PASS call SaveGameData A=00 F=70
-ok call SaveGameData pc=510e dots=81422014
+ok call SaveGameData pc=510e dots=81421966
 PASS call SaveCurrentVersion A=0b F=70
-ok call SaveCurrentVersion pc=510e dots=81422230
+ok call SaveCurrentVersion pc=510e dots=81422182
 PASS coherent primary/backup, both checksums, save version 11
-ok checksave pc=510e dots=81422230
+ok checksave pc=510e dots=81422182
 ok reset pc=0100 dots=0
 ok run 500 pc=4f40 dots=35112000
 ok press 8 7f pc=0dd4 dots=35673792
@@ -343,19 +358,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 15 10 6 4 pc=510e dots=70549132
-ok run 150 pc=650b dots=81082742
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 15 10 6 4 pc=510e dots=70549084
+ok run 150 pc=5274 dots=81082684
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=650b dots=81082742
+ok expect wMapGroup 0f 0a 04 06 pc=5274 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81141602
 PASS call SaveGameData A=00 F=70
@@ -390,45 +408,48 @@ PASS event 2156 = 1
 ok expect_event 2156 1 pc=510e dots=70511286
 ok shot continue-roof.ppm pc=510e dots=70511286
 ok restore neutral.state pc=510e dots=70548950
-ok event 73 0 pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
 ok event 717 1 pc=510e dots=70548950
 ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 00 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
 PASS script returned to idle after 906 frames
-ok finish pc=0dd4 dots=150604542
-ok run 180 pc=0dd4 dots=163244862
+ok finish pc=0dd4 dots=150604492
+ok run 180 pc=0dd4 dots=163244812
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=163244862
+ok expect_event 2289 0 pc=0dd4 dots=163244812
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=163244862
+ok expect_event 2290 0 pc=0dd4 dots=163244812
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=163244862
+ok expect_event 2291 0 pc=0dd4 dots=163244812
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=163244862
+ok expect_event 2154 1 pc=0dd4 dots=163244812
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=163244862
+ok expect_event 2156 0 pc=0dd4 dots=163244812
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=163244862
+ok expect wScriptRunning 00 pc=0dd4 dots=163244812
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -437,78 +458,41 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 00 pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
-PASS script returned to idle after 906 frames
-ok finish pc=0dd4 dots=150604542
-ok run 180 pc=0dd4 dots=163244862
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=163244862
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=163244862
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=163244862
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=163244862
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=163244862
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=163244862
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 0 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 0 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 04 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
 PASS script returned to idle after 786 frames
-ok finish pc=0dd4 dots=142177652
-ok run 180 pc=0dd4 dots=154817972
+ok finish pc=0dd4 dots=142177604
+ok run 180 pc=0dd4 dots=154817924
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=154817972
+ok expect_event 2289 0 pc=0dd4 dots=154817924
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=154817972
+ok expect_event 2290 0 pc=0dd4 dots=154817924
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=154817972
+ok expect_event 2291 0 pc=0dd4 dots=154817924
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=154817972
+ok expect_event 2154 1 pc=0dd4 dots=154817924
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=154817972
+ok expect_event 2156 0 pc=0dd4 dots=154817924
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=154817972
+ok expect wScriptRunning 00 pc=0dd4 dots=154817924
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -517,78 +501,41 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 04 pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
-PASS script returned to idle after 786 frames
-ok finish pc=0dd4 dots=142177652
-ok run 180 pc=0dd4 dots=154817972
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=154817972
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=154817972
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=154817972
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=154817972
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=154817972
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=154817972
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 0 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 0 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 08 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
 PASS script returned to idle after 786 frames
-ok finish pc=0dd4 dots=142177652
-ok run 180 pc=0dd4 dots=154817972
+ok finish pc=0dd4 dots=142177604
+ok run 180 pc=0dd4 dots=154817924
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=154817972
+ok expect_event 2289 0 pc=0dd4 dots=154817924
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=154817972
+ok expect_event 2290 0 pc=0dd4 dots=154817924
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=154817972
+ok expect_event 2291 0 pc=0dd4 dots=154817924
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=154817972
+ok expect_event 2154 1 pc=0dd4 dots=154817924
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=154817972
+ok expect_event 2156 0 pc=0dd4 dots=154817924
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=154817972
+ok expect wScriptRunning 00 pc=0dd4 dots=154817924
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -597,78 +544,41 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 08 pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
-PASS script returned to idle after 786 frames
-ok finish pc=0dd4 dots=142177652
-ok run 180 pc=0dd4 dots=154817972
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=154817972
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=154817972
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=154817972
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=154817972
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=154817972
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=154817972
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 0 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 0 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 0c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
 PASS script returned to idle after 666 frames
-ok finish pc=0dd4 dots=133750770
-ok run 180 pc=0dd4 dots=146391090
+ok finish pc=0dd4 dots=133750724
+ok run 180 pc=0dd4 dots=146391044
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=146391090
+ok expect_event 2289 0 pc=0dd4 dots=146391044
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=146391090
+ok expect_event 2290 0 pc=0dd4 dots=146391044
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=146391090
+ok expect_event 2291 0 pc=0dd4 dots=146391044
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=146391090
+ok expect_event 2154 1 pc=0dd4 dots=146391044
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=146391090
+ok expect_event 2156 0 pc=0dd4 dots=146391044
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=146391090
+ok expect wScriptRunning 00 pc=0dd4 dots=146391044
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -677,78 +587,41 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 0c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
-PASS script returned to idle after 666 frames
-ok finish pc=0dd4 dots=133750770
-ok run 180 pc=0dd4 dots=146391090
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=146391090
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=146391090
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=146391090
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=146391090
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=146391090
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=146391090
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 0 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 0 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 10 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
 PASS script returned to idle after 756 frames
-ok finish pc=0dd4 dots=140070934
-ok run 180 pc=0dd4 dots=152711254
+ok finish pc=0dd4 dots=140070886
+ok run 180 pc=0dd4 dots=152711206
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=152711254
+ok expect_event 2289 0 pc=0dd4 dots=152711206
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=152711254
+ok expect_event 2290 0 pc=0dd4 dots=152711206
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=152711254
+ok expect_event 2291 0 pc=0dd4 dots=152711206
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=152711254
+ok expect_event 2154 1 pc=0dd4 dots=152711206
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=152711254
+ok expect_event 2156 0 pc=0dd4 dots=152711206
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=152711254
+ok expect wScriptRunning 00 pc=0dd4 dots=152711206
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -757,78 +630,41 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 10 pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
-PASS script returned to idle after 756 frames
-ok finish pc=0dd4 dots=140070934
-ok run 180 pc=0dd4 dots=152711254
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=152711254
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=152711254
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=152711254
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=152711254
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=152711254
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=152711254
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 0 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 0 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 14 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
 PASS script returned to idle after 636 frames
-ok finish pc=0dd4 dots=131644052
-ok run 180 pc=0dd4 dots=144284372
+ok finish pc=0dd4 dots=131644004
+ok run 180 pc=0dd4 dots=144284324
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=144284372
+ok expect_event 2289 0 pc=0dd4 dots=144284324
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=144284372
+ok expect_event 2290 0 pc=0dd4 dots=144284324
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=144284372
+ok expect_event 2291 0 pc=0dd4 dots=144284324
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=144284372
+ok expect_event 2154 1 pc=0dd4 dots=144284324
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=144284372
+ok expect_event 2156 0 pc=0dd4 dots=144284324
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=144284372
+ok expect wScriptRunning 00 pc=0dd4 dots=144284324
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -837,78 +673,41 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 14 pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
-PASS script returned to idle after 636 frames
-ok finish pc=0dd4 dots=131644052
-ok run 180 pc=0dd4 dots=144284372
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=144284372
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=144284372
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=144284372
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=144284372
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=144284372
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=144284372
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 0 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 0 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 18 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
 PASS script returned to idle after 636 frames
-ok finish pc=0dd4 dots=131644050
-ok run 180 pc=0dd4 dots=144284370
+ok finish pc=0dd4 dots=131644002
+ok run 180 pc=0dd4 dots=144284322
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=144284370
+ok expect_event 2289 0 pc=0dd4 dots=144284322
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=144284370
+ok expect_event 2290 0 pc=0dd4 dots=144284322
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=144284370
+ok expect_event 2291 0 pc=0dd4 dots=144284322
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=144284370
+ok expect_event 2154 1 pc=0dd4 dots=144284322
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=144284370
+ok expect_event 2156 0 pc=0dd4 dots=144284322
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=144284370
+ok expect wScriptRunning 00 pc=0dd4 dots=144284322
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -917,156 +716,162 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 18 pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
-PASS script returned to idle after 636 frames
-ok finish pc=0dd4 dots=131644050
-ok run 180 pc=0dd4 dots=144284370
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=144284370
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=144284370
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=144284370
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=144284370
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=144284370
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=144284370
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 0 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 0 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
-PASS script returned to idle after 306 frames
-ok finish pc=0dd4 dots=108470118
-ok run 180 pc=0dd4 dots=121110438
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=121110438
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=121110438
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=121110438
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=121110438
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=121110438
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=121110438
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 0 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
 PASS script returned to idle after 608 frames
-ok finish pc=0dd4 dots=129677770
-ok run 180 pc=0dd4 dots=142318090
+ok finish pc=0dd4 dots=129677722
+ok run 180 pc=0dd4 dots=142318042
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=142318090
+ok expect_event 2289 1 pc=0dd4 dots=142318042
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=142318090
+ok expect_event 2290 0 pc=0dd4 dots=142318042
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=142318090
+ok expect_event 2291 0 pc=0dd4 dots=142318042
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=142318090
+ok expect_event 2154 1 pc=0dd4 dots=142318042
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=142318090
+ok expect_event 2156 1 pc=0dd4 dots=142318042
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=142318090
+ok expect wScriptRunning 00 pc=0dd4 dots=142318042
 ok restore neutral.state pc=510e dots=70548950
-ok event 73 0 pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
 ok event 717 1 pc=510e dots=70548950
 ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 00 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
+ok expect wMapGroup 15 20 04 02 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
 PASS script returned to idle after 608 frames
-ok finish pc=0dd4 dots=129677770
-ok run 180 pc=0dd4 dots=142318090
+ok finish pc=0dd4 dots=129677722
+ok run 180 pc=0dd4 dots=142318042
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=142318090
+ok expect_event 2289 1 pc=0dd4 dots=142318042
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=142318090
+ok expect_event 2290 0 pc=0dd4 dots=142318042
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=142318090
+ok expect_event 2291 0 pc=0dd4 dots=142318042
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=142318090
+ok expect_event 2154 1 pc=0dd4 dots=142318042
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=142318090
+ok expect_event 2156 1 pc=0dd4 dots=142318042
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 0 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 0 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 0 pc=510e dots=70548950
+ok event 2290 0 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=01 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549110
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 3 4 6 4 pc=510e dots=70549110
+ok run 150 pc=5213 dots=81082710
+PASS expect wMapGroup 03 04 04 06
+ok expect wMapGroup 03 04 04 06 pc=5213 dots=81082710
+PASS event 2155 = 0
+ok expect_event 2155 0 pc=5213 dots=81082710
+PASS event 2170 = 1
+ok expect_event 2170 1 pc=5213 dots=81082710
+PASS event 718 = 0
+ok expect_event 718 0 pc=5213 dots=81082710
+PASS event 2289 = 0
+ok expect_event 2289 0 pc=5213 dots=81082710
+PASS event 2290 = 0
+ok expect_event 2290 0 pc=5213 dots=81082710
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=5213 dots=81082710
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=5213 dots=81082710
+PASS event 2156 = 0
+ok expect_event 2156 0 pc=5213 dots=81082710
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 0 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 0 pc=510e dots=70548950
+ok event 2290 0 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=01 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549110
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 3 4 6 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
+PASS expect wMapGroup 03 04 04 06
+ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=81082710
+PASS event 2155 = 1
+ok expect_event 2155 1 pc=0dd4 dots=81082710
+PASS event 2170 = 0
+ok expect_event 2170 0 pc=0dd4 dots=81082710
+PASS event 718 = 0
+ok expect_event 718 0 pc=0dd4 dots=81082710
+PASS event 2289 = 0
+ok expect_event 2289 0 pc=0dd4 dots=81082710
+PASS event 2290 = 0
+ok expect_event 2290 0 pc=0dd4 dots=81082710
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=0dd4 dots=81082710
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=0dd4 dots=81082710
+PASS event 2156 = 0
+ok expect_event 2156 0 pc=0dd4 dots=81082710
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -1075,295 +880,336 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 00 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=00 F=a0
-ok call UpdateEusineVisibility pc=510e dots=70549092
+PASS call UpdateEusineVisibility A=00 F=70
+ok call UpdateEusineVisibility pc=510e dots=70549104
 PASS call RespawnOneOffs A=00 F=a0
-ok call RespawnOneOffs pc=510e dots=70554850
+ok call RespawnOneOffs pc=510e dots=70554862
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70554850
-ok warp 21 32 2 4 pc=510e dots=70554850
-ok run 150 pc=7208 dots=81088450
+ok until OverworldLoop.loop pc=510e dots=70554862
+ok warp 21 32 2 4 pc=510e dots=70554862
+ok run 150 pc=7209 dots=81088462
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=7208 dots=81088450
+ok expect wMapGroup 15 20 04 02 pc=7209 dots=81088462
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=7208 dots=81088450
+ok expect_event 2289 0 pc=7209 dots=81088462
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=7208 dots=81088450
+ok expect_event 2290 0 pc=7209 dots=81088462
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=7208 dots=81088450
+ok expect_event 2291 0 pc=7209 dots=81088462
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=7208 dots=81088450
+ok expect_event 2154 1 pc=7209 dots=81088462
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=7208 dots=81088450
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok expect_event 2156 1 pc=7209 dots=81088462
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 1 3 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 03 01
-ok expect wMapGroup 15 20 03 01 pc=0dd4 dots=81082758
-ok press 8 fe pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=27b3 dots=82768136
-ok run 60 pc=0dd4 dots=86981576
-PASS script returned to idle after 590 frames
-ok finish pc=0dd4 dots=128413736
-ok run 180 pc=0dd4 dots=141054056
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=141054056
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=141054056
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=141054056
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=141054056
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=141054056
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=141054056
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 2 2 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
-PASS expect wMapGroup 15 20 02 02
-ok expect wMapGroup 15 20 02 02 pc=0dd4 dots=81082758
-ok press 8 f7 pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=0dd4 dots=82768134
-ok run 60 pc=0dd4 dots=86981574
-PASS script returned to idle after 590 frames
-ok finish pc=0dd4 dots=128413738
-ok run 180 pc=0dd4 dots=141054058
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=141054058
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=141054058
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=141054058
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=141054058
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=141054058
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=141054058
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 1 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 4 5 3 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
-PASS expect wMapGroup 03 04 03 05
-ok expect wMapGroup 03 04 03 05 pc=0dd4 dots=81082732
-ok press 8 fe pc=0dd4 dots=81644524
-ok run 8 pc=0dd4 dots=82206316
-ok press 8 ef pc=27bb dots=82768108
-ok run 60 pc=0dd4 dots=86981548
-PASS script returned to idle after 766 frames
-ok finish pc=0dd4 dots=140773136
-ok run 180 pc=0dd4 dots=153413456
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=153413456
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=153413456
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=0dd4 dots=153413456
-PASS event 2291 = 1
-ok expect_event 2291 1 pc=0dd4 dots=153413456
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=153413456
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=153413456
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 1 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 4 7 3 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
-PASS expect wMapGroup 03 04 03 07
-ok expect wMapGroup 03 04 03 07 pc=0dd4 dots=81082732
-ok press 8 fd pc=0dd4 dots=81644524
-ok run 8 pc=0dd4 dots=82206316
-ok press 8 ef pc=27b8 dots=82768112
-ok run 60 pc=0dd4 dots=86981552
-PASS script returned to idle after 748 frames
-ok finish pc=0dd4 dots=139509106
-ok run 180 pc=0dd4 dots=152149426
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=152149426
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=152149426
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=0dd4 dots=152149426
-PASS event 2291 = 1
-ok expect_event 2291 1 pc=0dd4 dots=152149426
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=152149426
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=152149426
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 1 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 4 6 2 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
-PASS expect wMapGroup 03 04 02 06
-ok expect wMapGroup 03 04 02 06 pc=0dd4 dots=81082732
-ok press 8 f7 pc=0dd4 dots=81644524
-ok run 8 pc=0dd4 dots=82206316
-ok press 8 ef pc=0dd4 dots=82768108
-ok run 60 pc=0dd4 dots=86981548
-PASS script returned to idle after 748 frames
-ok finish pc=0dd4 dots=139509102
-ok run 180 pc=0dd4 dots=152149422
-PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=152149422
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=152149422
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=0dd4 dots=152149422
-PASS event 2291 = 1
-ok expect_event 2291 1 pc=0dd4 dots=152149422
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=152149422
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=152149422
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 21 32 5 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=81149238
+ok warp 21 32 5 4 pc=510e dots=81149238
+ok run 150 pc=0dd4 dots=91682838
 PASS expect wMapGroup 15 20 04 05
-ok expect wMapGroup 15 20 04 05 pc=0dd4 dots=81082758
-ok press 8 fb pc=0dd4 dots=81644550
-ok run 8 pc=0dd4 dots=82206342
-ok press 8 ef pc=27b6 dots=82768136
-ok run 60 pc=0dd4 dots=86981576
-PASS script returned to idle after 36 frames
-ok finish pc=0dd4 dots=89509642
-ok run 180 pc=0dd4 dots=102149962
+ok expect wMapGroup 15 20 04 05 pc=0dd4 dots=91682838
+ok press 8 fb pc=0dd4 dots=92244630
+ok run 8 pc=0dd4 dots=92806422
+ok press 8 ef pc=0ca6 dots=93368218
+ok run 60 pc=0dd4 dots=97581658
+PASS script returned to idle after 155 frames
+ok finish pc=494c dots=108466378
+ok run 180 pc=0dd4 dots=121106698
 PASS event 589 = 0
-ok expect_event 589 0 pc=0dd4 dots=102149962
+ok expect_event 589 0 pc=0dd4 dots=121106698
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=102149962
+ok expect wScriptRunning 00 pc=0dd4 dots=121106698
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
 ok event 717 1 pc=510e dots=70548950
 ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 0 pc=510e dots=70548950
+ok event 2290 0 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=01 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549110
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 1 3 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
+PASS expect wMapGroup 15 20 03 01
+ok expect wMapGroup 15 20 03 01 pc=0dd4 dots=81082710
+ok press 8 fe pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=27b3 dots=82768088
+ok run 60 pc=0dd4 dots=86981528
+PASS script returned to idle after 590 frames
+ok finish pc=0dd4 dots=128413688
+ok run 180 pc=0dd4 dots=141054008
+PASS expect wScriptRunning 00
+ok expect wScriptRunning 00 pc=0dd4 dots=141054008
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=0dd4 dots=141054008
+PASS event 2290 = 0
+ok expect_event 2290 0 pc=0dd4 dots=141054008
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=0dd4 dots=141054008
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=0dd4 dots=141054008
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=0dd4 dots=141054008
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 0 pc=510e dots=70548950
+ok event 2290 0 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=01 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549110
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 2 2 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
+PASS expect wMapGroup 15 20 02 02
+ok expect wMapGroup 15 20 02 02 pc=0dd4 dots=81082710
+ok press 8 f7 pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=0dd4 dots=82768086
+ok run 60 pc=0dd4 dots=86981526
+PASS script returned to idle after 590 frames
+ok finish pc=0dd4 dots=128413690
+ok run 180 pc=0dd4 dots=141054010
+PASS expect wScriptRunning 00
+ok expect wScriptRunning 00 pc=0dd4 dots=141054010
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=0dd4 dots=141054010
+PASS event 2290 = 0
+ok expect_event 2290 0 pc=0dd4 dots=141054010
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=0dd4 dots=141054010
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=0dd4 dots=141054010
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=0dd4 dots=141054010
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 1 pc=510e dots=70548950
+ok event 2290 1 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=03 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549084
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 4 5 3 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
+PASS expect wMapGroup 03 04 03 05
+ok expect wMapGroup 03 04 03 05 pc=0dd4 dots=81082684
+ok press 8 fe pc=0dd4 dots=81644476
+ok run 8 pc=0dd4 dots=82206268
+ok press 8 ef pc=27bb dots=82768064
+ok run 60 pc=0dd4 dots=86981504
+PASS script returned to idle after 766 frames
+ok finish pc=0dd4 dots=140773088
+ok run 180 pc=0dd4 dots=153413408
+PASS expect wScriptRunning 00
+ok expect wScriptRunning 00 pc=0dd4 dots=153413408
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=0dd4 dots=153413408
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=0dd4 dots=153413408
+PASS event 2291 = 1
+ok expect_event 2291 1 pc=0dd4 dots=153413408
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=0dd4 dots=153413408
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=0dd4 dots=153413408
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 1 pc=510e dots=70548950
+ok event 2290 1 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=03 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549084
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 4 7 3 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
+PASS expect wMapGroup 03 04 03 07
+ok expect wMapGroup 03 04 03 07 pc=0dd4 dots=81082684
+ok press 8 fd pc=0dd4 dots=81644476
+ok run 8 pc=0dd4 dots=82206268
+ok press 8 ef pc=27d0 dots=82768062
+ok run 60 pc=0dd4 dots=86981502
+PASS script returned to idle after 748 frames
+ok finish pc=0dd4 dots=139509058
+ok run 180 pc=0dd4 dots=152149378
+PASS expect wScriptRunning 00
+ok expect wScriptRunning 00 pc=0dd4 dots=152149378
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=0dd4 dots=152149378
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=0dd4 dots=152149378
+PASS event 2291 = 1
+ok expect_event 2291 1 pc=0dd4 dots=152149378
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=0dd4 dots=152149378
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=0dd4 dots=152149378
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 1 pc=510e dots=70548950
+ok event 2290 1 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=03 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549084
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 4 6 2 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
+PASS expect wMapGroup 03 04 02 06
+ok expect wMapGroup 03 04 02 06 pc=0dd4 dots=81082684
+ok press 8 f7 pc=0dd4 dots=81644476
+ok run 8 pc=0dd4 dots=82206268
+ok press 8 ef pc=0dd4 dots=82768060
+ok run 60 pc=0dd4 dots=86981500
+PASS script returned to idle after 748 frames
+ok finish pc=0dd4 dots=139509058
+ok run 180 pc=0dd4 dots=152149378
+PASS expect wScriptRunning 00
+ok expect wScriptRunning 00 pc=0dd4 dots=152149378
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=0dd4 dots=152149378
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=0dd4 dots=152149378
+PASS event 2291 = 1
+ok expect_event 2291 1 pc=0dd4 dots=152149378
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=0dd4 dots=152149378
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=0dd4 dots=152149378
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 0 pc=510e dots=70548950
+ok event 2290 0 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=01 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549110
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 21 32 5 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
+PASS expect wMapGroup 15 20 04 05
+ok expect wMapGroup 15 20 04 05 pc=0dd4 dots=81082710
+ok press 8 fb pc=0dd4 dots=81644502
+ok run 8 pc=0dd4 dots=82206294
+ok press 8 ef pc=27ce dots=82768090
+ok run 60 pc=0dd4 dots=86981530
+PASS script returned to idle after 36 frames
+ok finish pc=0dd4 dots=89509594
+ok run 180 pc=0dd4 dots=102149914
+PASS event 589 = 0
+ok expect_event 589 0 pc=0dd4 dots=102149914
+PASS expect wScriptRunning 00
+ok expect wScriptRunning 00 pc=0dd4 dots=102149914
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=02 F=70
-ok call UpdateEusineVisibility pc=510e dots=70549134
+ok call UpdateEusineVisibility pc=510e dots=70549086
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549134
-ok warp 21 32 5 4 pc=510e dots=70549134
-ok run 150 pc=3056 dots=81082734
+ok until OverworldLoop.loop pc=510e dots=70549086
+ok warp 21 32 5 4 pc=510e dots=70549086
+ok run 150 pc=3056 dots=81082686
 PASS expect wMapGroup 15 20 04 05
-ok expect wMapGroup 15 20 04 05 pc=3056 dots=81082734
-ok press 8 fb pc=3006 dots=81644528
-ok run 8 pc=304c dots=82206320
-ok press 8 ef pc=0c88 dots=82768114
-ok run 60 pc=0dd4 dots=86981554
+ok expect wMapGroup 15 20 04 05 pc=3056 dots=81082686
+ok press 8 fb pc=3006 dots=81644480
+ok run 8 pc=304b dots=82206274
+ok press 8 ef pc=0c84 dots=82768068
+ok run 60 pc=0dd4 dots=86981508
 PASS script returned to idle after 126 frames
-ok finish pc=3008 dots=95829786
-ok run 180 pc=3007 dots=108470112
+ok finish pc=3008 dots=95829742
+ok run 180 pc=3007 dots=108470064
 PASS event 589 = 0
-ok expect_event 589 0 pc=3007 dots=108470112
+ok expect_event 589 0 pc=3007 dots=108470064
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=3007 dots=108470112
+ok expect wScriptRunning 00 pc=3007 dots=108470064
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 1 pc=510e dots=70548950
@@ -1372,30 +1218,33 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 21 32 5 4 pc=510e dots=70549132
-ok run 150 pc=3006 dots=81082736
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 21 32 5 4 pc=510e dots=70549084
+ok run 150 pc=3006 dots=81082688
 PASS expect wMapGroup 15 20 04 05
-ok expect wMapGroup 15 20 04 05 pc=3006 dots=81082736
-ok press 8 fb pc=3007 dots=81644532
-ok run 8 pc=3050 dots=82206326
-ok press 8 ef pc=0c86 dots=82768122
-ok run 60 pc=0dd4 dots=86981562
+ok expect wMapGroup 15 20 04 05 pc=3006 dots=81082688
+ok press 8 fb pc=3007 dots=81644484
+ok run 8 pc=304c dots=82206276
+ok press 8 ef pc=0c86 dots=82768070
+ok run 60 pc=0dd4 dots=86981510
 PASS script returned to idle after 126 frames
-ok finish pc=300b dots=95829790
-ok run 180 pc=3008 dots=108470116
+ok finish pc=3009 dots=95829740
+ok run 180 pc=3007 dots=108470060
 PASS event 589 = 0
-ok expect_event 589 0 pc=3008 dots=108470116
+ok expect_event 589 0 pc=3007 dots=108470060
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=3008 dots=108470116
+ok expect wScriptRunning 00 pc=3007 dots=108470060
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 1 pc=510e dots=70548950
@@ -1404,401 +1253,92 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 1 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
+ok call UpdateEusineVisibility pc=510e dots=70549050
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549098
-ok warp 21 32 5 4 pc=510e dots=70549098
-ok run 150 pc=3006 dots=81082700
+ok until OverworldLoop.loop pc=510e dots=70549050
+ok warp 21 32 5 4 pc=510e dots=70549050
+ok run 150 pc=3006 dots=81082652
 PASS expect wMapGroup 15 20 04 05
-ok expect wMapGroup 15 20 04 05 pc=3006 dots=81082700
-ok press 8 fb pc=3007 dots=81644496
-ok run 8 pc=304c dots=82206288
-ok press 8 ef pc=0c86 dots=82768082
-ok run 60 pc=0dd4 dots=86981522
+ok expect wMapGroup 15 20 04 05 pc=3006 dots=81082652
+ok press 8 fb pc=3006 dots=81644448
+ok run 8 pc=304c dots=82206240
+ok press 8 ef pc=0c84 dots=82768036
+ok run 60 pc=0dd4 dots=86981476
 PASS script returned to idle after 427 frames
-ok finish pc=0680 dots=116967198
-ok run 180 pc=304b dots=129607518
+ok finish pc=0680 dots=116967150
+ok run 180 pc=304b dots=129607470
 PASS event 589 = 1
-ok expect_event 589 1 pc=304b dots=129607518
+ok expect_event 589 1 pc=304b dots=129607470
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=304b dots=129607518
-ok press 8 fb pc=304f dots=130169310
-ok run 8 pc=3053 dots=130731104
-ok press 8 ef pc=0c86 dots=131292900
-ok run 60 pc=0dd4 dots=135506340
+ok expect wScriptRunning 00 pc=304b dots=129607470
+ok press 8 fb pc=304f dots=130169262
+ok run 8 pc=3053 dots=130731056
+ok press 8 ef pc=0c86 dots=131292852
+ok run 60 pc=0dd4 dots=135506292
 PASS script returned to idle after 96 frames
-ok finish pc=3008 dots=142247856
-ok run 180 pc=304c dots=154888176
+ok finish pc=300a dots=142247800
+ok run 180 pc=304c dots=154888120
 PASS event 589 = 1
-ok expect_event 589 1 pc=304c dots=154888176
+ok expect_event 589 1 pc=304c dots=154888120
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=304c dots=154888176
+ok expect wScriptRunning 00 pc=304c dots=154888120
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
 ok event 717 1 pc=510e dots=70548950
 ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 PASS call RespawnOneOffs A=00 F=a0
-ok call RespawnOneOffs pc=510e dots=70555086
+ok call RespawnOneOffs pc=510e dots=70555038
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=510e dots=70555086
+ok expect_event 2289 0 pc=510e dots=70555038
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=510e dots=70555086
+ok expect_event 2290 0 pc=510e dots=70555038
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=510e dots=70555086
+ok expect_event 2291 0 pc=510e dots=70555038
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=510e dots=70555086
+ok expect_event 2154 1 pc=510e dots=70555038
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=510e dots=70555086
+ok expect_event 2156 0 pc=510e dots=70555038
 PASS event 671 = 0
-ok expect_event 671 0 pc=510e dots=70555086
+ok expect_event 671 0 pc=510e dots=70555038
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70555086
-ok warp 3 4 6 4 pc=510e dots=70555086
-ok run 150 pc=33a0 dots=81088686
-PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=33a0 dots=81088686
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=33a0 dots=81088686
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=33a0 dots=81088686
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=33a0 dots=81088686
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=33a0 dots=81088686
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=33a0 dots=81088686
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1d pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-PASS call RespawnOneOffs A=00 F=a0
-ok call RespawnOneOffs pc=510e dots=70555060
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=510e dots=70555060
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=510e dots=70555060
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=510e dots=70555060
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=510e dots=70555060
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=510e dots=70555060
-PASS event 671 = 1
-ok expect_event 671 1 pc=510e dots=70555060
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70555060
-ok warp 3 4 6 4 pc=510e dots=70555060
-ok run 150 pc=339e dots=81088660
-PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=339e dots=81088660
-PASS event 2289 = 0
-ok expect_event 2289 0 pc=339e dots=81088660
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=339e dots=81088660
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=339e dots=81088660
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=339e dots=81088660
-PASS event 2156 = 0
-ok expect_event 2156 0 pc=339e dots=81088660
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=02 F=70
-ok call UpdateEusineVisibility pc=510e dots=70549134
-PASS call RespawnOneOffs A=00 F=a0
-ok call RespawnOneOffs pc=510e dots=70555062
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=510e dots=70555062
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=510e dots=70555062
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=510e dots=70555062
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=510e dots=70555062
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=510e dots=70555062
-PASS event 671 = 0
-ok expect_event 671 0 pc=510e dots=70555062
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70555062
-ok warp 3 4 6 4 pc=510e dots=70555062
-ok run 150 pc=339e dots=81088664
-PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=339e dots=81088664
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=339e dots=81088664
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=339e dots=81088664
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=339e dots=81088664
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=339e dots=81088664
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=339e dots=81088664
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1d pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=02 F=70
-ok call UpdateEusineVisibility pc=510e dots=70549134
-PASS call RespawnOneOffs A=00 F=a0
-ok call RespawnOneOffs pc=510e dots=70555036
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=510e dots=70555036
-PASS event 2290 = 0
-ok expect_event 2290 0 pc=510e dots=70555036
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=510e dots=70555036
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=510e dots=70555036
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=510e dots=70555036
-PASS event 671 = 1
-ok expect_event 671 1 pc=510e dots=70555036
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70555036
-ok warp 3 4 6 4 pc=510e dots=70555036
+ok until OverworldLoop.loop pc=510e dots=70555038
+ok warp 3 4 6 4 pc=510e dots=70555038
 ok run 150 pc=33a0 dots=81088638
 PASS expect wMapGroup 03 04 04 06
 ok expect wMapGroup 03 04 04 06 pc=33a0 dots=81088638
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=33a0 dots=81088638
+PASS event 2289 = 0
+ok expect_event 2289 0 pc=33a0 dots=81088638
 PASS event 2290 = 0
 ok expect_event 2290 0 pc=33a0 dots=81088638
 PASS event 2291 = 0
 ok expect_event 2291 0 pc=33a0 dots=81088638
 PASS event 2154 = 1
 ok expect_event 2154 1 pc=33a0 dots=81088638
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=33a0 dots=81088638
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 1 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
-PASS call RespawnOneOffs A=00 F=a0
-ok call RespawnOneOffs pc=510e dots=70555060
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=510e dots=70555060
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=510e dots=70555060
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=510e dots=70555060
-PASS event 2154 = 0
-ok expect_event 2154 0 pc=510e dots=70555060
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=510e dots=70555060
-PASS event 671 = 0
-ok expect_event 671 0 pc=510e dots=70555060
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70555060
-ok warp 3 4 6 4 pc=510e dots=70555060
-ok run 150 pc=ff81 dots=81088664
-PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=ff81 dots=81088664
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=ff81 dots=81088664
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=ff81 dots=81088664
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=ff81 dots=81088664
-PASS event 2154 = 0
-ok expect_event 2154 0 pc=ff81 dots=81088664
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=ff81 dots=81088664
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 1 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1d pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
-PASS call RespawnOneOffs A=00 F=a0
-ok call RespawnOneOffs pc=510e dots=70555034
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=510e dots=70555034
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=510e dots=70555034
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=510e dots=70555034
-PASS event 2154 = 0
-ok expect_event 2154 0 pc=510e dots=70555034
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=510e dots=70555034
-PASS event 671 = 1
-ok expect_event 671 1 pc=510e dots=70555034
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70555034
-ok warp 3 4 6 4 pc=510e dots=70555034
-ok run 150 pc=ff81 dots=81088638
-PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=ff81 dots=81088638
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=ff81 dots=81088638
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=ff81 dots=81088638
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=ff81 dots=81088638
-PASS event 2154 = 0
-ok expect_event 2154 0 pc=ff81 dots=81088638
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=ff81 dots=81088638
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 1 pc=510e dots=70548950
-ok event 2291 1 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
-PASS call RespawnOneOffs A=00 F=a0
-ok call RespawnOneOffs pc=510e dots=70555026
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=510e dots=70555026
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=510e dots=70555026
-PASS event 2291 = 1
-ok expect_event 2291 1 pc=510e dots=70555026
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=510e dots=70555026
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=510e dots=70555026
-PASS event 671 = 0
-ok expect_event 671 0 pc=510e dots=70555026
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70555026
-ok warp 3 4 6 4 pc=510e dots=70555026
-ok run 150 pc=339f dots=81088626
-PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=339f dots=81088626
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=339f dots=81088626
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=339f dots=81088626
-PASS event 2291 = 1
-ok expect_event 2291 1 pc=339f dots=81088626
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=339f dots=81088626
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=339f dots=81088626
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 1 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 1 pc=510e dots=70548950
-ok event 2291 1 pc=510e dots=70548950
-ok write wPlayerCaught 1d pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
-PASS call RespawnOneOffs A=00 F=a0
-ok call RespawnOneOffs pc=510e dots=70555000
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=510e dots=70555000
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=510e dots=70555000
-PASS event 2291 = 1
-ok expect_event 2291 1 pc=510e dots=70555000
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=510e dots=70555000
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=510e dots=70555000
-PASS event 671 = 1
-ok expect_event 671 1 pc=510e dots=70555000
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70555000
-ok warp 3 4 6 4 pc=510e dots=70555000
-ok run 150 pc=339a dots=81088604
-PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=339a dots=81088604
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=339a dots=81088604
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=339a dots=81088604
-PASS event 2291 = 1
-ok expect_event 2291 1 pc=339a dots=81088604
-PASS event 2154 = 1
-ok expect_event 2154 1 pc=339a dots=81088604
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=339a dots=81088604
+PASS event 2156 = 0
+ok expect_event 2156 0 pc=33a0 dots=81088638
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -1807,112 +1347,46 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
-ok event 2289 0 pc=510e dots=70548950
-ok event 2290 0 pc=510e dots=70548950
-ok event 2291 0 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 15 10 6 4 pc=510e dots=70549158
-ok run 150 pc=41d0 dots=81082758
-PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41d0 dots=81082758
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=81097334
-ok script TinTowerHoOh pc=510e dots=81097334
-break Script_startbattle pc=6b2b
-ok until Script_startbattle pc=6b2b dots=89355266
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=6b2b dots=89355266
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=6b2b dots=89355266
-PASS event 2291 = 0
-ok expect_event 2291 0 pc=6b2b dots=89355266
-PASS event 2154 = 0
-ok expect_event 2154 0 pc=6b2b dots=89355266
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=6b2b dots=89355266
-PASS event 671 = 1
-ok expect_event 671 1 pc=6b2b dots=89355266
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=02 F=70
-ok call UpdateEusineVisibility pc=510e dots=70549134
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549134
-ok warp 15 10 6 4 pc=510e dots=70549134
-ok run 150 pc=41ca dots=81082738
-PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41ca dots=81082738
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=81097326
-ok script TinTowerHoOh pc=510e dots=81097326
-break Script_startbattle pc=6b2b
-ok until Script_startbattle pc=6b2b dots=89355258
+ok call UpdateEusineVisibility pc=510e dots=70549086
+PASS call RespawnOneOffs A=00 F=a0
+ok call RespawnOneOffs pc=510e dots=70555014
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=6b2b dots=89355258
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=6b2b dots=89355258
+ok expect_event 2289 1 pc=510e dots=70555014
+PASS event 2290 = 0
+ok expect_event 2290 0 pc=510e dots=70555014
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=6b2b dots=89355258
-PASS event 2154 = 0
-ok expect_event 2154 0 pc=6b2b dots=89355258
-PASS event 2156 = 1
-ok expect_event 2156 1 pc=6b2b dots=89355258
-PASS event 671 = 1
-ok expect_event 671 1 pc=6b2b dots=89355258
-ok restore neutral.state pc=510e dots=70548950
-ok event 73 1 pc=510e dots=70548950
-ok event 671 0 pc=510e dots=70548950
-ok event 717 1 pc=510e dots=70548950
-ok event 718 1 pc=510e dots=70548950
-ok event 589 0 pc=510e dots=70548950
-ok event 2154 1 pc=510e dots=70548950
-ok event 2156 0 pc=510e dots=70548950
-ok event 2289 1 pc=510e dots=70548950
-ok event 2290 1 pc=510e dots=70548950
-ok event 2291 1 pc=510e dots=70548950
-ok write wPlayerCaught 1c pc=510e dots=70548950
-ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549098
-ok warp 15 10 6 4 pc=510e dots=70549098
-ok run 150 pc=0067 dots=81082700
-PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082700
-break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=81097322
-ok script TinTowerHoOh pc=510e dots=81097322
-break Script_startbattle pc=6b2b
-ok until Script_startbattle pc=6b2b dots=89355220
-PASS event 2289 = 1
-ok expect_event 2289 1 pc=6b2b dots=89355220
-PASS event 2290 = 1
-ok expect_event 2290 1 pc=6b2b dots=89355220
-PASS event 2291 = 1
-ok expect_event 2291 1 pc=6b2b dots=89355220
+ok expect_event 2291 0 pc=510e dots=70555014
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=6b2b dots=89355220
+ok expect_event 2154 1 pc=510e dots=70555014
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=6b2b dots=89355220
-PASS event 671 = 1
-ok expect_event 671 1 pc=6b2b dots=89355220
+ok expect_event 2156 1 pc=510e dots=70555014
+PASS event 671 = 0
+ok expect_event 671 0 pc=510e dots=70555014
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70555014
+ok warp 3 4 6 4 pc=510e dots=70555014
+ok run 150 pc=339e dots=81088616
+PASS expect wMapGroup 03 04 04 06
+ok expect wMapGroup 03 04 04 06 pc=339e dots=81088616
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=339e dots=81088616
+PASS event 2290 = 0
+ok expect_event 2290 0 pc=339e dots=81088616
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=339e dots=81088616
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=339e dots=81088616
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=339e dots=81088616
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 1 pc=510e dots=70548950
@@ -1921,21 +1395,339 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
+PASS call RespawnOneOffs A=00 F=a0
+ok call RespawnOneOffs pc=510e dots=70555012
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=510e dots=70555012
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=510e dots=70555012
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=510e dots=70555012
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=510e dots=70555012
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=510e dots=70555012
+PASS event 671 = 0
+ok expect_event 671 0 pc=510e dots=70555012
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 15 10 6 4 pc=510e dots=70549132
-ok run 150 pc=650b dots=81082742
+ok until OverworldLoop.loop pc=510e dots=70555012
+ok warp 3 4 6 4 pc=510e dots=70555012
+ok run 150 pc=ff81 dots=81088616
+PASS expect wMapGroup 03 04 04 06
+ok expect wMapGroup 03 04 04 06 pc=ff81 dots=81088616
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=ff81 dots=81088616
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=ff81 dots=81088616
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=ff81 dots=81088616
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=ff81 dots=81088616
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=ff81 dots=81088616
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 1 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 1 pc=510e dots=70548950
+ok event 2290 1 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1d pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=03 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549084
+PASS call RespawnOneOffs A=00 F=a0
+ok call RespawnOneOffs pc=510e dots=70554986
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=510e dots=70554986
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=510e dots=70554986
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=510e dots=70554986
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=510e dots=70554986
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=510e dots=70554986
+PASS event 671 = 1
+ok expect_event 671 1 pc=510e dots=70554986
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70554986
+ok warp 3 4 6 4 pc=510e dots=70554986
+ok run 150 pc=ff81 dots=81088590
+PASS expect wMapGroup 03 04 04 06
+ok expect wMapGroup 03 04 04 06 pc=ff81 dots=81088590
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=ff81 dots=81088590
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=ff81 dots=81088590
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=ff81 dots=81088590
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=ff81 dots=81088590
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=ff81 dots=81088590
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 1 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 1 pc=510e dots=70548950
+ok event 2290 1 pc=510e dots=70548950
+ok event 2291 1 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=04 F=40
+ok call UpdateEusineVisibility pc=510e dots=70549050
+PASS call RespawnOneOffs A=00 F=a0
+ok call RespawnOneOffs pc=510e dots=70554978
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=510e dots=70554978
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=510e dots=70554978
+PASS event 2291 = 1
+ok expect_event 2291 1 pc=510e dots=70554978
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=510e dots=70554978
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=510e dots=70554978
+PASS event 671 = 0
+ok expect_event 671 0 pc=510e dots=70554978
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70554978
+ok warp 3 4 6 4 pc=510e dots=70554978
+ok run 150 pc=339f dots=81088578
+PASS expect wMapGroup 03 04 04 06
+ok expect wMapGroup 03 04 04 06 pc=339f dots=81088578
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=339f dots=81088578
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=339f dots=81088578
+PASS event 2291 = 1
+ok expect_event 2291 1 pc=339f dots=81088578
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=339f dots=81088578
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=339f dots=81088578
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 1 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 1 pc=510e dots=70548950
+ok event 2290 1 pc=510e dots=70548950
+ok event 2291 1 pc=510e dots=70548950
+ok write wPlayerCaught 1d pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=04 F=40
+ok call UpdateEusineVisibility pc=510e dots=70549050
+PASS call RespawnOneOffs A=00 F=a0
+ok call RespawnOneOffs pc=510e dots=70554952
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=510e dots=70554952
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=510e dots=70554952
+PASS event 2291 = 1
+ok expect_event 2291 1 pc=510e dots=70554952
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=510e dots=70554952
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=510e dots=70554952
+PASS event 671 = 1
+ok expect_event 671 1 pc=510e dots=70554952
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70554952
+ok warp 3 4 6 4 pc=510e dots=70554952
+ok run 150 pc=339b dots=81088552
+PASS expect wMapGroup 03 04 04 06
+ok expect wMapGroup 03 04 04 06 pc=339b dots=81088552
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=339b dots=81088552
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=339b dots=81088552
+PASS event 2291 = 1
+ok expect_event 2291 1 pc=339b dots=81088552
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=339b dots=81088552
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=339b dots=81088552
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 0 pc=510e dots=70548950
+ok event 2290 0 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=01 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549110
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 15 10 6 4 pc=510e dots=70549110
+ok run 150 pc=0067 dots=81082712
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=650b dots=81082742
-ok write wLastSpawnMapGroup 04 02 pc=650b dots=81082742
-ok write wBattleResult 01 pc=650b dots=81082742
+ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082712
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=81097334
+ok script TinTowerHoOh pc=510e dots=81097334
+break Script_startbattle pc=6b2b
+ok until Script_startbattle pc=6b2b dots=89355218
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=6b2b dots=89355218
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=6b2b dots=89355218
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=6b2b dots=89355218
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=6b2b dots=89355218
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=6b2b dots=89355218
+PASS event 671 = 1
+ok expect_event 671 1 pc=6b2b dots=89355218
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 1 pc=510e dots=70548950
+ok event 2290 0 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=02 F=70
+ok call UpdateEusineVisibility pc=510e dots=70549086
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549086
+ok warp 15 10 6 4 pc=510e dots=70549086
+ok run 150 pc=0063 dots=81082690
+PASS expect wMapGroup 0f 0a 04 06
+ok expect wMapGroup 0f 0a 04 06 pc=0063 dots=81082690
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=81097326
+ok script TinTowerHoOh pc=510e dots=81097326
+break Script_startbattle pc=6b2b
+ok until Script_startbattle pc=6b2b dots=89355210
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=6b2b dots=89355210
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=6b2b dots=89355210
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=6b2b dots=89355210
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=6b2b dots=89355210
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=6b2b dots=89355210
+PASS event 671 = 1
+ok expect_event 671 1 pc=6b2b dots=89355210
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 1 pc=510e dots=70548950
+ok event 2290 1 pc=510e dots=70548950
+ok event 2291 1 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=04 F=40
+ok call UpdateEusineVisibility pc=510e dots=70549050
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549050
+ok warp 15 10 6 4 pc=510e dots=70549050
+ok run 150 pc=41af dots=81082656
+PASS expect wMapGroup 0f 0a 04 06
+ok expect wMapGroup 0f 0a 04 06 pc=41af dots=81082656
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=81097322
+ok script TinTowerHoOh pc=510e dots=81097322
+break Script_startbattle pc=6b2b
+ok until Script_startbattle pc=6b2b dots=89355172
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=6b2b dots=89355172
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=6b2b dots=89355172
+PASS event 2291 = 1
+ok expect_event 2291 1 pc=6b2b dots=89355172
+PASS event 2154 = 1
+ok expect_event 2154 1 pc=6b2b dots=89355172
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=6b2b dots=89355172
+PASS event 671 = 1
+ok expect_event 671 1 pc=6b2b dots=89355172
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 1 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 1 pc=510e dots=70548950
+ok event 2290 1 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=03 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549084
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 15 10 6 4 pc=510e dots=70549084
+ok run 150 pc=5274 dots=81082684
+PASS expect wMapGroup 0f 0a 04 06
+ok expect wMapGroup 0f 0a 04 06 pc=5274 dots=81082684
+ok write wLastSpawnMapGroup 04 02 pc=5274 dots=81082684
+ok write wBattleResult 01 pc=5274 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81141602
 ok script TinTowerHoOh.nocatch pc=510e dots=81141602
@@ -1962,19 +1754,19 @@ ok expect_event 2156 1 pc=0dd4 dots=122995264
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=123040458
 ok warp 21 32 2 4 pc=510e dots=123040458
-ok run 150 pc=5200 dots=133574060
+ok run 150 pc=523a dots=133574058
 PASS expect wMapGroup 15 20 04 02
-ok expect wMapGroup 15 20 04 02 pc=5200 dots=133574060
+ok expect wMapGroup 15 20 04 02 pc=523a dots=133574058
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=5200 dots=133574060
+ok expect_event 2289 1 pc=523a dots=133574058
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=5200 dots=133574060
+ok expect_event 2290 1 pc=523a dots=133574058
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=5200 dots=133574060
+ok expect_event 2291 0 pc=523a dots=133574058
 PASS event 2154 = 0
-ok expect_event 2154 0 pc=5200 dots=133574060
+ok expect_event 2154 0 pc=523a dots=133574058
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=5200 dots=133574060
+ok expect_event 2156 1 pc=523a dots=133574058
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -1983,45 +1775,141 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 15 10 6 4 pc=510e dots=70549158
-ok run 150 pc=41d0 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 15 10 6 4 pc=510e dots=70549110
+ok run 150 pc=0067 dots=81082712
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41d0 dots=81082758
-ok write wLastSpawnMapGroup 04 02 pc=41d0 dots=81082758
+ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082712
+ok write wNumItems 01 61 01 ff pc=0067 dots=81082712
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097334
 ok script TinTowerHoOh pc=510e dots=81097334
 break StartBattle pc=71c2
-ok until StartBattle pc=71c2 dots=89356400
+ok until StartBattle pc=71c2 dots=89356352
+ok run 500 pc=0dd4 dots=124468352
+ok press 8 ef pc=0dd4 dots=125030144
+ok run 180 pc=0dd4 dots=137670464
+ok press 8 ef pc=0dd4 dots=138232256
+ok run 120 pc=0dd4 dots=146659136
+ok press 8 ef pc=0dd4 dots=147220928
+ok run 180 pc=0dd4 dots=159861248
+ok press 8 ef pc=0dd4 dots=160423040
+ok run 180 pc=0dd4 dots=173063360
+ok snapshot battle-menu.state pc=0dd4 dots=173063360
+ok press 8 f7 pc=0dd4 dots=173625152
+ok run 8 pc=0dd4 dots=174186944
+ok press 8 fe pc=0dd4 dots=174748736
+ok run 8 pc=0dd4 dots=175310528
+ok press 8 ef pc=0dd4 dots=175872320
+ok run 40 pc=0dd4 dots=178681280
+ok shot run-rejected.ppm pc=0dd4 dots=178681280
+PASS expect wBattleEnded 00
+ok expect wBattleEnded 00 pc=0dd4 dots=178681280
+PASS expect wBattleResult 00
+ok expect wBattleResult 00 pc=0dd4 dots=178681280
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=0dd4 dots=178681280
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=0dd4 dots=178681280
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=0dd4 dots=178681280
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=0dd4 dots=178681280
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=0dd4 dots=178681280
+ok restore battle-menu.state pc=0dd4 dots=173063360
+ok press 8 f7 pc=0dd4 dots=173625152
+ok run 8 pc=0dd4 dots=174186944
+ok press 8 ef pc=0dd4 dots=174748736
+ok run 100 pc=0dd4 dots=181771136
+ok press 8 ef pc=0dd4 dots=182332928
+ok run 30 pc=0dd4 dots=184439648
+ok press 8 ef pc=0dd4 dots=185001440
+ok run 60 pc=0dd4 dots=189214880
+ok shot doll-escape.ppm pc=0dd4 dots=189214880
+PASS script returned to idle after 59 frames
+ok finish pc=3007 dots=193358190
+ok run 180 pc=300d dots=205998510
+PASS expect wBattleMode 00
+ok expect wBattleMode 00 pc=300d dots=205998510
+PASS expect wBattleResult 02
+ok expect wBattleResult 02 pc=300d dots=205998510
+PASS expect wNumItems 00 ff
+ok expect wNumItems 00 ff pc=300d dots=205998510
+PASS expect wPlayerCaught 1c
+ok expect wPlayerCaught 1c pc=300d dots=205998510
+PASS event 2289 = 1
+ok expect_event 2289 1 pc=300d dots=205998510
+PASS event 2290 = 1
+ok expect_event 2290 1 pc=300d dots=205998510
+PASS event 2291 = 0
+ok expect_event 2291 0 pc=300d dots=205998510
+PASS event 2154 = 0
+ok expect_event 2154 0 pc=300d dots=205998510
+PASS event 2156 = 1
+ok expect_event 2156 1 pc=300d dots=205998510
+ok shot doll-finished.ppm pc=300d dots=205998510
+ok restore neutral.state pc=510e dots=70548950
+ok event 73 1 pc=510e dots=70548950
+ok event 671 0 pc=510e dots=70548950
+ok event 717 1 pc=510e dots=70548950
+ok event 718 1 pc=510e dots=70548950
+ok event 589 0 pc=510e dots=70548950
+ok event 2154 1 pc=510e dots=70548950
+ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
+ok event 2289 0 pc=510e dots=70548950
+ok event 2290 0 pc=510e dots=70548950
+ok event 2291 0 pc=510e dots=70548950
+ok write wPlayerCaught 1c pc=510e dots=70548950
+ok write wTinTower1FSceneID 01 pc=510e dots=70548950
+PASS call UpdateEusineVisibility A=01 F=c0
+ok call UpdateEusineVisibility pc=510e dots=70549110
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 15 10 6 4 pc=510e dots=70549110
+ok run 150 pc=0067 dots=81082712
+PASS expect wMapGroup 0f 0a 04 06
+ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082712
+ok write wLastSpawnMapGroup 04 02 pc=0067 dots=81082712
+break OverworldLoop.loop pc=510e
+ok until OverworldLoop.loop pc=510e dots=81097334
+ok script TinTowerHoOh pc=510e dots=81097334
+break StartBattle pc=71c2
+ok until StartBattle pc=71c2 dots=89356352
 Injected battle engine result 00
-ok battle_result 00 pc=0014 dots=89356400
-ok run 90 pc=0dd4 dots=95676560
+ok battle_result 00 pc=0014 dots=89356352
+ok run 90 pc=0dd4 dots=95676512
 PASS script returned to idle after 0 frames
-ok finish pc=0dd4 dots=95676560
-ok run 180 pc=0dd4 dots=108316880
+ok finish pc=0dd4 dots=95676512
+ok run 180 pc=0dd4 dots=108316832
 PASS expect wPlayerCaught 1c
-ok expect wPlayerCaught 1c pc=0dd4 dots=108316880
+ok expect wPlayerCaught 1c pc=0dd4 dots=108316832
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=108316880
+ok expect wScriptRunning 00 pc=0dd4 dots=108316832
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=108316880
+ok expect_event 2289 1 pc=0dd4 dots=108316832
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=0dd4 dots=108316880
+ok expect_event 2290 1 pc=0dd4 dots=108316832
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=108316880
+ok expect_event 2291 0 pc=0dd4 dots=108316832
 PASS event 2154 = 0
-ok expect_event 2154 0 pc=0dd4 dots=108316880
+ok expect_event 2154 0 pc=0dd4 dots=108316832
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=108316880
+ok expect_event 2156 1 pc=0dd4 dots=108316832
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2030,45 +1918,48 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 15 10 6 4 pc=510e dots=70549158
-ok run 150 pc=41d0 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 15 10 6 4 pc=510e dots=70549110
+ok run 150 pc=0067 dots=81082712
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41d0 dots=81082758
-ok write wLastSpawnMapGroup 04 02 pc=41d0 dots=81082758
+ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082712
+ok write wLastSpawnMapGroup 04 02 pc=0067 dots=81082712
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097334
 ok script TinTowerHoOh pc=510e dots=81097334
 break StartBattle pc=71c2
-ok until StartBattle pc=71c2 dots=89356400
+ok until StartBattle pc=71c2 dots=89356352
 Injected battle engine result 02
-ok battle_result 02 pc=0014 dots=89356400
-ok run 90 pc=0dd4 dots=95676560
+ok battle_result 02 pc=0014 dots=89356352
+ok run 90 pc=0dd4 dots=95676512
 PASS script returned to idle after 0 frames
-ok finish pc=0dd4 dots=95676560
-ok run 180 pc=0dd4 dots=108316880
+ok finish pc=0dd4 dots=95676512
+ok run 180 pc=0dd4 dots=108316832
 PASS expect wPlayerCaught 1c
-ok expect wPlayerCaught 1c pc=0dd4 dots=108316880
+ok expect wPlayerCaught 1c pc=0dd4 dots=108316832
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=108316880
+ok expect wScriptRunning 00 pc=0dd4 dots=108316832
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=108316880
+ok expect_event 2289 1 pc=0dd4 dots=108316832
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=0dd4 dots=108316880
+ok expect_event 2290 1 pc=0dd4 dots=108316832
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=108316880
+ok expect_event 2291 0 pc=0dd4 dots=108316832
 PASS event 2154 = 0
-ok expect_event 2154 0 pc=0dd4 dots=108316880
+ok expect_event 2154 0 pc=0dd4 dots=108316832
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=108316880
+ok expect_event 2156 1 pc=0dd4 dots=108316832
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2077,45 +1968,48 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 15 10 6 4 pc=510e dots=70549158
-ok run 150 pc=41d0 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 15 10 6 4 pc=510e dots=70549110
+ok run 150 pc=0067 dots=81082712
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41d0 dots=81082758
-ok write wLastSpawnMapGroup 04 02 pc=41d0 dots=81082758
+ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082712
+ok write wLastSpawnMapGroup 04 02 pc=0067 dots=81082712
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097334
 ok script TinTowerHoOh pc=510e dots=81097334
 break StartBattle pc=71c2
-ok until StartBattle pc=71c2 dots=89356400
+ok until StartBattle pc=71c2 dots=89356352
 Injected battle engine result 40
-ok battle_result 40 pc=0014 dots=89356400
-ok run 90 pc=0dd4 dots=95676560
+ok battle_result 40 pc=0014 dots=89356352
+ok run 90 pc=0dd4 dots=95676512
 PASS script returned to idle after 0 frames
-ok finish pc=0dd4 dots=95676560
-ok run 180 pc=0dd4 dots=108316880
+ok finish pc=0dd4 dots=95676512
+ok run 180 pc=0dd4 dots=108316832
 PASS expect wPlayerCaught 1d
-ok expect wPlayerCaught 1d pc=0dd4 dots=108316880
+ok expect wPlayerCaught 1d pc=0dd4 dots=108316832
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=108316880
+ok expect wScriptRunning 00 pc=0dd4 dots=108316832
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=0dd4 dots=108316880
+ok expect_event 2289 1 pc=0dd4 dots=108316832
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=0dd4 dots=108316880
+ok expect_event 2290 1 pc=0dd4 dots=108316832
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=108316880
+ok expect_event 2291 0 pc=0dd4 dots=108316832
 PASS event 2154 = 0
-ok expect_event 2154 0 pc=0dd4 dots=108316880
+ok expect_event 2154 0 pc=0dd4 dots=108316832
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=0dd4 dots=108316880
+ok expect_event 2156 1 pc=0dd4 dots=108316832
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2124,47 +2018,50 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 15 10 6 4 pc=510e dots=70549158
-ok run 150 pc=41d0 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 15 10 6 4 pc=510e dots=70549110
+ok run 150 pc=0067 dots=81082712
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41d0 dots=81082758
-ok write wLastSpawnMapGroup 04 02 pc=41d0 dots=81082758
+ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082712
+ok write wLastSpawnMapGroup 04 02 pc=0067 dots=81082712
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097334
 ok script TinTowerHoOh pc=510e dots=81097334
 break StartBattle pc=71c2
-ok until StartBattle pc=71c2 dots=89356400
+ok until StartBattle pc=71c2 dots=89356352
 Injected battle engine result 01
-ok battle_result 01 pc=0014 dots=89356400
-ok run 90 pc=0dd4 dots=95676560
+ok battle_result 01 pc=0014 dots=89356352
+ok run 90 pc=0dd4 dots=95676512
 PASS script returned to idle after 325 frames
-ok finish pc=2684 dots=118499424
-ok run 180 pc=300d dots=131139744
+ok finish pc=520c dots=118499376
+ok run 180 pc=3052 dots=131139696
 PASS expect wPlayerCaught 1c
-ok expect wPlayerCaught 1c pc=300d dots=131139744
+ok expect wPlayerCaught 1c pc=3052 dots=131139696
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=300d dots=131139744
+ok expect wScriptRunning 00 pc=3052 dots=131139696
 PASS event 2289 = 1
-ok expect_event 2289 1 pc=300d dots=131139744
+ok expect_event 2289 1 pc=3052 dots=131139696
 PASS event 2290 = 1
-ok expect_event 2290 1 pc=300d dots=131139744
+ok expect_event 2290 1 pc=3052 dots=131139696
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=300d dots=131139744
+ok expect_event 2291 0 pc=3052 dots=131139696
 PASS event 2154 = 0
-ok expect_event 2154 0 pc=300d dots=131139744
+ok expect_event 2154 0 pc=3052 dots=131139696
 PASS event 2156 = 1
-ok expect_event 2156 1 pc=300d dots=131139744
+ok expect_event 2156 1 pc=3052 dots=131139696
 PASS expect wMapGroup 04 02
-ok expect wMapGroup 04 02 pc=300d dots=131139744
+ok expect wMapGroup 04 02 pc=3052 dots=131139696
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 0 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2173,53 +2070,56 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 00 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=00 F=a0
-ok call UpdateEusineVisibility pc=510e dots=70549092
-ok event 1854 0 pc=510e dots=70549092
-ok event 2143 0 pc=510e dots=70549092
-ok event 2146 0 pc=510e dots=70549092
-ok write wLastSpawnMapGroup 04 02 pc=510e dots=70549092
-ok write wTinTower1FSceneID 00 pc=510e dots=70549092
+PASS call UpdateEusineVisibility A=00 F=70
+ok call UpdateEusineVisibility pc=510e dots=70549104
+ok event 1457 0 pc=510e dots=70549104
+ok write wLastSpawnMapGroup 04 02 pc=510e dots=70549104
+ok write wTinTower1FSceneID 00 pc=510e dots=70549104
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549092
-ok warp 3 4 7 15 pc=510e dots=70549092
+ok until OverworldLoop.loop pc=510e dots=70549104
+ok warp 3 4 7 15 pc=510e dots=70549104
 break StartBattle pc=71c2
-ok until StartBattle 1800 pc=71c2 dots=121674562
+ok until StartBattle 1800 pc=71c2 dots=121674570
 Injected battle engine result 00
-ok battle_result 00 pc=0014 dots=121674562
-ok run 90 pc=0dd4 dots=127994722
+ok battle_result 00 pc=0014 dots=121674570
+ok run 90 pc=0dd4 dots=127994730
 PASS script returned to idle after 1066 frames
-ok finish pc=0dd4 dots=202853520
-ok run 180 pc=0dd4 dots=215493840
+ok finish pc=0dd4 dots=202853528
+ok run 180 pc=0dd4 dots=215493848
 PASS event 717 = 1
-ok expect_event 717 1 pc=0dd4 dots=215493840
+ok expect_event 717 1 pc=0dd4 dots=215493848
 PASS expect wTinTower1FSceneID 01
-ok expect wTinTower1FSceneID 01 pc=0dd4 dots=215493840
+ok expect wTinTower1FSceneID 01 pc=0dd4 dots=215493848
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=215493840
+ok expect wScriptRunning 00 pc=0dd4 dots=215493848
 PASS expect wPlayerCaught 00
-ok expect wPlayerCaught 00 pc=0dd4 dots=215493840
+ok expect wPlayerCaught 00 pc=0dd4 dots=215493848
 PASS event 1854 = 1
-ok expect_event 1854 1 pc=0dd4 dots=215493840
+ok expect_event 1854 1 pc=0dd4 dots=215493848
 PASS event 2143 = 1
-ok expect_event 2143 1 pc=0dd4 dots=215493840
+ok expect_event 2143 1 pc=0dd4 dots=215493848
 PASS event 2146 = 1
-ok expect_event 2146 1 pc=0dd4 dots=215493840
+ok expect_event 2146 1 pc=0dd4 dots=215493848
+PASS event 1457 = 0
+ok expect_event 1457 0 pc=0dd4 dots=215493848
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=215493840
+ok expect_event 2289 0 pc=0dd4 dots=215493848
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=215493840
+ok expect_event 2290 0 pc=0dd4 dots=215493848
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=215493840
+ok expect_event 2291 0 pc=0dd4 dots=215493848
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=215493840
+ok expect_event 2154 1 pc=0dd4 dots=215493848
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=215493840
+ok expect_event 2156 0 pc=0dd4 dots=215493848
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 0 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2228,53 +2128,56 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 00 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=00 F=a0
-ok call UpdateEusineVisibility pc=510e dots=70549092
-ok event 1854 0 pc=510e dots=70549092
-ok event 2143 0 pc=510e dots=70549092
-ok event 2146 0 pc=510e dots=70549092
-ok write wLastSpawnMapGroup 04 02 pc=510e dots=70549092
-ok write wTinTower1FSceneID 00 pc=510e dots=70549092
+PASS call UpdateEusineVisibility A=00 F=70
+ok call UpdateEusineVisibility pc=510e dots=70549104
+ok event 1457 0 pc=510e dots=70549104
+ok write wLastSpawnMapGroup 04 02 pc=510e dots=70549104
+ok write wTinTower1FSceneID 00 pc=510e dots=70549104
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549092
-ok warp 3 4 7 15 pc=510e dots=70549092
+ok until OverworldLoop.loop pc=510e dots=70549104
+ok warp 3 4 7 15 pc=510e dots=70549104
 break StartBattle pc=71c2
-ok until StartBattle 1800 pc=71c2 dots=121674562
+ok until StartBattle 1800 pc=71c2 dots=121674570
 Injected battle engine result 02
-ok battle_result 02 pc=0014 dots=121674562
-ok run 90 pc=0dd4 dots=127994722
+ok battle_result 02 pc=0014 dots=121674570
+ok run 90 pc=0dd4 dots=127994730
 PASS script returned to idle after 1066 frames
-ok finish pc=0dd4 dots=202853520
-ok run 180 pc=0dd4 dots=215493840
+ok finish pc=0dd4 dots=202853528
+ok run 180 pc=0dd4 dots=215493848
 PASS event 717 = 1
-ok expect_event 717 1 pc=0dd4 dots=215493840
+ok expect_event 717 1 pc=0dd4 dots=215493848
 PASS expect wTinTower1FSceneID 01
-ok expect wTinTower1FSceneID 01 pc=0dd4 dots=215493840
+ok expect wTinTower1FSceneID 01 pc=0dd4 dots=215493848
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=215493840
+ok expect wScriptRunning 00 pc=0dd4 dots=215493848
 PASS expect wPlayerCaught 00
-ok expect wPlayerCaught 00 pc=0dd4 dots=215493840
+ok expect wPlayerCaught 00 pc=0dd4 dots=215493848
 PASS event 1854 = 1
-ok expect_event 1854 1 pc=0dd4 dots=215493840
+ok expect_event 1854 1 pc=0dd4 dots=215493848
 PASS event 2143 = 1
-ok expect_event 2143 1 pc=0dd4 dots=215493840
+ok expect_event 2143 1 pc=0dd4 dots=215493848
 PASS event 2146 = 1
-ok expect_event 2146 1 pc=0dd4 dots=215493840
+ok expect_event 2146 1 pc=0dd4 dots=215493848
+PASS event 1457 = 0
+ok expect_event 1457 0 pc=0dd4 dots=215493848
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=215493840
+ok expect_event 2289 0 pc=0dd4 dots=215493848
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=215493840
+ok expect_event 2290 0 pc=0dd4 dots=215493848
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=215493840
+ok expect_event 2291 0 pc=0dd4 dots=215493848
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=215493840
+ok expect_event 2154 1 pc=0dd4 dots=215493848
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=215493840
+ok expect_event 2156 0 pc=0dd4 dots=215493848
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 0 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2283,54 +2186,56 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 00 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=00 F=a0
-ok call UpdateEusineVisibility pc=510e dots=70549092
-ok event 1854 0 pc=510e dots=70549092
-ok event 2143 0 pc=510e dots=70549092
-ok event 2146 0 pc=510e dots=70549092
-ok write wLastSpawnMapGroup 04 02 pc=510e dots=70549092
-ok write wTinTower1FSceneID 00 pc=510e dots=70549092
+PASS call UpdateEusineVisibility A=00 F=70
+ok call UpdateEusineVisibility pc=510e dots=70549104
+ok event 1457 1 pc=510e dots=70549104
+ok write wLastSpawnMapGroup 04 02 pc=510e dots=70549104
+ok write wTinTower1FSceneID 00 pc=510e dots=70549104
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549092
-ok warp 3 4 7 15 pc=510e dots=70549092
+ok until OverworldLoop.loop pc=510e dots=70549104
+ok warp 3 4 7 15 pc=510e dots=70549104
 break StartBattle pc=71c2
-ok until StartBattle 1800 pc=71c2 dots=121674562
+ok until StartBattle 1800 pc=71c2 dots=121674570
 Injected battle engine result 40
-ok battle_result 40 pc=0014 dots=121674562
-ok run 90 pc=0dd4 dots=127994722
+ok battle_result 40 pc=0014 dots=121674570
+ok run 90 pc=0dd4 dots=127994730
 PASS script returned to idle after 1066 frames
-ok finish pc=0dd4 dots=202853520
-ok run 180 pc=0dd4 dots=215493840
+ok finish pc=0dd4 dots=202853528
+ok run 180 pc=0dd4 dots=215493848
 PASS event 717 = 1
-ok expect_event 717 1 pc=0dd4 dots=215493840
+ok expect_event 717 1 pc=0dd4 dots=215493848
 PASS expect wTinTower1FSceneID 01
-ok expect wTinTower1FSceneID 01 pc=0dd4 dots=215493840
+ok expect wTinTower1FSceneID 01 pc=0dd4 dots=215493848
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=215493840
+ok expect wScriptRunning 00 pc=0dd4 dots=215493848
 PASS expect wPlayerCaught 10
-ok expect wPlayerCaught 10 pc=0dd4 dots=215493840
+ok expect wPlayerCaught 10 pc=0dd4 dots=215493848
 PASS event 1854 = 1
-ok expect_event 1854 1 pc=0dd4 dots=215493840
+ok expect_event 1854 1 pc=0dd4 dots=215493848
 PASS event 2143 = 1
-ok expect_event 2143 1 pc=0dd4 dots=215493840
+ok expect_event 2143 1 pc=0dd4 dots=215493848
 PASS event 2146 = 1
-ok expect_event 2146 1 pc=0dd4 dots=215493840
+ok expect_event 2146 1 pc=0dd4 dots=215493848
+PASS event 1457 = 1
+ok expect_event 1457 1 pc=0dd4 dots=215493848
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=215493840
+ok expect_event 2289 0 pc=0dd4 dots=215493848
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=215493840
+ok expect_event 2290 0 pc=0dd4 dots=215493848
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=215493840
+ok expect_event 2291 0 pc=0dd4 dots=215493848
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=215493840
+ok expect_event 2154 1 pc=0dd4 dots=215493848
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=215493840
-# Process restarted here from the same neutral snapshot after exit 143.
+ok expect_event 2156 0 pc=0dd4 dots=215493848
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 0 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2339,55 +2244,58 @@ ok event 718 0 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 00 pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
-PASS call UpdateEusineVisibility A=00 F=a0
-ok call UpdateEusineVisibility pc=510e dots=70549092
-ok event 1854 0 pc=510e dots=70549092
-ok event 2143 0 pc=510e dots=70549092
-ok event 2146 0 pc=510e dots=70549092
-ok write wLastSpawnMapGroup 04 02 pc=510e dots=70549092
-ok write wTinTower1FSceneID 00 pc=510e dots=70549092
+PASS call UpdateEusineVisibility A=00 F=70
+ok call UpdateEusineVisibility pc=510e dots=70549104
+ok event 1457 1 pc=510e dots=70549104
+ok write wLastSpawnMapGroup 04 02 pc=510e dots=70549104
+ok write wTinTower1FSceneID 00 pc=510e dots=70549104
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549092
-ok warp 3 4 7 15 pc=510e dots=70549092
+ok until OverworldLoop.loop pc=510e dots=70549104
+ok warp 3 4 7 15 pc=510e dots=70549104
 break StartBattle pc=71c2
-ok until StartBattle 1800 pc=71c2 dots=121674562
+ok until StartBattle 1800 pc=71c2 dots=121674570
 Injected battle engine result 01
-ok battle_result 01 pc=0014 dots=121674562
-ok run 90 pc=0dd4 dots=127994722
+ok battle_result 01 pc=0014 dots=121674570
+ok run 90 pc=0dd4 dots=127994730
 PASS script returned to idle after 326 frames
-ok finish pc=0dd4 dots=150888026
-ok run 180 pc=0dd4 dots=163528346
+ok finish pc=0dd4 dots=150888014
+ok run 180 pc=0dd4 dots=163528334
 PASS event 717 = 1
-ok expect_event 717 1 pc=0dd4 dots=163528346
+ok expect_event 717 1 pc=0dd4 dots=163528334
 PASS expect wTinTower1FSceneID 01
-ok expect wTinTower1FSceneID 01 pc=0dd4 dots=163528346
+ok expect wTinTower1FSceneID 01 pc=0dd4 dots=163528334
 PASS expect wScriptRunning 00
-ok expect wScriptRunning 00 pc=0dd4 dots=163528346
+ok expect wScriptRunning 00 pc=0dd4 dots=163528334
 PASS expect wPlayerCaught 00
-ok expect wPlayerCaught 00 pc=0dd4 dots=163528346
+ok expect wPlayerCaught 00 pc=0dd4 dots=163528334
 PASS event 1854 = 1
-ok expect_event 1854 1 pc=0dd4 dots=163528346
+ok expect_event 1854 1 pc=0dd4 dots=163528334
 PASS event 2143 = 1
-ok expect_event 2143 1 pc=0dd4 dots=163528346
+ok expect_event 2143 1 pc=0dd4 dots=163528334
 PASS event 2146 = 1
-ok expect_event 2146 1 pc=0dd4 dots=163528346
+ok expect_event 2146 1 pc=0dd4 dots=163528334
+PASS event 1457 = 1
+ok expect_event 1457 1 pc=0dd4 dots=163528334
 PASS event 2289 = 0
-ok expect_event 2289 0 pc=0dd4 dots=163528346
+ok expect_event 2289 0 pc=0dd4 dots=163528334
 PASS event 2290 = 0
-ok expect_event 2290 0 pc=0dd4 dots=163528346
+ok expect_event 2290 0 pc=0dd4 dots=163528334
 PASS event 2291 = 0
-ok expect_event 2291 0 pc=0dd4 dots=163528346
+ok expect_event 2291 0 pc=0dd4 dots=163528334
 PASS event 2154 = 1
-ok expect_event 2154 1 pc=0dd4 dots=163528346
+ok expect_event 2154 1 pc=0dd4 dots=163528334
 PASS event 2156 = 0
-ok expect_event 2156 0 pc=0dd4 dots=163528346
+ok expect_event 2156 0 pc=0dd4 dots=163528334
 PASS expect wMapGroup 04 02
-ok expect wMapGroup 04 02 pc=0dd4 dots=163528346
+ok expect wMapGroup 04 02 pc=0dd4 dots=163528334
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2396,26 +2304,29 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 4 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 4 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 04 04 06
-ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 04 04 06 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=81106504
-ok write wDigWarpNumber 03 10 0f pc=510e dots=81106504
+ok until OverworldLoop.loop pc=510e dots=81106464
+ok write wDigWarpNumber 03 10 0f pc=510e dots=81106464
 PASS call EscapeRopeOrDig.CheckCanDig A=01 F=20
-ok call EscapeRopeOrDig.CheckCanDig 01 pc=510e dots=81107136
+ok call EscapeRopeOrDig.CheckCanDig 01 pc=510e dots=81107096
 PASS call CheckFlyAllowedOnMap A=01 F=00
-ok call CheckFlyAllowedOnMap 01 00 pc=510e dots=81108552
+ok call CheckFlyAllowedOnMap 01 00 pc=510e dots=81108512
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2424,19 +2335,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 5 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 5 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 05 04 06
-ok expect wMapGroup 03 05 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 05 04 06 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81135292
 ok write wDigWarpNumber 03 10 0f pc=510e dots=81135292
@@ -2452,19 +2366,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 6 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 6 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 06 04 06
-ok expect wMapGroup 03 06 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 06 04 06 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81136086
 ok write wDigWarpNumber 03 10 0f pc=510e dots=81136086
@@ -2480,19 +2397,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 7 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 7 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 07 04 06
-ok expect wMapGroup 03 07 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 07 04 06 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81136722
 ok write wDigWarpNumber 03 10 0f pc=510e dots=81136722
@@ -2508,19 +2428,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 8 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 8 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 08 04 06
-ok expect wMapGroup 03 08 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 08 04 06 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81136534
 ok write wDigWarpNumber 03 10 0f pc=510e dots=81136534
@@ -2536,26 +2459,29 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 9 6 4 pc=510e dots=70549132
-ok run 150 pc=0064 dots=81082736
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 9 6 4 pc=510e dots=70549084
+ok run 150 pc=5117 dots=81082684
 PASS expect wMapGroup 03 09 04 06
-ok expect wMapGroup 03 09 04 06 pc=0064 dots=81082736
+ok expect wMapGroup 03 09 04 06 pc=5117 dots=81082684
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=81153060
-ok write wDigWarpNumber 03 10 0f pc=510e dots=81153060
+ok until OverworldLoop.loop pc=510e dots=81082702
+ok write wDigWarpNumber 03 10 0f pc=510e dots=81082702
 PASS call EscapeRopeOrDig.CheckCanDig A=01 F=20
-ok call EscapeRopeOrDig.CheckCanDig 01 pc=510e dots=81153692
+ok call EscapeRopeOrDig.CheckCanDig 01 pc=510e dots=81083334
 PASS call CheckFlyAllowedOnMap A=01 F=00
-ok call CheckFlyAllowedOnMap 01 00 pc=510e dots=81155108
+ok call CheckFlyAllowedOnMap 01 00 pc=510e dots=81084750
 ok restore neutral.state pc=510e dots=70548950
 ok event 73 1 pc=510e dots=70548950
 ok event 671 0 pc=510e dots=70548950
@@ -2564,19 +2490,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 10 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 10 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 0a 04 06
-ok expect wMapGroup 03 0a 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 0a 04 06 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81136194
 ok write wDigWarpNumber 03 10 0f pc=510e dots=81136194
@@ -2592,19 +2521,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 11 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 11 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 0b 04 06
-ok expect wMapGroup 03 0b 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 0b 04 06 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81102042
 ok write wDigWarpNumber 03 10 0f pc=510e dots=81102042
@@ -2620,19 +2552,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 12 6 4 pc=510e dots=70549132
-ok run 150 pc=26cb dots=81082734
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 12 6 4 pc=510e dots=70549084
+ok run 150 pc=0053 dots=81082684
 PASS expect wMapGroup 03 0c 04 06
-ok expect wMapGroup 03 0c 04 06 pc=26cb dots=81082734
+ok expect wMapGroup 03 0c 04 06 pc=0053 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81082820
 ok write wDigWarpNumber 03 10 0f pc=510e dots=81082820
@@ -2648,19 +2583,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 13 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 13 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 0d 04 06
-ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81134790
 ok write wDigWarpNumber 03 10 0f pc=510e dots=81134790
@@ -2676,19 +2614,22 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 15 10 6 4 pc=510e dots=70549132
-ok run 150 pc=41ca dots=81082736
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 15 10 6 4 pc=510e dots=70549084
+ok run 150 pc=0063 dots=81082688
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41ca dots=81082736
+ok expect wMapGroup 0f 0a 04 06 pc=0063 dots=81082688
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097324
 ok write wDigWarpNumber 03 10 0f pc=510e dots=81097324
@@ -2704,23 +2645,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 3 13 6 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 3 13 6 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 03 0d 04 06
-ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082758
-ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082758
-ok write wNextWarp 03 10 0f pc=0dd4 dots=81082758
-ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082758
-ok write wCurPartyMon 00 pc=0dd4 dots=81082758
+ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082710
+ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082710
+ok write wNextWarp 03 10 0f pc=0dd4 dots=81082710
+ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082710
+ok write wCurPartyMon 00 pc=0dd4 dots=81082710
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81134792
 ok script EscapeRopeOrDig.UsedEscapeRopeScript pc=510e dots=81134792
@@ -2750,23 +2694,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 13 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 13 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 0d 04 06
-ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082732
-ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082732
-ok write wNextWarp 03 10 0f pc=0dd4 dots=81082732
-ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082732
-ok write wCurPartyMon 00 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082684
+ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082684
+ok write wNextWarp 03 10 0f pc=0dd4 dots=81082684
+ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082684
+ok write wCurPartyMon 00 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81134790
 ok script EscapeRopeOrDig.UsedEscapeRopeScript pc=510e dots=81134790
@@ -2796,23 +2743,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 1 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
+ok call UpdateEusineVisibility pc=510e dots=70549050
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549098
-ok warp 3 13 6 4 pc=510e dots=70549098
-ok run 150 pc=0dd4 dots=81082698
+ok until OverworldLoop.loop pc=510e dots=70549050
+ok warp 3 13 6 4 pc=510e dots=70549050
+ok run 150 pc=0dd4 dots=81082650
 PASS expect wMapGroup 03 0d 04 06
-ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082698
-ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082698
-ok write wNextWarp 03 10 0f pc=0dd4 dots=81082698
-ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082698
-ok write wCurPartyMon 00 pc=0dd4 dots=81082698
+ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082650
+ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082650
+ok write wNextWarp 03 10 0f pc=0dd4 dots=81082650
+ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082650
+ok write wCurPartyMon 00 pc=0dd4 dots=81082650
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81134788
 ok script EscapeRopeOrDig.UsedEscapeRopeScript pc=510e dots=81134788
@@ -2842,23 +2792,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 3 13 6 4 pc=510e dots=70549158
-ok run 150 pc=0dd4 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 3 13 6 4 pc=510e dots=70549110
+ok run 150 pc=0dd4 dots=81082710
 PASS expect wMapGroup 03 0d 04 06
-ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082758
-ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082758
-ok write wNextWarp 03 10 0f pc=0dd4 dots=81082758
-ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082758
-ok write wCurPartyMon 00 pc=0dd4 dots=81082758
+ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082710
+ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082710
+ok write wNextWarp 03 10 0f pc=0dd4 dots=81082710
+ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082710
+ok write wCurPartyMon 00 pc=0dd4 dots=81082710
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81134792
 ok script EscapeRopeOrDig.UsedDigScript pc=510e dots=81134792
@@ -2888,23 +2841,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 3 13 6 4 pc=510e dots=70549132
-ok run 150 pc=0dd4 dots=81082732
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 3 13 6 4 pc=510e dots=70549084
+ok run 150 pc=0dd4 dots=81082684
 PASS expect wMapGroup 03 0d 04 06
-ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082732
-ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082732
-ok write wNextWarp 03 10 0f pc=0dd4 dots=81082732
-ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082732
-ok write wCurPartyMon 00 pc=0dd4 dots=81082732
+ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082684
+ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082684
+ok write wNextWarp 03 10 0f pc=0dd4 dots=81082684
+ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082684
+ok write wCurPartyMon 00 pc=0dd4 dots=81082684
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81134790
 ok script EscapeRopeOrDig.UsedDigScript pc=510e dots=81134790
@@ -2934,23 +2890,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 1 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
+ok call UpdateEusineVisibility pc=510e dots=70549050
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549098
-ok warp 3 13 6 4 pc=510e dots=70549098
-ok run 150 pc=0dd4 dots=81082698
+ok until OverworldLoop.loop pc=510e dots=70549050
+ok warp 3 13 6 4 pc=510e dots=70549050
+ok run 150 pc=0dd4 dots=81082650
 PASS expect wMapGroup 03 0d 04 06
-ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082698
-ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082698
-ok write wNextWarp 03 10 0f pc=0dd4 dots=81082698
-ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082698
-ok write wCurPartyMon 00 pc=0dd4 dots=81082698
+ok expect wMapGroup 03 0d 04 06 pc=0dd4 dots=81082650
+ok write wDigWarpNumber 03 10 0f pc=0dd4 dots=81082650
+ok write wNextWarp 03 10 0f pc=0dd4 dots=81082650
+ok write wDefaultSpawnpoint ff pc=0dd4 dots=81082650
+ok write wCurPartyMon 00 pc=0dd4 dots=81082650
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81134788
 ok script EscapeRopeOrDig.UsedDigScript pc=510e dots=81134788
@@ -2980,23 +2939,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 15 10 6 4 pc=510e dots=70549158
-ok run 150 pc=41d0 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 15 10 6 4 pc=510e dots=70549110
+ok run 150 pc=0067 dots=81082712
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41d0 dots=81082758
-ok write wDigWarpNumber 03 10 0f pc=41d0 dots=81082758
-ok write wNextWarp 03 10 0f pc=41d0 dots=81082758
-ok write wDefaultSpawnpoint 0b pc=41d0 dots=81082758
-ok write wCurPartyMon 00 pc=41d0 dots=81082758
+ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082712
+ok write wDigWarpNumber 03 10 0f pc=0067 dots=81082712
+ok write wNextWarp 03 10 0f pc=0067 dots=81082712
+ok write wDefaultSpawnpoint 0b pc=0067 dots=81082712
+ok write wCurPartyMon 00 pc=0067 dots=81082712
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097334
 ok script TeleportFunction.TeleportScript pc=510e dots=81097334
@@ -3026,23 +2988,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 15 10 6 4 pc=510e dots=70549132
-ok run 150 pc=41ca dots=81082736
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 15 10 6 4 pc=510e dots=70549084
+ok run 150 pc=0063 dots=81082688
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41ca dots=81082736
-ok write wDigWarpNumber 03 10 0f pc=41ca dots=81082736
-ok write wNextWarp 03 10 0f pc=41ca dots=81082736
-ok write wDefaultSpawnpoint 0b pc=41ca dots=81082736
-ok write wCurPartyMon 00 pc=41ca dots=81082736
+ok expect wMapGroup 0f 0a 04 06 pc=0063 dots=81082688
+ok write wDigWarpNumber 03 10 0f pc=0063 dots=81082688
+ok write wNextWarp 03 10 0f pc=0063 dots=81082688
+ok write wDefaultSpawnpoint 0b pc=0063 dots=81082688
+ok write wCurPartyMon 00 pc=0063 dots=81082688
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097324
 ok script TeleportFunction.TeleportScript pc=510e dots=81097324
@@ -3072,23 +3037,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 1 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
+ok call UpdateEusineVisibility pc=510e dots=70549050
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549098
-ok warp 15 10 6 4 pc=510e dots=70549098
-ok run 150 pc=0067 dots=81082700
+ok until OverworldLoop.loop pc=510e dots=70549050
+ok warp 15 10 6 4 pc=510e dots=70549050
+ok run 150 pc=41af dots=81082656
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082700
-ok write wDigWarpNumber 03 10 0f pc=0067 dots=81082700
-ok write wNextWarp 03 10 0f pc=0067 dots=81082700
-ok write wDefaultSpawnpoint 0b pc=0067 dots=81082700
-ok write wCurPartyMon 00 pc=0067 dots=81082700
+ok expect wMapGroup 0f 0a 04 06 pc=41af dots=81082656
+ok write wDigWarpNumber 03 10 0f pc=41af dots=81082656
+ok write wNextWarp 03 10 0f pc=41af dots=81082656
+ok write wDefaultSpawnpoint 0b pc=41af dots=81082656
+ok write wCurPartyMon 00 pc=41af dots=81082656
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097322
 ok script TeleportFunction.TeleportScript pc=510e dots=81097322
@@ -3118,23 +3086,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 0 pc=510e dots=70548950
 ok event 2290 0 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=01 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549158
+ok call UpdateEusineVisibility pc=510e dots=70549110
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549158
-ok warp 15 10 6 4 pc=510e dots=70549158
-ok run 150 pc=41d0 dots=81082758
+ok until OverworldLoop.loop pc=510e dots=70549110
+ok warp 15 10 6 4 pc=510e dots=70549110
+ok run 150 pc=0067 dots=81082712
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41d0 dots=81082758
-ok write wDigWarpNumber 03 10 0f pc=41d0 dots=81082758
-ok write wNextWarp 03 10 0f pc=41d0 dots=81082758
-ok write wDefaultSpawnpoint 0b pc=41d0 dots=81082758
-ok write wCurPartyMon 00 pc=41d0 dots=81082758
+ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082712
+ok write wDigWarpNumber 03 10 0f pc=0067 dots=81082712
+ok write wNextWarp 03 10 0f pc=0067 dots=81082712
+ok write wDefaultSpawnpoint 0b pc=0067 dots=81082712
+ok write wCurPartyMon 00 pc=0067 dots=81082712
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097334
 ok script FlyFunction.FlyScript pc=510e dots=81097334
@@ -3164,23 +3135,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 0 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=03 F=c0
-ok call UpdateEusineVisibility pc=510e dots=70549132
+ok call UpdateEusineVisibility pc=510e dots=70549084
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549132
-ok warp 15 10 6 4 pc=510e dots=70549132
-ok run 150 pc=41ca dots=81082736
+ok until OverworldLoop.loop pc=510e dots=70549084
+ok warp 15 10 6 4 pc=510e dots=70549084
+ok run 150 pc=0063 dots=81082688
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=41ca dots=81082736
-ok write wDigWarpNumber 03 10 0f pc=41ca dots=81082736
-ok write wNextWarp 03 10 0f pc=41ca dots=81082736
-ok write wDefaultSpawnpoint 0b pc=41ca dots=81082736
-ok write wCurPartyMon 00 pc=41ca dots=81082736
+ok expect wMapGroup 0f 0a 04 06 pc=0063 dots=81082688
+ok write wDigWarpNumber 03 10 0f pc=0063 dots=81082688
+ok write wNextWarp 03 10 0f pc=0063 dots=81082688
+ok write wDefaultSpawnpoint 0b pc=0063 dots=81082688
+ok write wCurPartyMon 00 pc=0063 dots=81082688
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097324
 ok script FlyFunction.FlyScript pc=510e dots=81097324
@@ -3210,23 +3184,26 @@ ok event 718 1 pc=510e dots=70548950
 ok event 589 0 pc=510e dots=70548950
 ok event 2154 1 pc=510e dots=70548950
 ok event 2156 0 pc=510e dots=70548950
+ok event 1854 1 pc=510e dots=70548950
+ok event 2143 1 pc=510e dots=70548950
+ok event 2146 1 pc=510e dots=70548950
 ok event 2289 1 pc=510e dots=70548950
 ok event 2290 1 pc=510e dots=70548950
 ok event 2291 1 pc=510e dots=70548950
 ok write wPlayerCaught 1c pc=510e dots=70548950
 ok write wTinTower1FSceneID 01 pc=510e dots=70548950
 PASS call UpdateEusineVisibility A=04 F=40
-ok call UpdateEusineVisibility pc=510e dots=70549098
+ok call UpdateEusineVisibility pc=510e dots=70549050
 break OverworldLoop.loop pc=510e
-ok until OverworldLoop.loop pc=510e dots=70549098
-ok warp 15 10 6 4 pc=510e dots=70549098
-ok run 150 pc=0067 dots=81082700
+ok until OverworldLoop.loop pc=510e dots=70549050
+ok warp 15 10 6 4 pc=510e dots=70549050
+ok run 150 pc=41af dots=81082656
 PASS expect wMapGroup 0f 0a 04 06
-ok expect wMapGroup 0f 0a 04 06 pc=0067 dots=81082700
-ok write wDigWarpNumber 03 10 0f pc=0067 dots=81082700
-ok write wNextWarp 03 10 0f pc=0067 dots=81082700
-ok write wDefaultSpawnpoint 0b pc=0067 dots=81082700
-ok write wCurPartyMon 00 pc=0067 dots=81082700
+ok expect wMapGroup 0f 0a 04 06 pc=41af dots=81082656
+ok write wDigWarpNumber 03 10 0f pc=41af dots=81082656
+ok write wNextWarp 03 10 0f pc=41af dots=81082656
+ok write wDefaultSpawnpoint 0b pc=41af dots=81082656
+ok write wCurPartyMon 00 pc=41af dots=81082656
 break OverworldLoop.loop pc=510e
 ok until OverworldLoop.loop pc=510e dots=81097322
 ok script FlyFunction.FlyScript pc=510e dots=81097322

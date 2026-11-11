@@ -1,7 +1,7 @@
 Eusine event order investigation and proposed fix
 ===============================================
 
-Issue [#1282](https://github.com/Rangi42/polishedcrystal/issues/1282) is reproduced on branch `investigate/1282-eusine-event-order`, based on `0e73a0d5f13b4cc97d924c17ee2e239f20318aef`. The investigation below records the original bug and approved design. Implementation was subsequently authorized; see [save patcher integration](SAVE_PATCHER.md) and [validation](VALIDATION.md) for the current implementation and release handoff.
+Issue [#1282](https://github.com/Rangi42/polishedcrystal/issues/1282) is reproduced on branch `investigate/1282-eusine-event-order`, based on `0e73a0d5f13b4cc97d924c17ee2e239f20318aef`. The investigation below records the original bug and approved design, updated after PR review and a reachability audit. Implementation was subsequently authorized; see [save patcher integration](SAVE_PATCHER.md) and [validation](VALIDATION.md) for the current implementation and release handoff.
 
 The proposed fix separates Eusine's permanent story progress from Ho-Oh's repeatable encounter availability. Completing his farewell must permanently prevent both the house rumor and tower farewell from replaying. Leaving by whiteout or a field move must preserve a farewell that has not yet been heard.
 
@@ -39,7 +39,7 @@ Run the reproduction against a ROM and symbols built from the baseline commit (t
 python3 docs/issue-1282/reproduce.py --rom /path/to/baseline.gbc --sym /path/to/baseline.sym
 ```
 
-The driver uses the sibling vibeEmu source directly through a temporary Cargo project. It requires Rust, cached Cargo dependencies, and Pillow. The default seed is the existing local save identified above; another seed may need different title/Continue input timing. `--rom`, `--sym`, `--save`, and `--output` override inputs and output location. Outputs default to `/tmp/issue1282-replay`. Retained evidence includes [the command sequence](evidence/commands.txt), [the assertion trace](evidence/trace.txt), and [input hashes](evidence/inputs.json). The driver asserts the broken baseline. The separate `verify.py` driver asserts the fixed behavior.
+The driver uses the sibling vibeEmu source directly through a temporary Cargo project. It requires Rust, cached Cargo dependencies, and Pillow. The default seed is the existing local save identified above; another seed may need different title/Continue input timing. `--rom`, `--sym`, `--save`, `--vibe-emu`, and `--output` override inputs and output location. Use absolute paths when running this documentation branch from a separate worktree. Outputs default to `/tmp/issue1282-replay`. Retained evidence includes [the command sequence](evidence/commands.txt), [the assertion trace](evidence/trace.txt), and [input hashes](evidence/inputs.json). The driver asserts the broken baseline. The separate `verify.py` driver asserts the fixed behavior.
 
 **Why it happens**
 
@@ -55,7 +55,7 @@ The driver uses the sibling vibeEmu source directly through a temporary Cargo pr
 flowchart TD
     suicune["Suicune tower battle ends"] --> home["House Eusine enabled"]
     encounter["Start Ho-Oh battle: set fought flag"] --> outcome{"Battle outcome"}
-    outcome -->|"Catch, defeat, or escape"| choose{"Next destination"}
+    outcome -->|"Catch, defeat, or Poké Doll escape"| choose{"Next destination"}
     outcome -->|"Whiteout"| respawn["Respawn outside tower"]
     respawn --> choose
     choose -->|"House, including bypass of 1F"| homeTalk["If visible: check three beast catches only"]
@@ -87,7 +87,9 @@ Use three permanent event bits, tentatively `EVENT_EUSINE_LEFT_CELADON`, `EVENT_
 | Farewell pending | 110 | Absent | Present | Still visiting Bell Tower |
 | Farewell complete | 111 | Absent | Absent | One-time Abra Doll, then traveling |
 
-The research-to-departure conversation is optional. Starting Ho-Oh's battle advances either research or departed state to farewell pending. There is no prerequisite to visit Celadon. The rumor is available only while still researching and Ho-Oh is actually unlocked: `GOT_RAINBOW_WING` or `(BEAT_ELITE_FOUR and all three native beast-caught flags)`. Before that, retain the research notes; when the beasts are caught but the League condition is missing, use a short waiting/research line rather than a false appearance rumor.
+The research-to-departure conversation is optional. Starting Ho-Oh's battle advances either research or departed state to farewell pending. Visiting Celadon is not a prerequisite for the Ho-Oh encounter. At home, the rumor requires only all three native beast-caught flags: reaching Celadon already requires League completion. Otherwise retain the original research notes. The initial plan's pre-League house dialogue was unreachable and is removed, along with the redundant Wing and League checks. No replacement dialogue is needed.
+
+Tower 1F remains accessible before League, so its existing Wing/League/beast eligibility checks remain necessary. League completion does not require the optional Suicune tower battle, so Grandpa's early-searching dialogue also remains reachable. The `.Gone` script guards handle an inconsistent loaded object defensively; they are not additional reachable story branches.
 
 The three bits avoid dependence on a resettable encounter flag and avoid overloading object visibility. Allocate them in three audited unused event slots without changing any existing event number, `NUM_EVENTS`, or SRAM size. Old values in those slots must be explicitly initialized during migration. Verify the exact slots against supported release layouts before choosing them.
 
@@ -96,13 +98,13 @@ The three bits avoid dependence on a resettable encounter flag and avoid overloa
 ```mermaid
 flowchart TD
     early["Early Eusine and Suicune quest"] --> research["Suicune fought: research at home"]
-    research --> eligible{"Ho-Oh unlocked and player talks at home?"}
+    research --> eligible{"At home: all native beasts caught and player talks?"}
     eligible -->|"No"| research
     eligible -->|"Yes"| depart["Set left milestone; rumor once; leave home"]
     research -->|"Skip house; start Ho-Oh battle"| pending["Before battle: set left and encounter milestones"]
     depart -->|"Start Ho-Oh battle"| pending
     pending --> result{"Battle outcome"}
-    result -->|"Caught, defeated, or escaped"| exits["Walk, Rope, Dig, Fly, Teleport, or leave later"]
+    result -->|"Caught, defeated, or Poké Doll escape"| exits["Walk, Rope, Dig, Fly, Teleport, or leave later"]
     result -->|"Whiteout"| heal["Respawn at healing location"]
     exits --> waiting["Farewell pending: house absent; Eusine waits on 1F"]
     heal --> waiting
@@ -121,7 +123,7 @@ Exit availability is map-specific, as detailed below. The graph groups exits bec
 **Approved implementation steps**
 
 1. Reserve and initialize the three event bits, establish the state precedence `farewell > encounter > left > research/early`, and implement one small shared resolver for the house, 1F, and Grandpa. Both object callbacks must explicitly set their object's visible/hidden result on every normal map-entry path. Keep the Suicune cutscene's temporary Eusine appearance separate from his post–Ho-Oh standing NPC. Do not let the sage/beast eligibility branches bypass the Eusine resolver. Continue deliberately restores saved objects and skips `LoadMapObjects` / `MAPCALLBACK_OBJECTS` in this engine; therefore update live objects and saved visibility consistently at each story transition, and convert legacy saves only from a neutral location. Verify Continue directly rather than assuming it reruns the callback. Do not globally rerun unrelated map callbacks on Continue.
-2. At `CeladonEusine`, guard the rumor with the persistent state and unlock condition. Commit the left milestone once the departure text is acknowledged, before the departure movement. Keep the player-step-aside behavior and test each accessible facing. No additional permanent milestone is needed merely for reading beast notes.
+2. At `CeladonEusine`, guard the rumor with the persistent state and native beast catches. Commit the left milestone once the departure text is acknowledged, before the departure movement. Keep the player-step-aside behavior and test each accessible facing. No additional permanent milestone is needed merely for reading beast notes.
 3. At `TinTowerHoOh`, set left and encounter milestones immediately before `startbattle`, alongside the existing fought flag. Never clear farewell if it was already set. Preserve existing battle results, catch tracking, roof sprite behavior, and Ho-Oh respawning.
 4. In `TinTower1FEusineAfterHoOhScript`, commit farewell after the text is acknowledged and before exit movement. Reconcile both location flags; use `disappear` for the loaded tower object. Future callbacks must keep him absent. If a stale object invokes this script after completion, end without replaying the farewell and reconcile its visibility.
 5. Remove Eusine's house reset from the Ho-Oh branch of `RespawnOneOffs`. That routine should control Pokémon availability only. Preserve the existing Suicune postbattle home transition, including loss: its progression writes occur before `reloadmapafterbattle`. Reconcile the home output with any later Eusine milestone instead of unconditionally reopening an earlier stage.
@@ -140,10 +142,10 @@ The matrix records the approved requirements. It is not a claim that every row w
 | Win or lose to Eusine in Cianwood | Existing consumed-event behavior remains; loss must not duplicate the battle or relocate late-stage Eusine backward. |
 | Skip Cianwood encounter, Route 36 sighting, or Route 42 sighting before Suicune | Suicune's existing scene cleanup remains authoritative; visiting those places later does not restart the sequence. |
 | Fight Suicune before or after Elite Four | Home research becomes available after Suicune; Hall of Fame alone must not fabricate that story transition. |
-| Catch, knock out, run from, or white out against Suicune | Existing consumed Suicune scene and home research persist; only native catch sets the caught condition. A loss skips celebration text but cannot strand the home phase. |
+| Catch, knock out, use a Poké Doll, or white out against Suicune | Existing consumed Suicune scene and home research persist; only native catch sets the caught condition. A loss skips celebration text but cannot strand the home phase. |
 | Fail Suicune; Hall of Fame respawns roaming Suicune; catch it later | Completing the final native beast catch can unlock Ho-Oh; no reset of Eusine's later milestones. |
 | Zero, one, two, or three beast catches, in any species order | Missing-beast research follows the caught mask. All eight masks are checked. |
-| Catch all beasts before League, or beat League before catching the last beast | Same eventual eligibility. No premature rumor before Ho-Oh unlocks. |
+| Catch all beasts before League, or beat League before catching the last beast | Same eventual tower eligibility. The house is only reachable after League; there is no pre-League house branch. |
 | Beasts in PC, daycare, traded away, or released after native catch | Use existing native-catch flags, not party contents or Pokédex ownership. Beast release/roaming respawn must not rewind the story. |
 | Receive traded beasts or traded Ho-Oh without native catch | Do not use traded ownership as a native encounter/catch milestone. Trading alone does not unlock this story. |
 | Visit house before eligibility, after eligibility, after Wing, or never | Notes remain repeatable as appropriate; departure rumor at most once; house visit never gates Ho-Oh or farewell. |
@@ -151,7 +153,7 @@ The matrix records the approved requirements. It is not a claim that every row w
 | Leave after departure rumor, before collecting Wing or approaching Ho-Oh | Preserve departed state through travel and saves; no farewell before an encounter. Grandpa correctly says visiting Bell Tower. |
 | Climb tower, see roof, and leave without initiating battle | No encounter milestone; looking at a sprite is not the battle trigger. |
 | Ho-Oh catch | Pending farewell remains until acknowledged; no Ho-Oh respawn. |
-| Ho-Oh KO, player escape, or another non-catch battle termination allowed by the engine | Pending farewell remains; existing Ho-Oh respawn rules are unchanged. Include full-box/catch-failure paths rather than treating every ball attempt as a catch. |
+| Ho-Oh KO or Poké Doll escape | Pending farewell remains; existing Ho-Oh respawn rules are unchanged. Normal Run, battle Teleport, and Roar cannot escape these legendary encounters. Failed ball attempts do not count as catches or terminate the battle. |
 | Whiteout in Ho-Oh battle | Encounter milestone already committed before battle. House stays absent; farewell waits on 1F despite script termination. |
 | Whiteout elsewhere in the tower before Ho-Oh, after Ho-Oh, or after farewell | Before: no advance. After: pending persists. Completed: never reopen. |
 | Overworld poison damage | This build heals poison at 1 HP; do not invent an ordinary poison-faint route. If the generic overworld-whiteout handler is reached, apply the same state-preservation rule. |
@@ -177,6 +179,17 @@ The matrix records the approved requirements. It is not a claim that every row w
 Sources for exit constraints: [field moves](../../engine/events/overworld.asm), [environments](../../data/maps/maps.asm), [indoor Fly exceptions](../../data/maps/indoor_fly_maps.asm), [Dig destination recording](../../engine/overworld/warp_connection.asm), [whiteout](../../engine/events/whiteout.asm), and [poison steps](../../engine/events/poisonstep.asm).
 
 This reduces unbounded visit orders to a finite set of progression states plus exits that preserve them. The regression driver enumerates every combination of the three new bits, old encounter/catch bits, beast-caught mask, League/Wing prerequisites, Suicune progression, doll ownership, and visibility bits. Verify the resolver's precedence and idempotence, and then exercise reachable representatives in vibeEmu. Invalid combinations are migration/defensive-input cases, not invented gameplay routes. The key invariants are: no story regression, no two standing Eusines, no lost pending farewell, no duplicate reward, and unchanged legendary availability.
+
+**Reachability audit after PR review**
+
+Rangi42 correctly identified the unreachable pre-League house line. The audit starts with the story dependencies, then checks their producers and consumers in source:
+
+- Celadon requires the League; the Rainbow Wing requires the League and all three native beast catches. Native Suicune catch implies its tower scene was consumed. These prerequisites constrain the house fixtures; they do not constrain the defensive resolver matrix.
+- In a new save, departure implies Suicune progression and Ho-Oh eligibility; encounter additionally implies the Wing; farewell implies encounter. Native Ho-Oh catch implies both encounter and the current fought flag. The new milestone combinations are only `000`, `100`, `110`, and `111` in left/encounter/farewell order. Farewell therefore writes only its own bit. Ho-Oh battle entry still sets both left and encounter to support skipping the house.
+- Burned Tower 1F hides Eusine when the beasts are released. Progression through Morty, Surf, Cianwood's medicine/Jasmine, Mahogany, and the Radio Tower precedes Clear Bell access. Cianwood entry has already hidden basement Eusine. Its optional encounter either stays hidden when skipped, or is hidden on return after a loss; `EVENT_BEAT_EUSINE` is set **before** combat, so it records consumption, not necessarily a victory. The Suicune script already consumes the remaining optional sighting scenes. The shared resolver consequently needs no early-map visibility writes.
+- `CheckRunSpeed`, `BattleCommand_teleport`, and `BattleCommand_roar` reject legendary battle escape, but `PokeDoll` permits it. The regression suite now exercises actual Run rejection and item-menu Poké Doll escape, and labels injected result `$02` accordingly.
+
+The original scripted suite included impossible prerequisite combinations (16 of 76 setups in the audit). These have been removed or corrected. The generator now asserts necessary history and travel prerequisites before emitting fixtures. The 32,768-combination matrix intentionally retains contradictory inputs as defensive precedence/idempotence checks, separate from gameplay scenarios. Debugger fixtures are still not a full new-game playthrough. Legacy migration has its own evidence and ambiguity rules below; preserving an old doll as completion is a policy, not proof of fresh-save history.
 
 **Save migration and the unavoidable legacy ambiguity**
 

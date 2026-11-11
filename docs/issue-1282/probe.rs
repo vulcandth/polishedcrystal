@@ -235,9 +235,7 @@ fn main() {
                         );
                     }
                     for bit in 0..2303 {
-                        let allowed = bit == 2154
-                            || bit == 2156
-                            || (expected != 0 && [1854, 2143, 2146].contains(&bit));
+                        let allowed = bit == 2154 || bit == 2156;
                         if !allowed {
                             assert_eq!(
                                 get_event(&mut gb, base, bit),
@@ -249,7 +247,7 @@ fn main() {
                 }
                 gb.load_state(&snapshot).unwrap();
                 println!(
-                    "PASS 32768 state combinations, idempotence, and unrelated event preservation"
+                    "PASS 32768 defensive input combinations, idempotence, and all other event preservation"
                 );
             }
             "run" | "press" => {

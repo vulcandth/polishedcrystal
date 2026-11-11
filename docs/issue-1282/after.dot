@@ -4,7 +4,7 @@ node [fontname="DejaVu Sans", fontsize=11, style="rounded,filled", fillcolor="#e
 edge [fontname="DejaVu Sans", fontsize=10, color="#475569"];
 early [label="Early Eusine and Suicune quest", shape=box];
 research [label="Suicune fought: research at home", shape=box];
-eligible [label="Ho-Oh unlocked and player talks at\nhome?", shape=diamond];
+eligible [label="At home: all native beasts caught\nand player talks?", shape=diamond];
 depart [label="Set left milestone; rumor once;\nleave home", shape=box];
 pending [label="Before battle: set left and\nencounter milestones", shape=box];
 result [label="Battle outcome", shape=diamond];
@@ -24,7 +24,7 @@ eligible -> depart [label="Yes"];
 research -> pending [label="Skip house; start Ho-Oh battle"];
 depart -> pending [label="Start Ho-Oh battle"];
 pending -> result [label=""];
-result -> exits [label="Caught, defeated, or escaped"];
+result -> exits [label="Caught, defeated, or Poké Doll escape"];
 result -> heal [label="Whiteout"];
 exits -> waiting [label=""];
 heal -> waiting [label=""];
