@@ -430,5 +430,109 @@ _DecompressMetatiles:
 	ld a, c
 	call StackCallInWRAMBankA
 
-.FunctionD000
-	jmp FarDecompressInB
+.LoadPlane
+	; B:HL = compressed data, C = selected destination WRAM bank.
+	ld a, b
+	call GetFarByte
+	inc a ; only a dictionary plane can begin with the LZP terminator
+	jp nz, FarDecompressInB
+
+	; The marker is followed by two LZP streams: 2x2 quadrants, then their IDs.
+	; Keep the same VBlank modes as Decompress until the plane is complete.
+	ldh a, [hVBlank]
+	push af
+	cp 4 ; Pokédex
+	jr z, .streams
+	ld a, 2 ; sound only
+	ldh [hVBlank], a
+.streams
+	inc hl
+	push bc
+	ld a, BANK(wTilesetQuadrants)
+	ldh [rWBK], a
+	ld de, wTilesetQuadrants
+	ld a, b
+	call FarDecompressToDE ; HL now points to the quadrant IDs
+	pop bc
+	push bc
+	ld a, c
+	ldh [rWBK], a
+	ld de, STARTOF(WRAMX)
+	ld a, b
+	call FarDecompressToDE
+	pop bc
+
+	; Expand backwards in place. Each group of four IDs yields 16 bytes,
+	; so writing a quadrant can only overwrite IDs we have already read.
+	ld h, d
+	ld l, e
+	push hl ; end of IDs
+	ld a, h
+	sub HIGH(STARTOF(WRAMX))
+	ld h, a
+	add hl, hl
+	add hl, hl
+	ld a, h
+	add HIGH(STARTOF(WRAMX))
+	ld d, a
+	ld e, l ; DE = end of expanded blocks
+	pop hl
+.block
+	call .pair ; bottom right, bottom left
+	call .pair ; top right, top left
+	ld a, h
+	xor HIGH(STARTOF(WRAMX))
+	or l
+	jr nz, .block
+	pop af
+	ldh [hVBlank], a
+	ret
+
+.pair
+	call .quadrant
+	; DE is at the right quadrant's top left. Add 4 to reach the end of the left quadrant.
+	ld a, e
+	add 4
+	ld e, a
+	; fallthrough
+.quadrant
+	dec hl
+	ld a, [hl]
+	push hl
+	ld l, a
+	ld h, 0
+	add hl, hl
+	add hl, hl
+	assert LOW(wTilesetQuadrants) == 0
+	ld a, h
+	add HIGH(wTilesetQuadrants)
+	ld h, a
+
+	; Carry the four bytes across the bank switch, then write the two rows.
+	ld a, BANK(wTilesetQuadrants)
+	ldh [rWBK], a
+	ld a, [hli]
+	push af
+	ld a, [hli]
+	ld b, a
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, c
+	ldh [rWBK], a
+	dec de
+	ld a, h
+	ld [de], a
+	dec e
+	ld a, l
+	ld [de], a
+	dec e
+	dec e
+	dec e
+	ld a, b
+	ld [de], a
+	dec e
+	pop af
+	ld [de], a
+	pop hl
+	ret

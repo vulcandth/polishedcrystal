@@ -1941,6 +1941,9 @@ wAbilityFlags:: db
 wAbilityDisplaySpeed:: db ; (Characters - 1) per DelayFrame
 NEXTU
 wWeatherScratch:: ds SCREEN_HEIGHT_PX + 2 * TILE_WIDTH
+NEXTU
+	ds $800 ; leave the scratch tile/attribute maps and the padded frontpic at the end intact
+wTilesetQuadrants:: ds 256 * 4
 ENDU
 
 

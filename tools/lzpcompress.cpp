@@ -1049,7 +1049,12 @@ LzCmd const &lz_cmd(Command const &cmd) {
 	return std::visit([](LzCmd const &inner_base) -> LzCmd const & { return inner_base; }, cmd);
 }
 
-static std::forward_list<Command> compress(std::vector<uint8_t> const &uncompressed) {
+struct CompressedStream {
+	std::forward_list<Command> commands;
+	size_t size; // Includes LZ_END.
+};
+
+static CompressedStream compress(std::vector<uint8_t> const &uncompressed) {
 	// The strategy behind a “dynamic programming” LZ compressor stems from an interesting property:
 	// the optimal command stream for the first N bytes is composed of one command, plus the optimal
 	// stream for all bytes prior to this command.
@@ -1130,7 +1135,7 @@ static std::forward_list<Command> compress(std::vector<uint8_t> const &uncompres
 		end_ofs -= lz_cmd(cmd).len; // Rewind by however many bytes that command covered.
 		final.emplace_after(final.before_begin(), std::move(cmd));
 	}
-	return final;
+	return {std::move(final), 1 + (best_cmds.empty() ? 0 : best_cmds.back().first)};
 }
 
 // Must decompress to a buffer, so that back-refs (`LzCopy`-derived commands) can access previous
@@ -1338,13 +1343,60 @@ static std::vector<std::pair<Command, ByteSpan>> deserialize(std::vector<uint8_t
 	return commands;
 }
 
+static constexpr size_t metatile_size = 16;
+
+// A .tlz is either plain LZP or LZ_END followed by two LZP streams:
+// unique 2x2 quadrants, then four quadrant IDs per metatile (TL, TR, BL, BR).
+// A nonempty plain stream always begins with a command.
+static void write_tileset_plane(
+    std::vector<uint8_t> const &input, FILE *output, char const *filename
+) {
+	auto plain = compress(input);
+	std::vector<std::array<uint8_t, 4>> shapes;
+	std::vector<uint8_t> selectors;
+	for (size_t block = 0; block < input.size(); block += metatile_size) {
+		for (size_t offset : {0, 2, 8, 10}) {
+			size_t top = block + offset;
+			std::array<uint8_t, 4> shape = {
+			    input[top], input[top + 1], input[top + 4], input[top + 5]
+			};
+			auto it = std::find(shapes.begin(), shapes.end(), shape);
+			size_t id = it - shapes.begin();
+			if (it == shapes.end()) {
+				if (id == 256) {
+					serialize(plain.commands, input, output, false, filename);
+					return;
+				}
+				shapes.push_back(shape);
+			}
+			selectors.push_back(static_cast<uint8_t>(id));
+		}
+	}
+
+	std::vector<uint8_t> dictionary;
+	for (auto const &shape : shapes) {
+		dictionary.insert(dictionary.end(), shape.begin(), shape.end());
+	}
+	auto dict_stream = compress(dictionary);
+	auto index_stream = compress(selectors);
+	if (1 + dict_stream.size + index_stream.size >= plain.size) {
+		serialize(plain.commands, input, output, false, filename);
+		return;
+	}
+	xputc(LZ_END, output, filename);
+	serialize(dict_stream.commands, dictionary, output, false, filename);
+	serialize(index_stream.commands, selectors, output, false, filename);
+}
+
 // CLI option parsing.
 
 [[noreturn]]
 static void usage_exit(int code, char const *program_name) {
 	fprintf(
 	    stderr,
-	    "Usage: %s [-h|--help] [-u|--uncompress] [-t|--text] [<infile> [<outfile>]]\n",
+	    "Usage: %s [-h|--help] [-u|--uncompress] [-t|--text] [<infile> [<outfile>]]\n"
+	    "       %s --tile-plane [<infile> [<outfile>]]\n",
+	    program_name,
 	    program_name
 	);
 	exit(code);
@@ -1355,6 +1407,7 @@ struct Options {
 	char const *output = nullptr;
 	bool uncompress = false;
 	bool text = false;
+	bool tile_plane = false;
 
 	/// Parse from CLI args.
 	Options(int argc, char *argv[]) {
@@ -1378,6 +1431,8 @@ struct Options {
 					usage_exit(0, program_name);
 				} else if (name == "text") {
 					this->text = true;
+				} else if (name == "tile-plane") {
+					this->tile_plane = true;
 				} else if (name == "uncompress") {
 					this->uncompress = true;
 				} else {
@@ -1406,6 +1461,9 @@ struct Options {
 				}
 			}
 		}
+		if (this->tile_plane && (this->text || this->uncompress)) {
+			error_exit("tileset plane encoding requires binary compression mode\n");
+		}
 	}
 };
 
@@ -1414,8 +1472,14 @@ struct Options {
 int main(int argc, char *argv[]) {
 	Options options(argc, argv);
 	std::vector<uint8_t> input_bytes = read_input(options.input);
+	if (options.tile_plane && (input_bytes.empty() || input_bytes.size() % metatile_size
+	                           || input_bytes.size() > 256 * metatile_size)) {
+		error_exit("expected 1 to 256 whole %zu-byte metatiles\n", metatile_size);
+	}
 	auto [output, output_filename] = open_output_file(options.output, options.text);
-	if (options.uncompress) {
+	if (options.tile_plane) {
+		write_tileset_plane(input_bytes, output, output_filename);
+	} else if (options.uncompress) {
 		std::vector<std::pair<Command, ByteSpan>> commands = deserialize(input_bytes);
 		std::vector<uint8_t> decompressed = decompress(commands);
 		if (options.text) {
@@ -1424,8 +1488,8 @@ int main(int argc, char *argv[]) {
 			xfwrite(decompressed, output, output_filename);
 		}
 	} else {
-		std::forward_list<Command> commands = compress(input_bytes);
-		serialize(commands, input_bytes, output, options.text, output_filename);
+		auto stream = compress(input_bytes);
+		serialize(stream.commands, input_bytes, output, options.text, output_filename);
 	}
 	close_output_file(output, output_filename);
 	return 0;

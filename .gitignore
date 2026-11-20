@@ -21,6 +21,7 @@ gfx/title/suicune_unowns.tilemap
 
 # compiled tilesets
 data/tilesets/*_collision.bin
+data/tilesets/*.tlz
 
 # compiled roms
 *.gbc
