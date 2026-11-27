@@ -1,3 +1,44 @@
+FarDecompressPic::
+; Decode a battle picture from a:hl. A leading LZ_END (an empty picture)
+; marks a far base picture followed by sparse overwrites of equal-length art.
+	call StackCallInBankA
+	ld de, wDecompressScratch
+	ld a, [hl]
+	inc a
+	jr nz, Decompress
+	inc hl
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
+	ld a, [hli] ; bank of the base picture
+	push hl
+	ld h, d
+	ld l, e
+	call FarDecompress
+	pop hl
+	push de ; return the end of the decoded base, including animation tiles
+.span
+	ld a, [hli]
+	and a
+	jr z, .done
+	ld c, a
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	or HIGH(wDecompressScratch)
+	ld d, a
+.copy
+	ld a, [hli]
+	ld [de], a
+	inc de
+	dec c
+	jr nz, .copy
+	jr .span
+.done
+	pop de
+	ret
+
 FarDecompressWRA6InB::
 ; Decompress LZP data from b:hl to 6:d000.
 	call RunFunctionInWRA6
@@ -349,6 +390,8 @@ DEF LZ_SPECIAL_PACKLO0      EQU $fe ; (len 1..256)
 ;; LZ_LONG: normal commands, but with the length field made 4 bits longer.
 
 .long_normal
+	bit 1, b
+	jr nz, .compact_pack
 	ld a, [de]
 	inc de
 	ld c, a
@@ -410,14 +453,31 @@ DEF LZ_SPECIAL_PACKLO0      EQU $fe ; (len 1..256)
 .special_pack16
 	ld a, [de]
 	inc de
+	push de
 	ld b, a
 	swap a
-	call .pack_lookup
-	jr z, .Main
+	and $0f
+	or LOW(LZPack16Table)
+	ld e, a
+	ld d, HIGH(LZPack16Table)
+	ld a, [de]
+	ld [hli], a
+	dec c
+	jr z, .pack16_done
 	ld a, b
-	call .pack_lookup
+	and $0f
+	or LOW(LZPack16Table)
+	ld e, a
+	ld a, [de]
+	ld [hli], a
+	pop de
+	dec c
 	jr nz, .special_pack16
-	jr .Main
+	jmp .Main
+
+.pack16_done
+	pop de
+	jmp .Main
 
 ;; LZ_SPECIAL_PACKLO0: Read nibbles from the input stream, and output them left-padded (`$0x`).
 
@@ -437,22 +497,24 @@ DEF LZ_SPECIAL_PACKLO0      EQU $fe ; (len 1..256)
 	jr nz, .special_packlo0
 	jmp .Main
 
-; Output the `a & $0f`th element of `.pack16_table`,
-; and decrement the count.
-.pack_lookup
-	and $0f
-	push de
-	add LOW(.pack16_table)
-	ld e, a
-	adc HIGH(.pack16_table)
-	sub e
-	ld d, a
-	ld a, [de]
-	pop de
-	ld [hli], a
-	dec c
-	ret
+; %111_nn_t1s packs 4, 6, 8 or 10 output bytes with no separate length.
+; ts selects packhi, pack16 or packlo. $fc-$ff retain their original meanings.
+.compact_pack
+	ld a, b
+	and %00011000
+	rrca
+	rrca
+	add 4
+	ld c, a
+	bit 2, b
+	jr nz, .special_packlo0
+	bit 0, b
+	jr nz, .special_pack16
+	jr .special_packhi0
 
-.pack16_table
+PUSHS
+SECTION "LZ pack16 dictionary", ROM0, ALIGN[4]
+LZPack16Table:
 	db $00, $ff, $01, $02, $03, $fe, $80, $07
 	db $c0, $7f, $04, $0f, $1f, $3f, $08, $fc
+POPS

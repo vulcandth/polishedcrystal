@@ -89,7 +89,8 @@ _PrepareFrontpic:
 
 	ld a, BANK(wDecompressScratch)
 	ldh [rWBK], a
-	call FarDecompressInB
+	ld a, b
+	call FarDecompressPic
 	; Save decompressed size
 	ld a, d
 	and $0f
@@ -223,7 +224,7 @@ GetBackpic:
 	ld a, BANK(PokemonPicPointers)
 	call GetFarWord
 	pop af
-	call FarDecompress
+	call FarDecompressPic
 	ld hl, wDecompressScratch
 	call FixBackpicAlignment
 	pop hl

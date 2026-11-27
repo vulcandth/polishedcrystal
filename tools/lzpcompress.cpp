@@ -44,13 +44,17 @@
  * [^9bit_len]: “Shorten long lz counts to 9 bits”
  * https://github.com/Rangi42/polishedcrystal/commit/2d48f4f2314fd9e0e91f6df3d36ba87edd8e581d
  *
+ * The nibble packers also have compact headers for frequent even lengths:
+ *   %111_nn_t1s
+ * The length is 4 + 2 * nn. The two bits ts select packhi (00), pack16 (01), or packlo (10).
+ * Packlo uses the two-byte header for length 10 because $fe already has that meaning.
+ *
  * ## Decoding decision tree
  *
  * First, a header byte is read, and checked for “short” encoding: if the `ccc` field is not the
  * reserved value 7, then we have a short command and can process it.
  *
- * Otherwise, check if the byte begins a “long” encoding: if that `ccc` isn't the reserved value 7,
- * then we have a long command and can read the extra byte before processing it.
+ * For bytes $e0–$fb, bit 1 distinguishes a normal long command (0) from a compact nibble pack (1).
  *
  * Otherwise (the top 6 bits of the first byte are all set), we must have a special command.
  * First, if it is the terminator byte, simply exit.
@@ -793,34 +797,39 @@ void LzCopyCmd::for_each_possible_cmd(Func const &func, ByteSpan emitted_bytes) 
 }
 
 struct LzSpecialCmd : public LzCmd {
+	LzSpecialCmdId id;
+
+	bool has_compact_header() const {
+		return len >= 4 && len <= (id == LZ_SPECIAL_PACKLO0 ? 8 : 10) && len % 2 == 0;
+	}
+
 	// FIXME: min length should be 2, and then the max length should become 257,
 	//        or that value reserved for some special purpose...
 	constexpr static uint16_t MIN_LENGTH = 1;
 
 	uint16_t min_length() const override { return MIN_LENGTH; }
 
-	// All of the special commands use an 8-bit length instead of the “long” header encoding.
+	// The full header carries an 8-bit length.
 	uint16_t max_length() const override { return this->min_length() + 256 - 1; }
 
-	// All of the special commands have a one-byte header, one-byte length, and operate on a nibble
-	// stream, thus two output bytes compress to one (rounding up, though).
-	size_t num_encoded_bytes() const override { return 1 + 1 + (this->len + 1) / 2; }
+	size_t num_encoded_bytes() const override {
+		return (has_compact_header() ? 1 : 2) + (len + 1) / 2;
+	}
 
 protected:
-	explicit LzSpecialCmd(uint16_t len_) : LzCmd(len_) {
+	LzSpecialCmd(uint16_t len_, LzSpecialCmdId id_) : LzCmd(len_), id(id_) {
 		assert(this->len >= this->min_length());
 		assert(this->len <= this->max_length());
 	}
 
-	/**
-	 * All special commands use a different header format:
-	 * - the first byte encodes the command ID (remember that the encoding of normal command forces
-	 *   its upper 6 bits to all be 1),
-	 * - the second byte encodes the command's length.
-	 */
-	void serialize_special_header(FILE *file, LzSpecialCmdId cmd_id, char const *filename) const {
-		xputc(cmd_id, file, filename);
-		xputc(this->len - 1, file, filename);
+	void serialize_special_header(FILE *file, char const *filename) const {
+		if (has_compact_header()) {
+			uint8_t mode = id - LZ_SPECIAL_PACKHI0;
+			xputc(0xe2 | ((len - 4) / 2) << 3 | (mode & 2) << 1 | (mode & 1), file, filename);
+		} else {
+			xputc(id, file, filename);
+			xputc(len - 1, file, filename);
+		}
 	}
 
 	template<typename Func>
@@ -834,7 +843,7 @@ protected:
 };
 
 struct LzSpecialPackhi0 final : public LzSpecialCmd {
-	explicit LzSpecialPackhi0(uint16_t len_) : LzSpecialCmd(len_) {
+	explicit LzSpecialPackhi0(uint16_t len_) : LzSpecialCmd(len_, LZ_SPECIAL_PACKHI0) {
 		assert(this->len >= this->min_length());
 		assert(this->len <= this->max_length());
 	}
@@ -848,9 +857,8 @@ struct LzSpecialPackhi0 final : public LzSpecialCmd {
 			if ((emitted_bytes[emitted_bytes.size() - data_len] & 0x0f) != 0) {
 				break;
 			}
-			// Since this command's cost increases monotonically, if the cost is higher than the
-			// current best sum, any further attempts are guaranteed to fail.
-			if (!func(LzSpecialPackhi0(data_len))) {
+			// At compact lengths an extra output byte can make the header shorter.
+			if (!func(LzSpecialPackhi0(data_len)) && data_len >= 10) {
 				break;
 			}
 		}
@@ -870,7 +878,7 @@ struct LzSpecialPackhi0 final : public LzSpecialCmd {
 			print_byte_list(file, bytes);
 			xputc('\n', file, filename);
 		} else {
-			this->serialize_special_header(file, LZ_SPECIAL_PACKHI0, filename);
+			this->serialize_special_header(file, filename);
 
 			ByteSpan remaining = bytes;
 			while (remaining.size() >= 2) {
@@ -892,7 +900,7 @@ struct LzSpecialPackhi0 final : public LzSpecialCmd {
 };
 
 struct LzSpecialPack16Short final : public LzSpecialCmd {
-	explicit LzSpecialPack16Short(uint16_t len_) : LzSpecialCmd(len_) {
+	explicit LzSpecialPack16Short(uint16_t len_) : LzSpecialCmd(len_, LZ_SPECIAL_PACK16SHORT) {
 		assert(this->len >= this->min_length());
 		assert(this->len <= this->max_length());
 	}
@@ -930,9 +938,8 @@ struct LzSpecialPack16Short final : public LzSpecialCmd {
 			if (dict_key(emitted_bytes[emitted_bytes.size() - data_len]) == dict.size()) {
 				break;
 			}
-			// Since this command's cost increases monotonically, if the cost is higher than the
-			// current best sum, any further attempts are guaranteed to fail.
-			if (!func(LzSpecialPack16Short(data_len))) {
+			// At compact lengths an extra output byte can make the header shorter.
+			if (!func(LzSpecialPack16Short(data_len)) && data_len >= 10) {
 				break;
 			}
 		}
@@ -952,7 +959,7 @@ struct LzSpecialPack16Short final : public LzSpecialCmd {
 			print_byte_list(file, bytes);
 			xputc('\n', file, filename);
 		} else {
-			this->serialize_special_header(file, LZ_SPECIAL_PACK16SHORT, filename);
+			this->serialize_special_header(file, filename);
 
 			ByteSpan remaining = bytes;
 			while (remaining.size() >= 2) {
@@ -974,7 +981,7 @@ struct LzSpecialPack16Short final : public LzSpecialCmd {
 };
 
 struct LzSpecialPacklo0 final : public LzSpecialCmd {
-	explicit LzSpecialPacklo0(uint16_t len_) : LzSpecialCmd(len_) {
+	explicit LzSpecialPacklo0(uint16_t len_) : LzSpecialCmd(len_, LZ_SPECIAL_PACKLO0) {
 		assert(this->len >= this->min_length());
 		assert(this->len <= this->max_length());
 	}
@@ -986,9 +993,8 @@ struct LzSpecialPacklo0 final : public LzSpecialCmd {
 			if ((emitted_bytes[emitted_bytes.size() - data_len] & 0xf0) != 0) {
 				break;
 			}
-			// Since this command's cost increases monotonically, if the cost is higher than the
-			// current best sum, any further attempts are guaranteed to fail.
-			if (!func(LzSpecialPacklo0(data_len))) {
+			// At compact lengths an extra output byte can make the header shorter.
+			if (!func(LzSpecialPacklo0(data_len)) && data_len >= 10) {
 				break;
 			}
 		}
@@ -1008,7 +1014,7 @@ struct LzSpecialPacklo0 final : public LzSpecialCmd {
 			print_byte_list(file, bytes);
 			xputc('\n', file, filename);
 		} else {
-			this->serialize_special_header(file, LZ_SPECIAL_PACKLO0, filename);
+			this->serialize_special_header(file, filename);
 
 			ByteSpan remaining = bytes;
 			while (remaining.size() >= 2) {
@@ -1245,11 +1251,22 @@ static std::vector<std::pair<Command, ByteSpan>> deserialize(std::vector<uint8_t
 		               &byte_idx,
 		               &require_bytes,
 		               &cmd_start_idx]() -> Command { // Immediately invoked function expression.
-			if ((first_byte & 0b111'111'00) == 0b111'111'00) { // Special commands.
-				uint16_t len = require_bytes(1)[0] + LzSpecialCmd::MIN_LENGTH;
+			bool full_pack = first_byte >= LZ_SPECIAL_PACKHI0;
+			if (full_pack || (first_byte & 0xe2) == 0xe2) {
+				uint16_t len;
+				uint8_t id = first_byte;
+				if (full_pack) {
+					len = require_bytes(1)[0] + LzSpecialCmd::MIN_LENGTH;
+				} else {
+					len = 4 + ((first_byte & 0x18) >> 2);
+					id = LZ_SPECIAL_PACKHI0 + ((first_byte & 4) >> 1) + (first_byte & 1);
+					if (id == LZ_END) {
+						error_exit("invalid compact pack header at offset %zu\n", cmd_start_idx);
+					}
+				}
 				payload_start_idx = byte_idx;
 				require_bytes((len + 1) / 2); // Halved, rounding up.
-				switch (first_byte) {
+				switch (id) {
 				case LZ_SPECIAL_PACKHI0:
 					return LzSpecialPackhi0(len);
 				case LZ_SPECIAL_PACK16SHORT:
@@ -1262,13 +1279,6 @@ static std::vector<std::pair<Command, ByteSpan>> deserialize(std::vector<uint8_t
 				uint8_t cmd_id;
 				uint16_t len;
 				if ((first_byte & 0b111'00000) == 0b111'00000) { // “Long” encoded commands.
-					if (first_byte & 0b10) {
-						error_exit(
-						    "corrupted input (encountered invalid long command header at "
-						    "offset %zu)\n",
-						    cmd_start_idx
-						);
-					}
 					uint8_t extended_header = require_bytes(1)[0];
 					cmd_id = (first_byte >> 2) & 0b111;
 					len = (first_byte & 1) << 8 | extended_header;
@@ -1319,7 +1329,11 @@ static std::vector<std::pair<Command, ByteSpan>> deserialize(std::vector<uint8_t
 			}
 		}();
 		// Too-short long command lengths are considered an error and rejected above.
-		assert(byte_idx - cmd_start_idx == lz_cmd(cmd).num_encoded_bytes());
+		// Original streams may use full pack headers even at compact lengths.
+		size_t encoded_size = first_byte >= LZ_SPECIAL_PACKHI0
+		    ? 2 + (lz_cmd(cmd).len + 1) / 2
+		    : lz_cmd(cmd).num_encoded_bytes();
+		assert(byte_idx - cmd_start_idx == encoded_size);
 
 		commands.emplace_back(
 		    std::move(cmd),

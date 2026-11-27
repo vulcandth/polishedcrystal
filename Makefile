@@ -112,7 +112,7 @@ tools:
 clean: tidy
 	find gfx maps data/tilesets -name '*.lzp' -delete
 	find gfx \( -name '*.[12]bpp' -o -name '*.2bpp.vram[012]' -o -name '*.2bpp.vram[012]p' \) -delete
-	find gfx/pokemon -mindepth 1 \( -name 'bitmask.asm' -o -name 'frames.asm' \
+	find gfx/pokemon -mindepth 1 \( -name 'bitmask.asm' -o -name 'frames.asm' -o -name '*.pic.asm' \
 		-o -name 'front.animated.tilemap' -o -name 'front.dimensions' \) -delete
 	find data/tilesets -name '*_collision.bin' -delete
 	$(RM) gfx/overworld/cable_car/bg.tilemap gfx/overworld/cable_car/cable_car.bin
@@ -317,6 +317,15 @@ gfx/pokemon/%/frames.asm: gfx/pokemon/%/front.animated.tilemap gfx/pokemon/%/fro
 	$Qtools/pokemon_animation -f $^ > $@
 
 
+
+# Compare related forms against an independently compressed picture of the same side.
+define form_pic
+gfx/pokemon/$(1)_%/$(2).pic.asm: gfx/pokemon/$(1)_$(3)/$(2).2bpp gfx/pokemon/$(1)_%/$(2).2bpp gfx/pokemon/$(1)_%/$(2).2bpp.lzp tools/form_pic
+	$Qtools/form_pic $$(wordlist 1,3,$$^) $(4) > $$@.tmp && mv $$@.tmp $$@
+endef
+$(eval $(call form_pic,magikarp,front.animated,plain,MagikarpPlainFrontpic))
+$(eval $(call form_pic,magikarp,back,plain,MagikarpPlainBackpic))
+$(eval $(call form_pic,arbok,front.animated,kanto,ArbokKantoFrontpic))
 
 %.lzp: % tools/lzpcompress
 	$Qtools/lzpcompress -- $< $@

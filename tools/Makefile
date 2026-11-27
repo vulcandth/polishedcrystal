@@ -38,6 +38,7 @@ tools := \
 	bpp2png \
 	bspcomp \
 	fine_print \
+	form_pic \
 	gfx \
 	lzpcompress \
 	make_patch \
@@ -54,6 +55,7 @@ clean:
 	$(RM) $(tools) *.o *.h.gch *.pyc
 
 fine_print: common.h
+form_pic: common.h
 gfx: common.h
 png_dimensions: common.h
 pokemon_animation: common.h

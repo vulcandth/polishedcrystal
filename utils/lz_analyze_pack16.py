@@ -9,9 +9,9 @@ Focus:
 
 This script parses the *on-disk* LZ stream as implemented by:
 - home/decompress.asm
-- tools/lz/uncomp.c
+- tools/lzpcompress.cpp
 
-It understands the special opcode bytes $fc-$fe.
+It understands both full and compact nibble-pack headers.
 
 Usage:
   utils/lz_analyze_pack16.py [root]
@@ -39,12 +39,9 @@ LZ_COPY_FLIPPED  = 5
 LZ_COPY_REVERSED = 6
 LZ_LONG          = 7
 
-# Special opcode bytes ($fc-$fe)
-LZ_SPECIAL_MASK         = 0b11111100
-LZ_SPECIAL_BASE         = 0xFC
-LZ_SPECIAL_PACKHI0      = LZ_SPECIAL_BASE + 0  # 0xFC
-LZ_SPECIAL_PACK16_SHORT = LZ_SPECIAL_BASE + 1  # 0xFD
-LZ_SPECIAL_PACKLO0      = LZ_SPECIAL_BASE + 2  # 0xFE
+# Full nibble-pack headers ($fc-$fe) and compact headers (%111_nn_t1s).
+LZ_SPECIAL_BASE = 0xFC
+LZ_COMPACT_MASK = 0xE2
 
 PACK16_TABLE = bytes(
     [
@@ -88,42 +85,26 @@ def parse_stream(buf: bytes) -> Iterator[ParsedCommand]:
         if b0 == LZ_END:
             return
 
-        # Special opcode bytes: $fc-$fe
-        if (b0 & LZ_SPECIAL_MASK) == LZ_SPECIAL_BASE:
-            if i >= n:
-                return
-            len_code = buf[i]
-            i += 1
-
-            if b0 == LZ_SPECIAL_PACKHI0:
-                out_len = len_code + 1
-                payload = _payload_len_packed(out_len)
-                if i + payload > n:
+        if b0 >= LZ_SPECIAL_BASE or (b0 & LZ_COMPACT_MASK) == LZ_COMPACT_MASK:
+            if b0 >= LZ_SPECIAL_BASE:
+                if i >= n:
                     return
-                i += payload
-                yield ParsedCommand("special_packhi0", out_len=out_len, comp_len=2 + payload)
-                continue
-
-            if b0 == LZ_SPECIAL_PACKLO0:
-                out_len = len_code + 1
-                payload = _payload_len_packed(out_len)
-                if i + payload > n:
-                    return
-                i += payload
-                yield ParsedCommand("special_packlo0", out_len=out_len, comp_len=2 + payload)
-                continue
-
-            if b0 == LZ_SPECIAL_PACK16_SHORT:
-                out_len = len_code + 1
+                out_len = buf[i] + 1
+                i += 1
+                mode = b0 - LZ_SPECIAL_BASE
+                header_len = 2
             else:
-                # 0xFF handled above; 0xFC..0xFE only expected
-                return
-
+                out_len = 4 + ((b0 & 0x18) >> 2)
+                mode = ((b0 & 4) >> 1) | (b0 & 1)
+                header_len = 1
+                if mode == 3:
+                    return
+            kind = ("special_packhi0", "special_pack16", "special_packlo0")[mode]
             payload = _payload_len_packed(out_len)
             if i + payload > n:
                 return
             i += payload
-            yield ParsedCommand("special_pack16", out_len=out_len, comp_len=2 + payload)
+            yield ParsedCommand(kind, out_len=out_len, comp_len=header_len + payload)
             continue
 
         cmd = (b0 >> 5) & 0x7
@@ -205,7 +186,6 @@ def main() -> int:
     literal_total = 0
 
     run_len_hist = Counter()
-    run_savings_bestcase = 0
 
     file_count = 0
     bad_files = 0
@@ -247,13 +227,9 @@ def main() -> int:
                     else:
                         if run:
                             run_len_hist[run] += 1
-                            # Best-case savings if this run were encoded as pack16
-                            # instead of raw literal bytes (ignoring any header split costs).
-                            run_savings_bestcase += max(0, run - (2 + (run + 1) // 2))
                             run = 0
                 if run:
                     run_len_hist[run] += 1
-                    run_savings_bestcase += max(0, run - (2 + (run + 1) // 2))
 
         # If our parser computed fewer bytes than file size, remaining are padding.
         totals["stream_bytes"] += stream_comp + 1  # + terminator
@@ -292,6 +268,10 @@ def main() -> int:
                 if len(tail) > 10:
                     print("  …")
 
+            run_savings_bestcase = 0
+            for length, count in run_len_hist.items():
+                header = 1 if length in (4, 6, 8, 10) else 2
+                run_savings_bestcase += count * max(0, length - header - _payload_len_packed(length))
             print("\nPack16 extra-savings best-case (very optimistic)")
             print("  This assumes every table-only run inside remaining literals could be encoded")
             print("  as pack16 with no extra splitting/header overhead and no interaction with other opcodes.")
